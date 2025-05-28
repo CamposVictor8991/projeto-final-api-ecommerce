@@ -15,6 +15,7 @@ import jakarta.persistence.OneToMany;
 import jakarta.validation.constraints.NotBlank;
 // import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
+import org.serratec.TrabalhoFinalAPI.dto.ClienteInserirDTO;
 
 @Entity
 public class Cliente {
@@ -53,6 +54,15 @@ public class Cliente {
     List<Pedido>pedidos;
 
     //construtor
+    public Cliente(ClienteInserirDTO clienteInserirDTO) {
+        this.nome = clienteInserirDTO.getNome();
+        this.telefone = clienteInserirDTO.getTelefone();
+        this.email = clienteInserirDTO.getEmail();
+        this.cpf = clienteInserirDTO.getCpf();
+        this.senha = clienteInserirDTO.getSenha();
+    }
+
+    public Cliente() {};
 
     public Long getId() {
         return id;
