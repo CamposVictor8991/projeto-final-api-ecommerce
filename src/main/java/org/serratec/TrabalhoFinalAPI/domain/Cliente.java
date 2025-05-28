@@ -1,11 +1,16 @@
 package org.serratec.TrabalhoFinalAPI.domain;
 
+import java.util.List;
+
 import org.hibernate.validator.constraints.br.CPF;
+
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 import jakarta.validation.constraints.NotBlank;
 // import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
@@ -35,6 +40,16 @@ public class Cliente {
     @NotBlank(message="A senha é um campo obrigatório.")
     @Size(min = 8, max = 100)
     private String senha;
+    
+   /* Aqui estamos exibindo uma lista de endereço no cliente */
+    @JsonManagedReference
+    @OneToMany(mappedBy = "cliente")
+    List<Endereco>enderecos;
+    
+    /* Aqui estamos exibindo uma lista de pedidos no cliente */
+    @JsonManagedReference
+    @OneToMany(mappedBy = "cliente")
+    List<Pedido>pedidos;
 
     //construtor
 
@@ -85,5 +100,21 @@ public class Cliente {
     public void setSenha(String senha) {
         this.senha = senha;
     }
+
+	public List<Endereco> getEnderecos() {
+		return enderecos;
+	}
+
+	public void setEnderecos(List<Endereco> enderecos) {
+		this.enderecos = enderecos;
+	}
+
+	public List<Pedido> getPedidos() {
+		return pedidos;
+	}
+
+	public void setPedidos(List<Pedido> pedidos) {
+		this.pedidos = pedidos;
+	}
 
 }

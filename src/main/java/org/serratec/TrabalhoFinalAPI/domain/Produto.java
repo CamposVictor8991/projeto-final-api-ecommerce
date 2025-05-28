@@ -6,6 +6,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToMany;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
@@ -15,7 +16,7 @@ public class Produto {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private String id;
+    private Long id;
 
     @NotBlank(message = "Nome do produto é obrigatória.")
     @Size(min = 3, max = 30, message="Mínimo de ${min} e máximo de ${max} caracteres")
@@ -28,15 +29,17 @@ public class Produto {
     @NotBlank(message = "Valor é obrigatório.")
     private Double preco;
 
-    @ManyToMany
-    @JoinColumn(name="id_pedido")
-    private Pedido pedido;
+    
+    /* Aqui estamos exibindo ID desta categoria no PRODUTO! */
+    @ManyToOne
+    @JoinColumn(name = "id_categoria")
+    private Categoria categoria;
 
-    public String getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -63,5 +66,13 @@ public class Produto {
     public void setPreco(Double preco) {
         this.preco = preco;
     }
+
+	public Categoria getCategoria() {
+		return categoria;
+	}
+
+	public void setCategoria(Categoria categoria) {
+		this.categoria = categoria;
+	}
 
 }
