@@ -26,7 +26,6 @@ public class Produto {
     @Size(max = 100)
     private String descricao;
 
-    @NotBlank(message = "Valor é obrigatório.")
     private Double preco;
 
     

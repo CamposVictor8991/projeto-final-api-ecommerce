@@ -2,6 +2,7 @@ package org.serratec.TrabalhoFinalAPI.domain;
 
 import java.util.List;
 
+import jakarta.validation.constraints.Email;
 import org.hibernate.validator.constraints.br.CPF;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
@@ -30,7 +31,7 @@ public class Cliente {
     private String telefone;
 
     @NotBlank(message="E-mail é um campo obrigatório.")
-    @Size(max = 100)
+    @Email(message = "E-mail inválido.")
     private String email;
 
     @NotBlank(message="CPF é um campo obrigatório.")

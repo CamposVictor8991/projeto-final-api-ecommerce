@@ -7,6 +7,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 
 @Entity
@@ -23,7 +24,7 @@ public class Endereco {
     private String logradouro;
 
     @NotBlank
-    private Integer numero;
+    private String numero;
 
     @NotBlank
     private String bairro;
@@ -68,11 +69,11 @@ public class Endereco {
         this.logradouro = logradouro;
     }
 
-    public Integer getNumero() {
+    public String getNumero() {
         return numero;
     }
 
-    public void setNumero(Integer numero) {
+    public void setNumero(String numero) {
         this.numero = numero;
     }
 
