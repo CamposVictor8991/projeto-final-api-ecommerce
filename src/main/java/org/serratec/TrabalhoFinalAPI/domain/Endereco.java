@@ -7,8 +7,8 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
+import org.serratec.TrabalhoFinalAPI.dto.EnderecoViaCepDTO;
 
 @Entity
 public class Endereco {
@@ -44,7 +44,18 @@ public class Endereco {
     @ManyToOne
     @JoinColumn(name="id_cliente")
     private Cliente cliente;
-    
+
+    public Endereco() {
+    }
+
+    public Endereco(EnderecoViaCepDTO dto) {
+        this.cep = dto.getCep();
+        this.logradouro = dto.getLogradouro();
+        this.bairro = dto.getBairro();
+        this.cidade = dto.getCidade();
+        this.uf = dto.getUf();
+    }
+
     public Long getId() {
         return id;
     }

@@ -1,5 +1,6 @@
 package org.serratec.TrabalhoFinalAPI.dto;
 
+import org.serratec.TrabalhoFinalAPI.domain.Cliente;
 import org.serratec.TrabalhoFinalAPI.domain.Endereco;
 
 import java.util.List;
@@ -10,6 +11,17 @@ public class ClienteDTO {
     private String cpf;
     private String email;
     private String telefone;
+
+    public ClienteDTO() {
+    }
+
+    public ClienteDTO(Cliente cliente) {
+        this.nome = cliente.getNome();
+        this.enderecos = cliente.getEnderecos();
+        this.cpf = cliente.getCpf();
+        this.email = cliente.getEmail();
+        this.telefone = cliente.getTelefone();
+    }
 
     public String getNome() {
         return nome;

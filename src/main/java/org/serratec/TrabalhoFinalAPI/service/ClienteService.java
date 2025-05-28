@@ -4,17 +4,14 @@ import org.serratec.TrabalhoFinalAPI.domain.Cliente;
 import org.serratec.TrabalhoFinalAPI.domain.Endereco;
 import org.serratec.TrabalhoFinalAPI.dto.ClienteDTO;
 import org.serratec.TrabalhoFinalAPI.dto.ClienteInserirDTO;
-import org.serratec.TrabalhoFinalAPI.dto.EnderecoDTO;
 import org.serratec.TrabalhoFinalAPI.exception.CpfException;
 import org.serratec.TrabalhoFinalAPI.exception.EmailException;
 import org.serratec.TrabalhoFinalAPI.exception.SenhaException;
 import org.serratec.TrabalhoFinalAPI.repository.ClienteRepository;
-import org.serratec.TrabalhoFinalAPI.repository.EnderecoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.web.client.RestTemplate;
 
-import java.util.Optional;
+import java.util.List;
 
 @Service
 public class ClienteService {
@@ -23,9 +20,7 @@ public class ClienteService {
     private ClienteRepository clienteRepository;
 
     @Autowired
-    private EnderecoRepository enderecoRepository;
-
-    @Autowired EnderecoService enderecoService;
+    private EnderecoService enderecoService;
 
     public ClienteDTO inserir(ClienteInserirDTO clienteInserirDTO) throws CpfException {
         if ((clienteRepository.findByCpf(clienteInserirDTO.getCpf())) != null) {
@@ -41,12 +36,26 @@ public class ClienteService {
         }
 
         String cep = clienteInserirDTO.getCep();
-
-//        enderecoService.buscar(cep);
+        Endereco endereco = enderecoService.adicionarEndereco(cep);
+        endereco.setNumero(clienteInserirDTO.getNumeroEndereco());
+        endereco.setComplemento(clienteInserirDTO.getComplemento());
 
         Cliente cliente = new Cliente(clienteInserirDTO);
+        endereco.setId(cliente.getId());
+
+        List<Endereco> listaEnderecosCliente = cliente.getEnderecos();
+        listaEnderecosCliente.add(endereco);
+        cliente.setEnderecos(listaEnderecosCliente);
 
         clienteRepository.save(cliente);
 
+        ClienteDTO clienteDTO = new ClienteDTO(cliente);
+
+        return clienteDTO;
+
+    }
+
+    public List<Cliente> listarTodos() {
+        return clienteRepository.findAll();
     }
 }
