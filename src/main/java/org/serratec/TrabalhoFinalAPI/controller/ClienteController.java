@@ -2,9 +2,11 @@ package org.serratec.TrabalhoFinalAPI.controller;
 
 import java.util.List;
 
+import org.serratec.TrabalhoFinalAPI.domain.Endereco;
 import org.serratec.TrabalhoFinalAPI.dto.ClienteDTO;
 import org.serratec.TrabalhoFinalAPI.dto.ClienteEditarDTO;
 import org.serratec.TrabalhoFinalAPI.dto.ClienteInserirDTO;
+import org.serratec.TrabalhoFinalAPI.dto.EnderecoInserirDTO;
 import org.serratec.TrabalhoFinalAPI.exception.CpfException;
 import org.serratec.TrabalhoFinalAPI.exception.EmailException;
 import org.serratec.TrabalhoFinalAPI.exception.SenhaException;
@@ -78,4 +80,16 @@ public class ClienteController {
 		}
 		return ResponseEntity.notFound().build();
 	}
+
+    @PostMapping("/{id}/enderecos")
+    public ResponseEntity<Endereco> criarEndereco(@PathVariable Long id, @Valid @RequestBody EnderecoInserirDTO enderecoInserirDTO){
+        Endereco endereco = clienteService.criarEndereco(id, enderecoInserirDTO);
+        if(endereco == null) {
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(endereco);
+    }
+        
+      
+    
 }

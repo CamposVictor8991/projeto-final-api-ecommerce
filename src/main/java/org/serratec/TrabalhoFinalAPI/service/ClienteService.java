@@ -17,6 +17,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import org.serratec.TrabalhoFinalAPI.dto.EnderecoInserirDTO;
+
 @Service
 public class ClienteService {
 
@@ -118,4 +120,19 @@ public class ClienteService {
 		}
 		return false;
 	}
+
+    public Endereco criarEndereco(Long id, EnderecoInserirDTO enderecoInserirDTO) {
+        String cep = enderecoInserirDTO.getCep();
+        Endereco endereco = enderecoService.adicionarEndereco(cep);
+        endereco.setNumero(enderecoInserirDTO.getNumero());
+        endereco.setComplemento(enderecoInserirDTO.getComplemento());
+        Optional<Cliente> clienteOptional = clienteRepository.findById(id);
+        if(clienteOptional.isPresent()) {
+            Cliente cliente = clienteOptional.get();
+            endereco.setCliente(cliente); 
+            enderecoRepository.save(endereco);
+            return endereco;
+        }
+        return null;
+    } 
 }
