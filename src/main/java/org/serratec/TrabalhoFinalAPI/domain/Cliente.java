@@ -1,8 +1,10 @@
 package org.serratec.TrabalhoFinalAPI.domain;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.Pattern;
 import org.hibernate.validator.constraints.br.CPF;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
@@ -13,8 +15,8 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 import jakarta.validation.constraints.NotBlank;
-// import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
+import org.serratec.TrabalhoFinalAPI.dto.ClienteInserirDTO;
 
 @Entity
 public class Cliente {
@@ -27,7 +29,7 @@ public class Cliente {
     private String nome;
 
     @NotBlank(message="Telefone é um campo obrigatório.")
-    // @Pattern(regexp = "^\(?[1-9]{2}\)?\s?(9[0-9]{4})-?[0-9]{4}$", message = "Telefone inválido. Ex: (11) 91234-5678")
+//     @Pattern(regexp = "^\(?[1-9]{2}\)?\s?(9[0-9]{4})-?[0-9]{4}$", message = "Telefone inválido. Ex: (11) 91234-5678")
     private String telefone;
 
     @NotBlank(message="E-mail é um campo obrigatório.")
@@ -45,14 +47,24 @@ public class Cliente {
    /* Aqui estamos exibindo uma lista de endereço no cliente */
     @JsonManagedReference
     @OneToMany(mappedBy = "cliente")
-    List<Endereco>enderecos;
+    List<Endereco> enderecos;
     
     /* Aqui estamos exibindo uma lista de pedidos no cliente */
     @JsonManagedReference
     @OneToMany(mappedBy = "cliente")
-    List<Pedido>pedidos;
+    List<Pedido> pedidos;
 
     //construtor
+    public Cliente(ClienteInserirDTO clienteInserirDTO) {
+        this.nome = clienteInserirDTO.getNome();
+        this.telefone = clienteInserirDTO.getTelefone();
+        this.email = clienteInserirDTO.getEmail();
+        this.cpf = clienteInserirDTO.getCpf();
+        this.senha = clienteInserirDTO.getSenha();
+        this.enderecos = new ArrayList<>();
+    }
+
+    public Cliente() {};
 
     public Long getId() {
         return id;
