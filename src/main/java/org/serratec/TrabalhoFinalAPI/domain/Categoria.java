@@ -2,13 +2,14 @@ package org.serratec.TrabalhoFinalAPI.domain;
 
 import java.util.List;
 
+import org.serratec.TrabalhoFinalAPI.dto.CategoriaInserirDTO;
+
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToMany;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
@@ -33,7 +34,22 @@ public class Categoria {
     @OneToMany(mappedBy = "categoria")
     List <Produto> produtos;
     
-    public Long getId() {
+    
+    
+    public Categoria() {
+		super();
+	}
+
+    
+    
+	public Categoria(CategoriaInserirDTO categoriaInserirDTO) {
+		this.nomeCategoria = categoriaInserirDTO.getNomeCategoria();
+		this.descricaoCategoria = categoriaInserirDTO.getDescricaoCategoria();
+	}
+
+
+
+	public Long getId() {
         return id;
     }
 

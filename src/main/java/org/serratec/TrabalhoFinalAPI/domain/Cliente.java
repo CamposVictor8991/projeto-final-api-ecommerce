@@ -3,20 +3,20 @@ package org.serratec.TrabalhoFinalAPI.domain;
 import java.util.ArrayList;
 import java.util.List;
 
-import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.Pattern;
 import org.hibernate.validator.constraints.br.CPF;
+import org.serratec.TrabalhoFinalAPI.dto.ClienteInserirDTO;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
+import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
-import org.serratec.TrabalhoFinalAPI.dto.ClienteInserirDTO;
 
 @Entity
 public class Cliente {
@@ -46,12 +46,12 @@ public class Cliente {
     
    /* Aqui estamos exibindo uma lista de endereço no cliente */
     @JsonManagedReference
-    @OneToMany(mappedBy = "cliente")
+    @OneToMany(mappedBy = "cliente",cascade = CascadeType.ALL, orphanRemoval = true)
     List<Endereco> enderecos;
     
     /* Aqui estamos exibindo uma lista de pedidos no cliente */
     @JsonManagedReference
-    @OneToMany(mappedBy = "cliente")
+    @OneToMany(mappedBy = "cliente",cascade = CascadeType.ALL, orphanRemoval = true)
     List<Pedido> pedidos;
 
     //construtor

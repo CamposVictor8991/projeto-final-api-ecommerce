@@ -28,7 +28,8 @@ public class ClienteService {
 
     @Autowired
     private EnderecoService enderecoService;
-
+    
+    //Fazer envio de email  
     public ClienteDTO inserir(ClienteInserirDTO clienteInserirDTO) throws CpfException, EmailException, SenhaException {
         if ((clienteRepository.findByCpf(clienteInserirDTO.getCpf())) != null) {
             throw new CpfException("CPF já cadastrado!");
@@ -61,7 +62,7 @@ public class ClienteService {
         return new ClienteDTO(cliente);
 
     }
-
+    //Fazer envio de email  
     public ClienteDTO editarCadastro(ClienteEditarDTO clienteEditarDTO, Long id) throws CpfException, EmailException, SenhaException {
         Optional<Cliente> clienteOpt = clienteRepository.findById(id);
         if (clienteOpt.isPresent()) {
@@ -109,4 +110,12 @@ public class ClienteService {
         }
         return null;
     }
+    
+	public boolean excluir(Long id) {
+		if (clienteRepository.existsById(id)) {
+			clienteRepository.deleteById(id);
+			return true;
+		}
+		return false;
+	}
 }
