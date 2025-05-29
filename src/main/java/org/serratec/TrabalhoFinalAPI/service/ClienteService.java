@@ -3,15 +3,19 @@ package org.serratec.TrabalhoFinalAPI.service;
 import org.serratec.TrabalhoFinalAPI.domain.Cliente;
 import org.serratec.TrabalhoFinalAPI.domain.Endereco;
 import org.serratec.TrabalhoFinalAPI.dto.ClienteDTO;
+import org.serratec.TrabalhoFinalAPI.dto.ClienteEditarDTO;
 import org.serratec.TrabalhoFinalAPI.dto.ClienteInserirDTO;
 import org.serratec.TrabalhoFinalAPI.exception.CpfException;
 import org.serratec.TrabalhoFinalAPI.exception.EmailException;
 import org.serratec.TrabalhoFinalAPI.exception.SenhaException;
 import org.serratec.TrabalhoFinalAPI.repository.ClienteRepository;
+import org.serratec.TrabalhoFinalAPI.repository.EnderecoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class ClienteService {
@@ -20,9 +24,12 @@ public class ClienteService {
     private ClienteRepository clienteRepository;
 
     @Autowired
+    private EnderecoRepository enderecoRepository;
+
+    @Autowired
     private EnderecoService enderecoService;
 
-    public ClienteDTO inserir(ClienteInserirDTO clienteInserirDTO) throws CpfException {
+    public ClienteDTO inserir(ClienteInserirDTO clienteInserirDTO) throws CpfException, EmailException, SenhaException {
         if ((clienteRepository.findByCpf(clienteInserirDTO.getCpf())) != null) {
             throw new CpfException("CPF já cadastrado!");
         }
@@ -37,25 +44,69 @@ public class ClienteService {
 
         String cep = clienteInserirDTO.getCep();
         Endereco endereco = enderecoService.adicionarEndereco(cep);
+        enderecoRepository.save(endereco);
+
         endereco.setNumero(clienteInserirDTO.getNumeroEndereco());
         endereco.setComplemento(clienteInserirDTO.getComplemento());
 
         Cliente cliente = new Cliente(clienteInserirDTO);
-        endereco.setId(cliente.getId());
+        endereco.setCliente(cliente);
 
-        List<Endereco> listaEnderecosCliente = cliente.getEnderecos();
+        List<Endereco> listaEnderecosCliente = new ArrayList<>();
         listaEnderecosCliente.add(endereco);
         cliente.setEnderecos(listaEnderecosCliente);
 
         clienteRepository.save(cliente);
 
-        ClienteDTO clienteDTO = new ClienteDTO(cliente);
-
-        return clienteDTO;
+        return new ClienteDTO(cliente);
 
     }
 
-    public List<Cliente> listarTodos() {
-        return clienteRepository.findAll();
+    public ClienteDTO editarCadastro(ClienteEditarDTO clienteEditarDTO, Long id) throws CpfException, EmailException, SenhaException {
+        Optional<Cliente> clienteOpt = clienteRepository.findById(id);
+        if (clienteOpt.isPresent()) {
+
+            Cliente clienteTemp = clienteRepository.findByEmail(clienteEditarDTO.getEmail());
+            if (null != clienteTemp && clienteEditarDTO.getEmail().equals(clienteTemp.getEmail())) {
+                if (!id.equals(clienteTemp.getId())) {
+                    throw new EmailException("E-mail já cadastrado!");
+                }
+            }
+
+            if (!clienteEditarDTO.getSenha().equals(clienteEditarDTO.getConfirmaSenha())) {
+                throw new SenhaException("Senhas inseridas são diferentes!");
+            }
+
+            Cliente cliente = clienteRepository.getReferenceById(id);
+
+            cliente.setNome(clienteEditarDTO.getNome());
+            cliente.setSenha(clienteEditarDTO.getSenha());
+            cliente.setEmail(clienteEditarDTO.getEmail());
+            cliente.setTelefone(clienteEditarDTO.getTelefone());
+
+            clienteRepository.save(cliente);
+
+            return new ClienteDTO(cliente);
+        }
+        return null;
+    }
+
+    public List<ClienteDTO> listarTodos() {
+        List<Cliente> clientes= clienteRepository.findAll();
+        List<ClienteDTO> clientesDTO = new ArrayList<>();
+        for (Cliente c: clientes) {
+            ClienteDTO clienteDTO = new ClienteDTO(c);
+            clientesDTO.add(clienteDTO);
+        }
+
+        return clientesDTO;
+    }
+
+    public ClienteDTO exibirUm(Long id) {
+        Optional<Cliente> clienteOptional = clienteRepository.findById(id);
+        if (clienteOptional.isPresent()) {
+            return new ClienteDTO(clienteOptional.get());
+        }
+        return null;
     }
 }

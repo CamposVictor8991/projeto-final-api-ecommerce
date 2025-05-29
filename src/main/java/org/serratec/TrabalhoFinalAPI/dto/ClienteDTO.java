@@ -6,21 +6,31 @@ import org.serratec.TrabalhoFinalAPI.domain.Endereco;
 import java.util.List;
 
 public class ClienteDTO {
+    private Long id;
     private String nome;
-    private List<Endereco> enderecos;
     private String cpf;
     private String email;
     private String telefone;
+    private List<Endereco> enderecos;
 
     public ClienteDTO() {
     }
 
     public ClienteDTO(Cliente cliente) {
         this.nome = cliente.getNome();
+        this.id = cliente.getId();
         this.enderecos = cliente.getEnderecos();
         this.cpf = cliente.getCpf();
         this.email = cliente.getEmail();
         this.telefone = cliente.getTelefone();
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getNome() {

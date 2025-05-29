@@ -9,6 +9,7 @@ public class EnderecoDTO {
     private String complemento;
     private String bairro;
     private String uf;
+    private String cidade;
 
     public EnderecoDTO(Endereco endereco) {
         this.cep = endereco.getCep();
@@ -16,5 +17,6 @@ public class EnderecoDTO {
         this.complemento = endereco.getComplemento();
         this.bairro = endereco.getBairro();
         this.uf = endereco.getUf();
+        this.cidade = endereco.getCidade();
     }
 }

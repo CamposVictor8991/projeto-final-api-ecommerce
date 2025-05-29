@@ -4,7 +4,7 @@ public class EnderecoViaCepDTO {
     private String cep;
     private String logradouro;
     private String uf;
-    private String cidade;
+    private String localidade;
     private String bairro;
 
     public String getCep() {
@@ -31,12 +31,12 @@ public class EnderecoViaCepDTO {
         this.uf = uf;
     }
 
-    public String getCidade() {
-        return cidade;
+    public String getLocalidade() {
+        return localidade;
     }
 
-    public void setCidade(String cidade) {
-        this.cidade = cidade;
+    public void setLocalidade(String cidade) {
+        this.localidade = cidade;
     }
 
     public String getBairro() {
