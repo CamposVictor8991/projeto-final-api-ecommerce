@@ -3,6 +3,7 @@ package org.serratec.TrabalhoFinalAPI.domain;
 import java.time.LocalDate;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import org.serratec.TrabalhoFinalAPI.enuns.Status;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
@@ -33,10 +34,12 @@ public class Pedido {
 	@Enumerated(EnumType.STRING)
 	private Status status = Status.PENDENTE;
 
+    @JsonBackReference
 	@ManyToOne
 	@JoinColumn(name = "id_cliente")
 	private Cliente cliente;
 
+    @JsonBackReference
 	@OneToOne
 	@JoinColumn(name = "id_endereco")
 	private Endereco endereco;

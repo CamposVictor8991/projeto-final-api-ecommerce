@@ -5,17 +5,9 @@ import java.util.List;
 import org.serratec.TrabalhoFinalAPI.domain.PedidoProduto;
 
 public class PedidoInserirDTO {
-    private Long clienteId;
     private Long enderecoId;
-    private List<PedidoProduto> pedidoProdutos;
+    private List<PedidoProdutoDTO> pedidoProdutos;
 
-    public Long getClienteId() {
-        return clienteId;
-    }
-
-    public void setClienteId(Long clienteId) {
-        this.clienteId = clienteId;
-    }
 
     public Long getEnderecoId() {
         return enderecoId;
@@ -25,11 +17,11 @@ public class PedidoInserirDTO {
         this.enderecoId = enderecoId;
     }
 
-    public List<PedidoProduto> getPedidoProdutos() {
+    public List<PedidoProdutoDTO> getPedidoProdutos() {
         return pedidoProdutos;
     }
 
-    public void setPedidoProdutos(List<PedidoProduto> pedidoProdutos) {
+    public void setPedidoProdutos(List<PedidoProdutoDTO> pedidoProdutos) {
         this.pedidoProdutos = pedidoProdutos;
     }
 

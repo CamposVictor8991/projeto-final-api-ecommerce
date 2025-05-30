@@ -4,19 +4,19 @@ package org.serratec.TrabalhoFinalAPI.domain;
 
 import java.math.BigDecimal;
 
-import jakarta.persistence.EmbeddedId;
-import jakarta.persistence.Entity;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.MapsId;
+import jakarta.persistence.*;
+
 @Entity
 public class PedidoProduto {
 	@EmbeddedId
 	private PedidoProdutoId id = new PedidoProdutoId();
-	
+
 	private Integer quantidade;
-	private Produto produto;
-	
+
+	@OneToOne
+    @JoinColumn(name = "produto_individual_id")
+    private Produto produto;
+
 	public PedidoProdutoId getId() {
 		return id;
 	}
