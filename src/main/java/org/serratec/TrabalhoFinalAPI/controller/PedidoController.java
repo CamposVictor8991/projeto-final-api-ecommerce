@@ -16,9 +16,9 @@ public class PedidoController {
     private PedidoService pedidoService;
 
     @PostMapping("/{id}")
-    public ResponseEntity<Pedido> inserirPedido (@PathVariable Long id, @RequestBody PedidoInserirDTO pedidoInserirDTO) {
-        Pedido pedido = pedidoService.inserirPedido(id, pedidoInserirDTO);
-        return ResponseEntity.ok(pedido);
+    public ResponseEntity<PedidoDTO> inserirPedido (@PathVariable Long id, @RequestBody PedidoInserirDTO pedidoInserirDTO) {
+        PedidoDTO pedidoDTO = pedidoService.inserirPedido(id, pedidoInserirDTO);
+        return ResponseEntity.ok(pedidoDTO);
     }
 
 

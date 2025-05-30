@@ -6,6 +6,7 @@ import java.util.Optional;
 
 import org.serratec.TrabalhoFinalAPI.domain.Pedido;
 import org.serratec.TrabalhoFinalAPI.domain.PedidoProduto;
+import org.serratec.TrabalhoFinalAPI.domain.PedidoProdutoId;
 import org.serratec.TrabalhoFinalAPI.domain.Produto;
 import org.serratec.TrabalhoFinalAPI.dto.PedidoDTO;
 import org.serratec.TrabalhoFinalAPI.dto.PedidoInserirDTO;
@@ -29,7 +30,7 @@ public class PedidoService {
     @Autowired
     private ProdutoRepository produtoRepository;
 
-    public Pedido inserirPedido(Long id, PedidoInserirDTO pedidoInserirDTO) {
+    public PedidoDTO inserirPedido(Long id, PedidoInserirDTO pedidoInserirDTO) {
 
         Pedido pedido = new Pedido();
         pedido.setCliente(clienteRepository.findById(id)
@@ -40,15 +41,19 @@ public class PedidoService {
         List<PedidoProdutoDTO> pedidoProdutosDTO = pedidoInserirDTO.getPedidoProdutos();
         List<PedidoProduto> pedidoProdutos = new ArrayList<>();
         for (PedidoProdutoDTO p: pedidoProdutosDTO) {
-            Optional<Produto> produtoOpd = produtoRepository.findById(p.getProdutoId());
-            if (produtoOpd.isPresent()) {
-                Produto produto = produtoOpd.get();
-                int quantidade = p.getQuantidade();
-                PedidoProduto pedidoProduto = new PedidoProduto();
-                pedidoProduto.setProduto(produto);
-                pedidoProduto.setQuantidade(quantidade);
-                pedidoProdutos.add(pedidoProduto);
-            }
+            Produto produto = produtoRepository.findById(p.getProdutoId())
+                .orElseThrow(() -> new RuntimeException("Produto não encontrado"));
+
+            PedidoProduto pedidoProduto = new PedidoProduto();
+            pedidoProduto.setQuantidade(p.getQuantidade());
+
+            // Cria o ID composto e seta corretamente
+            PedidoProdutoId ppId = new PedidoProdutoId();
+            ppId.setPedido(pedido);
+            ppId.setProduto(produto);
+            pedidoProduto.setId(ppId);
+
+            pedidoProdutos.add(pedidoProduto);
         }
 
         pedido.setPedidoProdutos(pedidoProdutos);
@@ -60,6 +65,8 @@ public class PedidoService {
         pedido.setValorVenda(valorTotal);
 
         pedidoRepository.save(pedido);
-        return pedido;
+        PedidoDTO pedidoDTO = new PedidoDTO(pedido);
+
+        return pedidoDTO;
     }
 }

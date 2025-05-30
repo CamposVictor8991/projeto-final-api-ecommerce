@@ -13,10 +13,6 @@ public class PedidoProduto {
 
 	private Integer quantidade;
 
-	@OneToOne
-    @JoinColumn(name = "produto_individual_id")
-    private Produto produto;
-
 	public PedidoProdutoId getId() {
 		return id;
 	}
@@ -29,16 +25,26 @@ public class PedidoProduto {
 	public void setQuantidade(Integer quantidade) {
 		this.quantidade = quantidade;
 	}
-	public Produto getProduto() {
-		return produto;
-	}
-	public void setProduto(Produto produto) {
-		this.produto = produto;
-	}
-	
-	
-	
-	
-	
+
+
+    //perguntar ao professor
+    @Transient
+    public Produto getProduto() {
+        return this.id.getProduto();
+    }
+
+    @Transient
+    public Pedido getPedido() {
+        return this.id.getPedido();
+    }
+
+    // Se quiser setters também
+    public void setProduto(Produto produto) {
+        this.id.setProduto(produto);
+    }
+
+    public void setPedido(Pedido pedido) {
+        this.id.setPedido(pedido);
+    }
 }
 	

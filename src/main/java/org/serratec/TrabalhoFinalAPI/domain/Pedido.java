@@ -4,21 +4,10 @@ import java.time.LocalDate;
 import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import jakarta.persistence.*;
 import org.serratec.TrabalhoFinalAPI.enuns.Status;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
-
-import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
-import jakarta.persistence.FetchType;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToMany;
-import jakarta.persistence.OneToOne;
 
 @Entity
 public class Pedido {
@@ -40,12 +29,12 @@ public class Pedido {
 	private Cliente cliente;
 
     @JsonBackReference
-	@OneToOne
+	@ManyToOne
 	@JoinColumn(name = "id_endereco")
 	private Endereco endereco;
 
 	@JsonManagedReference
-	@OneToMany(mappedBy = "id.pedido", fetch = FetchType.EAGER)
+	@OneToMany(mappedBy = "id.pedido", fetch = FetchType.EAGER, cascade = CascadeType.ALL) //perguntar para o professor
 	List<PedidoProduto> pedidoProdutos;
 
 	public Long getId() {

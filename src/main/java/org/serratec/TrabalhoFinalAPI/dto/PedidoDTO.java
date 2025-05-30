@@ -2,15 +2,36 @@ package org.serratec.TrabalhoFinalAPI.dto;
 
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import org.serratec.TrabalhoFinalAPI.domain.Cliente;
+import org.serratec.TrabalhoFinalAPI.domain.Endereco;
+import org.serratec.TrabalhoFinalAPI.domain.Pedido;
 import org.serratec.TrabalhoFinalAPI.domain.PedidoProduto;
+import org.serratec.TrabalhoFinalAPI.enuns.Status;
 
 public class PedidoDTO {
     private Long id;
-    private String cliente;
+    private ClienteResumoDTO cliente;
+    private EnderecoResumoDTO endereco;
+    private Status status;
+    private List<PedidoProdutoResumoDTO> pedidoProdutos;
     private Double total;
-    private EnderecoDTO endereco;
-    private String status;
-    private List<PedidoProduto> pedidoProdutos;
+
+    public PedidoDTO() {
+    }
+
+    public PedidoDTO(Pedido pedido) {
+        this.id = pedido.getId();
+        this.cliente = new ClienteResumoDTO(pedido.getCliente());
+        this.endereco = new EnderecoResumoDTO(pedido.getEndereco());
+        this.status = pedido.getStatus();
+        this.total = pedido.getValorVenda();
+        this.pedidoProdutos = pedido.getPedidoProdutos().stream()
+            .map(PedidoProdutoResumoDTO::new)
+            .toList();
+    }
 
     public Long getId() {
         return id;
@@ -20,11 +41,11 @@ public class PedidoDTO {
         this.id = id;
     }
 
-    public String getCliente() {
+    public ClienteResumoDTO getCliente() {
         return cliente;
     }
 
-    public void setCliente(String cliente) {
+    public void setCliente(ClienteResumoDTO cliente) {
         this.cliente = cliente;
     }
 
@@ -36,28 +57,27 @@ public class PedidoDTO {
         this.total = total;
     }
 
-    public EnderecoDTO getEndereco() {
+    public EnderecoResumoDTO getEndereco() {
         return endereco;
     }
 
-    public void setEndereco(EnderecoDTO endereco) {
+    public void setEndereco(EnderecoResumoDTO endereco) {
         this.endereco = endereco;
     }
 
-    public String getStatus() {
+    public Status getStatus() {
         return status;
     }
 
-    public void setStatus(String status) {
+    public void setStatus(Status status) {
         this.status = status;
     }
 
-    public List<PedidoProduto> getPedidoProdutos() {
+    public List<PedidoProdutoResumoDTO> getPedidoProdutos() {
         return pedidoProdutos;
     }
 
-    public void setPedidoProdutos(List<PedidoProduto> pedidoProdutos) {
+    public void setPedidoProdutos(List<PedidoProdutoResumoDTO> pedidoProdutos) {
         this.pedidoProdutos = pedidoProdutos;
     }
-
 }

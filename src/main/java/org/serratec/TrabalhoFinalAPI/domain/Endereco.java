@@ -1,14 +1,12 @@
 package org.serratec.TrabalhoFinalAPI.domain;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import jakarta.persistence.*;
 import jakarta.validation.constraints.Size;
 import org.serratec.TrabalhoFinalAPI.dto.EnderecoViaCepDTO;
+
+import java.util.List;
 
 @Entity
 public class Endereco {
@@ -32,8 +30,6 @@ public class Endereco {
 
     @Size(max=100, message="Preencha até ${max} caracteres.")
     private String complemento;
-
-    	/* Aqui estamos colocando um ID do cliente no endereço */
 
     @JsonBackReference
     @ManyToOne

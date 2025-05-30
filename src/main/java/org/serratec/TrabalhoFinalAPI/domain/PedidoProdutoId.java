@@ -3,6 +3,7 @@ package org.serratec.TrabalhoFinalAPI.domain;
 import java.io.Serializable;
 import java.util.Objects;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.Embeddable;
 // Essa é uma classe que garante que o produto vai aparecer 1x por pedido
 // ou seja, é uma classe auxiliar; 
@@ -17,10 +18,12 @@ public class PedidoProdutoId implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
+    @JsonBackReference
 	@JoinColumn(name = "pedido_id")
 	@ManyToOne
 	private Pedido pedido;
 
+    @JsonBackReference
 	@JoinColumn(name = "produto_id")
 	@ManyToOne
 	private Produto produto;
