@@ -13,9 +13,9 @@ import jakarta.persistence.MapsId;
 public class PedidoProduto {
 	@EmbeddedId
 	private PedidoProdutoId id = new PedidoProdutoId();
+	
 	private Integer quantidade;
-	private BigDecimal valorVenda;
-	private BigDecimal desconto;
+	private Produto produto;
 	
 	public PedidoProdutoId getId() {
 		return id;
@@ -23,36 +23,21 @@ public class PedidoProduto {
 	public void setId(PedidoProdutoId id) {
 		this.id = id;
 	}
-	public Pedido getPedido() {
-		return this.id.getPedido();
-	}
-	public void setPedido(Pedido pedido) {
-		this.id.setPedido(pedido);
-	}
-	public Produto getProduto() {
-		return this.id.getProduto();
-	}
-	public void setProduto(Produto produto) {
-		this.id.setProduto(produto);
-	}
 	public Integer getQuantidade() {
 		return quantidade;
 	}
 	public void setQuantidade(Integer quantidade) {
 		this.quantidade = quantidade;
 	}
-	public BigDecimal getValorVenda() {
-		return valorVenda;
+	public Produto getProduto() {
+		return produto;
 	}
-	public void setValorVenda(BigDecimal valorVenda) {
-		this.valorVenda = valorVenda;
+	public void setProduto(Produto produto) {
+		this.produto = produto;
 	}
-	public BigDecimal getDesconto() {
-		return desconto;
-	}
-	public void setDesconto(BigDecimal desconto) {
-		this.desconto = desconto;
-	}
+	
+	
+	
 	
 	
 }

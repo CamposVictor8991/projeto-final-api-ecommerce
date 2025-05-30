@@ -1,16 +1,20 @@
 package org.serratec.TrabalhoFinalAPI.domain;
 
+import java.time.LocalDate;
 import java.util.List;
+
+import org.serratec.TrabalhoFinalAPI.enuns.Status;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
@@ -18,21 +22,28 @@ import jakarta.persistence.OneToOne;
 @Entity
 public class Pedido {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long id;
 
-    @ManyToOne
-    @JoinColumn(name="id_cliente")
-    private Cliente cliente;
+	private double valorVenda;
+	private double desconto;
+	private LocalDate dataPedido = LocalDate.now();
 
-    @OneToOne
-    @JoinColumn(name="id_endereco")
-    private Endereco endereco;
+	@Enumerated(EnumType.STRING)
+	private Status status = Status.PENDENTE;
 
-    @JsonManagedReference
-    @OneToMany(mappedBy="id.pedido", fetch = FetchType.EAGER)
-    List<PedidoProduto> pedidoProdutos;
+	@ManyToOne
+	@JoinColumn(name = "id_cliente")
+	private Cliente cliente;
+
+	@OneToOne
+	@JoinColumn(name = "id_endereco")
+	private Endereco endereco;
+
+	@JsonManagedReference
+	@OneToMany(mappedBy = "id.pedido", fetch = FetchType.EAGER)
+	List<PedidoProduto> pedidoProdutos;
 
 	public Long getId() {
 		return id;
@@ -66,5 +77,28 @@ public class Pedido {
 		this.pedidoProdutos = pedidoProdutos;
 	}
 
-  
+	public double getValorVenda() {
+		return valorVenda;
+	}
+
+	public void setValorVenda(double valorVenda) {
+		this.valorVenda = valorVenda;
+	}
+
+	public double getDesconto() {
+		return desconto;
+	}
+
+	public void setDesconto(double desconto) {
+		this.desconto = desconto;
+	}
+
+	public Status getStatus() {
+		return status;
+	}
+
+	public void setStatus(Status status) {
+		this.status = status;
+	}
+
 }
