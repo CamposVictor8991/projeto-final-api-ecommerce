@@ -11,7 +11,6 @@ import jakarta.persistence.Embeddable;
 // Produto A 3 unidades.
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
-import jakarta.persistence.MapsId;
 
 @Embeddable
 public class PedidoProdutoId implements Serializable {

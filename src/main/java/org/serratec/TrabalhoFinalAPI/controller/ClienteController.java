@@ -6,12 +6,15 @@ import org.serratec.TrabalhoFinalAPI.domain.Endereco;
 import org.serratec.TrabalhoFinalAPI.dto.ClienteDTO;
 import org.serratec.TrabalhoFinalAPI.dto.ClienteEditarDTO;
 import org.serratec.TrabalhoFinalAPI.dto.ClienteInserirDTO;
+import org.serratec.TrabalhoFinalAPI.dto.EditarStatusDTO;
 import org.serratec.TrabalhoFinalAPI.dto.EnderecoInserirDTO;
+import org.serratec.TrabalhoFinalAPI.dto.PedidoDTO;
+import org.serratec.TrabalhoFinalAPI.dto.PedidoInserirDTO;
 import org.serratec.TrabalhoFinalAPI.exception.CpfException;
 import org.serratec.TrabalhoFinalAPI.exception.EmailException;
 import org.serratec.TrabalhoFinalAPI.exception.SenhaException;
-import org.serratec.TrabalhoFinalAPI.repository.ClienteRepository;
 import org.serratec.TrabalhoFinalAPI.service.ClienteService;
+import org.serratec.TrabalhoFinalAPI.service.PedidoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -32,9 +35,6 @@ public class ClienteController {
     @Autowired
     private ClienteService clienteService;
 
-    @Autowired
-    ClienteRepository clienteRepository;
-
     @GetMapping
     public ResponseEntity<List<ClienteDTO>> listarTodos() {
         return ResponseEntity.ok(clienteService.listarTodos());
@@ -45,7 +45,7 @@ public class ClienteController {
         ClienteDTO clienteDTO = clienteService.exibirUm(id);
         if (clienteDTO != null) {
             return ResponseEntity.ok(clienteDTO);
-        };
+        }
         return ResponseEntity.notFound().build();
     }
 
@@ -89,7 +89,42 @@ public class ClienteController {
         }
         return ResponseEntity.ok(endereco);
     }
+
+    // Pedidos
+
+    @Autowired
+    private PedidoService pedidoService;
+
+    @GetMapping("/{id}/pedidos")
+    public ResponseEntity<List<PedidoDTO>> listarPedidos(@PathVariable Long id) {
+       List<PedidoDTO> pedidoDTO = pedidoService.listarPedidos(id);
+       
+       if (null != pedidoDTO) {
+        return ResponseEntity.ok(pedidoDTO);
+       }
+
+       return ResponseEntity.notFound().build();
+    }
+
+    @PostMapping("/{id}/pedidos")
+    public ResponseEntity<PedidoDTO> inserirPedido (@PathVariable Long id, @RequestBody PedidoInserirDTO pedidoInserirDTO) {
+        PedidoDTO pedidoDTO = pedidoService.inserirPedido(id, pedidoInserirDTO);
+        return ResponseEntity.ok(pedidoDTO);
+    }
+
+
+    @PutMapping("/{id}/pedidos/{id_pedido}")
+    public ResponseEntity<PedidoDTO> editarPedido (@PathVariable Long id, @PathVariable Long id_pedido, @Valid @RequestBody PedidoInserirDTO pedidoInserirDTO) {
+        PedidoDTO pedidoDTO = pedidoService.editarPedido(id, id_pedido, pedidoInserirDTO);
+        return ResponseEntity.ok(pedidoDTO);
+    }
+
+    // Status do pedido
+
+    @PutMapping("/{id}/pedidos/{id_pedido}/status")
+    public ResponseEntity<PedidoDTO> editarStatus (@PathVariable Long id, @PathVariable Long id_pedido, @Valid @RequestBody EditarStatusDTO editarStatusDTO) {
+        PedidoDTO pedidoDTO = pedidoService.editarStatus(id, id_pedido, editarStatusDTO);
+        return ResponseEntity.ok(pedidoDTO);
+    }
         
-      
-    
 }

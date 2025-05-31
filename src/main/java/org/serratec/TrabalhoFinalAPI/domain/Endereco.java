@@ -1,12 +1,9 @@
 package org.serratec.TrabalhoFinalAPI.domain;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Size;
 import org.serratec.TrabalhoFinalAPI.dto.EnderecoViaCepDTO;
-
-import java.util.List;
 
 @Entity
 public class Endereco {

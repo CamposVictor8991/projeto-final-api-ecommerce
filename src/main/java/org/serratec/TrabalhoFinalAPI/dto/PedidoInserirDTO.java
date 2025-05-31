@@ -2,8 +2,6 @@ package org.serratec.TrabalhoFinalAPI.dto;
 
 import java.util.List;
 
-import org.serratec.TrabalhoFinalAPI.domain.PedidoProduto;
-
 public class PedidoInserirDTO {
     private Long enderecoId;
     private List<PedidoProdutoDTO> pedidoProdutos;

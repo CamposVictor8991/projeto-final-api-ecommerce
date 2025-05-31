@@ -1,5 +1,6 @@
 package org.serratec.TrabalhoFinalAPI.service;
 
+import org.serratec.TrabalhoFinalAPI.config.MailConfig;
 import org.serratec.TrabalhoFinalAPI.domain.Cliente;
 import org.serratec.TrabalhoFinalAPI.domain.Endereco;
 import org.serratec.TrabalhoFinalAPI.dto.ClienteDTO;
@@ -30,6 +31,9 @@ public class ClienteService {
 
     @Autowired
     private EnderecoService enderecoService;
+
+    @Autowired
+    private MailConfig mailConfig;
     
     //Fazer envio de email  
     public ClienteDTO inserir(ClienteInserirDTO clienteInserirDTO) throws CpfException, EmailException, SenhaException {
@@ -61,10 +65,13 @@ public class ClienteService {
 
         clienteRepository.save(cliente);
 
+        mailConfig.enviarEmail(cliente.getEmail(), "Cadastro de Cliente Criado!", cliente.toString());
+
         return new ClienteDTO(cliente);
 
     }
-    //Fazer envio de email  
+    
+
     public ClienteDTO editarCadastro(ClienteEditarDTO clienteEditarDTO, Long id) throws CpfException, EmailException, SenhaException {
         Optional<Cliente> clienteOpt = clienteRepository.findById(id);
         if (clienteOpt.isPresent()) {
@@ -88,6 +95,8 @@ public class ClienteService {
             cliente.setTelefone(clienteEditarDTO.getTelefone());
 
             clienteRepository.save(cliente);
+
+            mailConfig.enviarEmail(cliente.getEmail(), "Seu Cadastro Foi Atualizado!", "Olá! Seu cadastro foi atualizado com sucesso!");
 
             return new ClienteDTO(cliente);
         }
@@ -135,4 +144,5 @@ public class ClienteService {
         }
         return null;
     } 
+
 }

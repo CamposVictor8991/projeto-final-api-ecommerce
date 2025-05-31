@@ -2,8 +2,6 @@ package org.serratec.TrabalhoFinalAPI.domain;
 // Essa classe irá fazer a intermediação com as outras classes
 // para ser aplicado quantidade/valor de venda/desconto
 
-import java.math.BigDecimal;
-
 import jakarta.persistence.*;
 
 @Entity
@@ -47,4 +45,3 @@ public class PedidoProduto {
         this.id.setPedido(pedido);
     }
 }
-	
