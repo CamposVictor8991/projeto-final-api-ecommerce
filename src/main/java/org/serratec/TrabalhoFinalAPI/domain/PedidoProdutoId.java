@@ -15,49 +15,52 @@ import jakarta.persistence.ManyToOne;
 @Embeddable
 public class PedidoProdutoId implements Serializable {
 
-	private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
 
     @JsonBackReference
-	@JoinColumn(name = "pedido_id")
-	@ManyToOne
-	private Pedido pedido;
+    @JoinColumn(name = "pedido_id")
+    @ManyToOne
+    private Pedido pedido;
 
     @JsonBackReference
-	@JoinColumn(name = "produto_id")
-	@ManyToOne
-	private Produto produto;
+    @JoinColumn(name = "produto_id")
+    @ManyToOne
+    private Produto produto;
 
-	public Pedido getPedido() {
-		return pedido;
-	}
+    public Pedido getPedido() {
+        return pedido;
+    }
 
-	public void setPedido(Pedido pedido) {
-		this.pedido = pedido;
-	}
+    public void setPedido(Pedido pedido) {
+        this.pedido = pedido;
+    }
 
-	public Produto getProduto() {
-		return produto;
-	}
+    public Produto getProduto() {
+        return produto;
+    }
 
-	public void setProduto(Produto produto) {
-		this.produto = produto;
-	}
+    public void setProduto(Produto produto) {
+        this.produto = produto;
+    }
 
-	@Override
-	public int hashCode() {
-		return Objects.hash(pedido, produto);
-	}
+    @Override
+    public int hashCode() {
+        return Objects.hash(pedido, produto);
+    }
 
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		PedidoProdutoId other = (PedidoProdutoId) obj;
-		return Objects.equals(pedido, other.pedido) && Objects.equals(produto, other.produto);
-	}
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        PedidoProdutoId other = (PedidoProdutoId) obj;
+        return Objects.equals(pedido, other.pedido) && Objects.equals(produto, other.produto);
+    }
 
 }

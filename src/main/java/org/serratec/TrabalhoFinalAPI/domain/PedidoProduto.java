@@ -6,24 +6,27 @@ import jakarta.persistence.*;
 
 @Entity
 public class PedidoProduto {
-	@EmbeddedId
-	private PedidoProdutoId id = new PedidoProdutoId();
 
-	private Integer quantidade;
+    @EmbeddedId
+    private PedidoProdutoId id = new PedidoProdutoId();
 
-	public PedidoProdutoId getId() {
-		return id;
-	}
-	public void setId(PedidoProdutoId id) {
-		this.id = id;
-	}
-	public Integer getQuantidade() {
-		return quantidade;
-	}
-	public void setQuantidade(Integer quantidade) {
-		this.quantidade = quantidade;
-	}
+    private Integer quantidade;
 
+    public PedidoProdutoId getId() {
+        return id;
+    }
+
+    public void setId(PedidoProdutoId id) {
+        this.id = id;
+    }
+
+    public Integer getQuantidade() {
+        return quantidade;
+    }
+
+    public void setQuantidade(Integer quantidade) {
+        this.quantidade = quantidade;
+    }
 
     //perguntar ao professor
     @Transient

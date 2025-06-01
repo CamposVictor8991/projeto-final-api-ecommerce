@@ -13,7 +13,7 @@ public class ClienteInserirDTO {
     @Size(max = 100, message="Máximo de ${max} caracteres.")
     private String nome;
 
-     @NotBlank(message="E-mail é um campo obrigatório.")
+    @NotBlank(message="E-mail é um campo obrigatório.")
     @Email(message = "E-mail inválido.")
     private String email;
 

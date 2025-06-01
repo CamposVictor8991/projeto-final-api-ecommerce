@@ -38,7 +38,9 @@ public class ClientePerfilPK implements Serializable {
 
     @Override
     public boolean equals(Object o) {
-        if (o == null || getClass() != o.getClass()) return false;
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
         ClientePerfilPK that = (ClientePerfilPK) o;
         return Objects.equals(cliente, that.cliente) && Objects.equals(perfil, that.perfil);
     }
@@ -48,4 +50,3 @@ public class ClientePerfilPK implements Serializable {
         return Objects.hash(cliente, perfil);
     }
 }
-

@@ -7,7 +7,7 @@ import org.serratec.TrabalhoFinalAPI.dto.EnderecoViaCepDTO;
 
 @Entity
 public class Endereco {
-    
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -22,15 +22,15 @@ public class Endereco {
 
     private String cidade;
 
-    @Size(max=2)
+    @Size(max = 2)
     private String uf;
 
-    @Size(max=100, message="Preencha até ${max} caracteres.")
+    @Size(max = 100, message = "Preencha até ${max} caracteres.")
     private String complemento;
 
     @JsonBackReference
     @ManyToOne
-    @JoinColumn(name="id_cliente")
+    @JoinColumn(name = "id_cliente")
     private Cliente cliente;
 
     public Endereco() {
@@ -108,12 +108,12 @@ public class Endereco {
         this.complemento = complemento;
     }
 
-	public Cliente getCliente() {
-		return cliente;
-	}
+    public Cliente getCliente() {
+        return cliente;
+    }
 
-	public void setCliente(Cliente cliente) {
-		this.cliente = cliente;
-	}
+    public void setCliente(Cliente cliente) {
+        this.cliente = cliente;
+    }
 
 }

@@ -32,4 +32,3 @@ public class Perfil {
         this.nome = nome;
     }
 }
-

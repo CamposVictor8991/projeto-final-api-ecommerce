@@ -8,14 +8,15 @@ import jakarta.persistence.Entity;
 
 @Entity
 public class ClientePerfil {
-    
+
     @EmbeddedId
     private ClientePerfilPK id = new ClientePerfilPK();
 
     @Column(name = "data_criacao")
     private LocalDate dataCriacao;
 
-    public ClientePerfil() {}
+    public ClientePerfil() {
+    }
 
     public ClientePerfil(Cliente cliente, Perfil perfil, LocalDate dataCriacao) {
         this.id.setCliente(cliente);
@@ -39,5 +40,4 @@ public class ClientePerfil {
         this.dataCriacao = dataCriacao;
     }
 
-    
 }
