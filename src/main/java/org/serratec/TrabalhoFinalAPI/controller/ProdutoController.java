@@ -8,6 +8,7 @@ import org.serratec.TrabalhoFinalAPI.service.ProdutoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -52,6 +53,15 @@ public class ProdutoController {
         List<Produto> relacionados = produtoService.listarRelacionados(id);
         return ResponseEntity.ok(relacionados);
     }
-    // Delete não implementado, pois não é necessário para o projeto final.
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deletar(@PathVariable Long id) {
+        boolean deleted = produtoService.deletar(id);
+        if (deleted) {
+            return ResponseEntity.noContent().build();
+        }
+        return ResponseEntity.notFound().build();
+    }
+
+    
 
 }
