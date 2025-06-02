@@ -21,7 +21,7 @@ public class Produto {
     private Long id;
 
     @NotBlank(message = "Nome do produto é obrigatória.")
-    @Size(min = 3, max = 30, message="Mínimo de ${min} e máximo de ${max} caracteres")
+    @Size(min = 3, max = 30, message = "Mínimo de ${min} e máximo de ${max} caracteres")
     private String nomeProduto;
 
     @NotBlank(message = "Descrição é obrigatória.")
@@ -29,45 +29,39 @@ public class Produto {
     private String descricao;
 
     private Double preco;
-    
+
     private int quantidade;
 
-    
     /* Aqui estamos exibindo ID desta categoria no PRODUTO! */
     @JsonBackReference
     @ManyToOne
     @JoinColumn(name = "id_categoria")
     private Categoria categoria;
 
-    
-    
-    
-    
     public Produto() {
-		super();
-	}
-    
-    
-    public Produto(ProdutoInserirDTO produtoInserirDTO) {
-		this.nomeProduto = produtoInserirDTO.getNomeProduto();
-		this.descricao = produtoInserirDTO.getDescricaoProduto();
-		this.preco = produtoInserirDTO.getPrecoProduto();
-		this.quantidade = produtoInserirDTO.getQuantidadeProduto();
-	}
+        super();
+    }
 
-	public Long getId() {
+    public Produto(ProdutoInserirDTO produtoInserirDTO) {
+        this.nomeProduto = produtoInserirDTO.getNomeProduto();
+        this.descricao = produtoInserirDTO.getDescricaoProduto();
+        this.preco = produtoInserirDTO.getPrecoProduto();
+        this.quantidade = produtoInserirDTO.getQuantidadeProduto();
+    }
+
+    public Long getId() {
         return id;
     }
 
     public int getQuantidade() {
-		return quantidade;
-	}
+        return quantidade;
+    }
 
-	public void setQuantidade(int quantidade) {
-		this.quantidade = quantidade;
-	}
+    public void setQuantidade(int quantidade) {
+        this.quantidade = quantidade;
+    }
 
-	public void setId(Long id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -95,12 +89,12 @@ public class Produto {
         this.preco = preco;
     }
 
-	public Categoria getCategoria() {
-		return categoria;
-	}
+    public Categoria getCategoria() {
+        return categoria;
+    }
 
-	public void setCategoria(Categoria categoria) {
-		this.categoria = categoria;
-	}
+    public void setCategoria(Categoria categoria) {
+        this.categoria = categoria;
+    }
 
 }

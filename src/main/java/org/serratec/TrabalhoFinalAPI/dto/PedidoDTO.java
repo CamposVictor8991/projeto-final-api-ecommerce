@@ -2,13 +2,7 @@ package org.serratec.TrabalhoFinalAPI.dto;
 
 import java.util.List;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import org.serratec.TrabalhoFinalAPI.domain.Cliente;
-import org.serratec.TrabalhoFinalAPI.domain.Endereco;
 import org.serratec.TrabalhoFinalAPI.domain.Pedido;
-import org.serratec.TrabalhoFinalAPI.domain.PedidoProduto;
 import org.serratec.TrabalhoFinalAPI.enuns.Status;
 
 public class PedidoDTO {

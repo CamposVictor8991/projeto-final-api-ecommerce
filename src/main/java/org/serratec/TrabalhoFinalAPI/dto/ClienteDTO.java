@@ -1,9 +1,13 @@
 package org.serratec.TrabalhoFinalAPI.dto;
 
-import org.serratec.TrabalhoFinalAPI.domain.Cliente;
-import org.serratec.TrabalhoFinalAPI.domain.Endereco;
-
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
+
+import org.serratec.TrabalhoFinalAPI.domain.Cliente;
+import org.serratec.TrabalhoFinalAPI.domain.ClientePerfil;
+import org.serratec.TrabalhoFinalAPI.domain.Endereco;
+import org.serratec.TrabalhoFinalAPI.domain.Perfil;
 
 public class ClienteDTO {
     private Long id;
@@ -12,17 +16,22 @@ public class ClienteDTO {
     private String email;
     private String telefone;
     private List<Endereco> enderecos;
+    private Set<Perfil> perfis;
 
     public ClienteDTO() {
     }
 
     public ClienteDTO(Cliente cliente) {
-        this.nome = cliente.getNome();
         this.id = cliente.getId();
-        this.enderecos = cliente.getEnderecos();
+        this.nome = cliente.getNome();
         this.cpf = cliente.getCpf();
         this.email = cliente.getEmail();
         this.telefone = cliente.getTelefone();
+        this.enderecos = cliente.getEnderecos();
+        this.perfis = new HashSet<>();
+        for (ClientePerfil clientePerfil : cliente.getClientePerfis()) {
+			this.perfis.add(clientePerfil.getId().getPerfil());
+		}
     }
 
     public Long getId() {
@@ -71,5 +80,13 @@ public class ClienteDTO {
 
     public void setTelefone(String telefone) {
         this.telefone = telefone;
+    }
+   
+    public Set<Perfil> getPerfis() {
+        return perfis;
+    }
+
+    public void setPerfis(Set<Perfil> perfis) {
+        this.perfis = perfis;
     }
 }
