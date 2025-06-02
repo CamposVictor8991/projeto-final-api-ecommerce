@@ -35,37 +35,41 @@ public class ConfigSeguranca {
     @Bean
     SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http.csrf(csrf -> csrf.disable())
-                .cors((cors) -> cors.configurationSource(corsConfigurationsource()))
-                .httpBasic(Customizer.withDefaults())
-                .authorizeHttpRequests(authorize
-                        -> authorize
-                        .requestMatchers(HttpMethod.GET, "/clientes/**").permitAll()
-                        .requestMatchers(HttpMethod.POST, "/clientes/**").permitAll()
-                        .requestMatchers(HttpMethod.PUT, "/clientes/**").permitAll()
-                        .requestMatchers(HttpMethod.DELETE, "/clientes/**").permitAll()
-                        .requestMatchers(HttpMethod.GET, "/categorias/**").permitAll()
-                        .requestMatchers(HttpMethod.POST, "/categorias/**").permitAll()
-                        .requestMatchers(HttpMethod.PUT, "/categorias/**").permitAll()
-                        .requestMatchers(HttpMethod.DELETE, "/categorias/**").permitAll()
-                        .requestMatchers(HttpMethod.GET, "/produtos/**").permitAll()
-                        .requestMatchers(HttpMethod.POST, "/produtos/**").permitAll()
-                        .requestMatchers(HttpMethod.PUT, "/produtos/**").permitAll()
-                        .requestMatchers(HttpMethod.DELETE, "/produtos/**").permitAll()
-                        .anyRequest().authenticated()
-                )
-                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
+            .cors((cors) -> cors.configurationSource(corsConfigurationsource()))
+            .httpBasic(Customizer.withDefaults())
+            .authorizeHttpRequests(authorize -> authorize
+                .requestMatchers(HttpMethod.GET, "/clientes/**").permitAll()
+                .requestMatchers(HttpMethod.POST, "/clientes/**").permitAll()
+                .requestMatchers(HttpMethod.PUT, "/clientes/**").permitAll()
+                .requestMatchers(HttpMethod.DELETE, "/clientes/**").permitAll()
+                .requestMatchers(HttpMethod.GET, "/categorias/**").permitAll()
+                .requestMatchers(HttpMethod.POST, "/categorias/**").permitAll()
+                .requestMatchers(HttpMethod.PUT, "/categorias/**").permitAll()
+                .requestMatchers(HttpMethod.DELETE, "/categorias/**").permitAll()
+                .requestMatchers(HttpMethod.GET, "/produtos/**").permitAll()
+                .requestMatchers(HttpMethod.POST, "/produtos/**").permitAll()
+                .requestMatchers(HttpMethod.PUT, "/produtos/**").permitAll()
+                .requestMatchers(HttpMethod.DELETE, "/produtos/**").permitAll()
+                .requestMatchers("/h2-console/**").permitAll() //ṕermitir acesso ao h2 console
+                .anyRequest().authenticated()
+            )
+            //permitir exibição do h2 console no browser
+            .headers(headers -> headers
+                .frameOptions().disable() // Allow frames for H2 console
+            )
+            .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
 
         JwtAuthenticationFilter jwtAuthenticationFilter
-                = new JwtAuthenticationFilter(authenticationManager(
-                        http.getSharedObject(AuthenticationConfiguration.class)),
-                        jwtUtil);
+            = new JwtAuthenticationFilter(authenticationManager(
+            http.getSharedObject(AuthenticationConfiguration.class)),
+            jwtUtil);
         jwtAuthenticationFilter.setFilterProcessesUrl("/login");
 
         JwtAuthorizationFilter jwtAuthorizationFilter
-                = new JwtAuthorizationFilter(authenticationManager(
-                        http.getSharedObject(AuthenticationConfiguration.class)),
-                        jwtUtil,
-                        userDetailsService);
+            = new JwtAuthorizationFilter(authenticationManager(
+            http.getSharedObject(AuthenticationConfiguration.class)),
+            jwtUtil,
+            userDetailsService);
 
         http.addFilter(jwtAuthenticationFilter);
         http.addFilter(jwtAuthorizationFilter);

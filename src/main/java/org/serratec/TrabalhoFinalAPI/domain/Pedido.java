@@ -17,6 +17,7 @@ public class Pedido {
 	private Long id;
 
 	private double valorVenda;
+    private double total;
 	private double desconto;
 	private LocalDate dataPedido = LocalDate.now();
 
@@ -93,4 +94,11 @@ public class Pedido {
 		this.status = status;
 	}
 
+    public double getTotal() {
+        return total;
+    }
+
+    public void setTotal(double total) {
+        this.total = total;
+    }
 }

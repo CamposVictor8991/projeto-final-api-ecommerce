@@ -65,7 +65,11 @@ public class PedidoService {
             double valor = pedidoProduto.getProduto().getPreco() * pedidoProduto.getQuantidade();
             valorTotal += valor;
         }
+
+        double totalComDesconto = valorTotal - (pedido.getDesconto() / 100 * valorTotal);
+
         pedido.setValorVenda(valorTotal);
+        pedido.setTotal(totalComDesconto);
 
         pedidoRepository.save(pedido);
         PedidoDTO pedidoDTO = new PedidoDTO(pedido);
@@ -107,7 +111,10 @@ public class PedidoService {
             double valor = pedidoProduto.getProduto().getPreco() * pedidoProduto.getQuantidade();
             valorTotal += valor;
         }
+        double totalComDesconto = valorTotal - (pedido.getDesconto() / 100 * valorTotal);
+
         pedido.setValorVenda(valorTotal);
+        pedido.setTotal(totalComDesconto);
 
         pedidoRepository.save(pedido);
         PedidoDTO pedidoDTO = new PedidoDTO(pedido);
@@ -140,6 +147,20 @@ public class PedidoService {
         Pedido pedido = pedidoOpt.get();
 
         pedido.setStatus(status);
+        pedido.setDesconto(editarStatusDTO.getDesconto());
+
+        double totalComDesconto = pedido.getTotal() - (editarStatusDTO.getDesconto() / 100 * pedido.getTotal());
+        pedido.setTotal(totalComDesconto);
+
+        List<PedidoProduto> pedidosProdutos = pedido.getPedidoProdutos();
+
+        if (editarStatusDTO.getStatus().equals(Status.CONCLUIDO)) {
+            for (PedidoProduto pp : pedidosProdutos) {
+                Produto produto = pp.getProduto();
+                int quantidadeVendida = pp.getQuantidade();
+                produto.setQuantidade(produto.getQuantidade() - quantidadeVendida);
+            }
+        }
 
         pedidoRepository.save(pedido);
         PedidoDTO pedidoDTO = new PedidoDTO(pedido);
