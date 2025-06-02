@@ -51,9 +51,10 @@ public class Cliente implements UserDetails {
     /* Insere perfil no cliente */
     @OneToMany(mappedBy = "id.cliente", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private Set<ClientePerfil> clientesPerfis = new HashSet<>();
+
     //Aqui esta a lista de favoritos do cliente
     @JsonManagedReference
-    @OneToMany(mappedBy="cliente", fetch = FetchType.EAGER)
+    @OneToMany(mappedBy="cliente", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private List<Favorito> produtosFavoritos = new ArrayList<>();
 
     //construtor

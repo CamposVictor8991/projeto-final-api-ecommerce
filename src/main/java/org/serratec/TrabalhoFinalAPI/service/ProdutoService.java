@@ -38,6 +38,7 @@ public class ProdutoService {
 					.orElseThrow(() -> new RuntimeException("Categoria não encontrada")));
 			produtoAtualizado = produtoRepository.save(produtoAtualizado);
 		}
+
 		return produtoAtualizado;
 	}
 	public List<Produto> listarRelacionados(Long produtoId) {
@@ -53,6 +54,8 @@ public class ProdutoService {
 	    }
 	    return false;
 	}
+
+
 
 
 }
