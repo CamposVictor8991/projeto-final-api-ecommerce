@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import org.serratec.TrabalhoFinalAPI.config.MailConfig;
 import org.serratec.TrabalhoFinalAPI.domain.Cliente;
 import org.serratec.TrabalhoFinalAPI.domain.Pedido;
 import org.serratec.TrabalhoFinalAPI.domain.PedidoProduto;
@@ -32,6 +33,8 @@ public class PedidoService {
     private PedidoRepository pedidoRepository;
     @Autowired
     private ProdutoRepository produtoRepository;
+    @Autowired
+    private MailConfig mailConfig;
 
     public PedidoDTO inserirPedido(Long id, PedidoInserirDTO pedidoInserirDTO) {
 
@@ -68,6 +71,30 @@ public class PedidoService {
         pedido.setValorVenda(valorTotal);
 
         pedidoRepository.save(pedido);
+
+        // Envia o e-mail de confirmação
+        String emailCliente = pedido.getCliente().getEmail();
+        String assuntoPedidoConfirmado = "Seu pedido n° " + pedido.getId() + " foi realizado!";
+        String mensagemPedidoConfirmado = "Olá, " + pedido.getCliente().getNome() + "!\n\n" +
+                "Seu pedido foi realizado e em breve você o receberá! 🎉" +
+                "\n» Data do pedido: " + pedido.getDataPedido() +
+                "\n» Seu pedido é o n° " + pedido.getId() +
+                "\n» Total: R$ " + String.format("%.2f", pedido.getValorVenda()) +
+                "\n» Endereço de entrega: " + pedido.getEndereco().getLogradouro() + 
+                "\n» Itens do seu pedido: \n";
+
+                for (PedidoProduto pp : pedido.getPedidoProdutos()) {
+                    mensagemPedidoConfirmado += "✔ " + pp.getProduto().getNomeProduto() +
+                            " | " + pp.getQuantidade() + " por " +
+                            " R$ " + String.format("%.2f", pp.getProduto().getPreco()) + " cada. \n";
+                }
+
+        mensagemPedidoConfirmado += "\nAgradecemos pela sua compra e esperamos que você aproveite seus produtos!\n" +
+                "Atenciosamente,\n" +
+                "Grupo 5";
+
+        mailConfig.enviarEmail(emailCliente, assuntoPedidoConfirmado, mensagemPedidoConfirmado);
+
         PedidoDTO pedidoDTO = new PedidoDTO(pedido);
 
         return pedidoDTO;
