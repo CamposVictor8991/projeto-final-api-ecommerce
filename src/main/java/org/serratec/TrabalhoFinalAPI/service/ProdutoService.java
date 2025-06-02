@@ -40,4 +40,19 @@ public class ProdutoService {
 		}
 		return produtoAtualizado;
 	}
+	public List<Produto> listarRelacionados(Long produtoId) {
+	    Produto produto = produtoRepository.findById(produtoId)
+	        .orElseThrow(() -> new RuntimeException("Produto não encontrado"));
+	    // Busca produtos da mesma categoria, exceto o próprio produto
+	    return produtoRepository.findByCategoriaIdAndIdNot(produto.getCategoria().getId(), produtoId);
+	}
+	public boolean deletar(Long id) {
+	    if (produtoRepository.existsById(id)) {
+	        produtoRepository.deleteById(id);
+	        return true;
+	    }
+	    return false;
+	}
+
+
 }
