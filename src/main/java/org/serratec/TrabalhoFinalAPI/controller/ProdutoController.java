@@ -46,6 +46,12 @@ public class ProdutoController {
         }
         return ResponseEntity.notFound().build();
     }
+    
+    @GetMapping("/{id}/relacionados")
+    public ResponseEntity<List<Produto>> listarRelacionados(@PathVariable Long id) {
+        List<Produto> relacionados = produtoService.listarRelacionados(id);
+        return ResponseEntity.ok(relacionados);
+    }
     // Delete não implementado, pois não é necessário para o projeto final.
 
 }
