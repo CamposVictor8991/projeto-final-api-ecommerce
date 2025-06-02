@@ -1,6 +1,9 @@
 package org.serratec.TrabalhoFinalAPI.dto;
 
+import java.util.Set;
+
 import org.hibernate.validator.constraints.br.CPF;
+import org.serratec.TrabalhoFinalAPI.domain.Perfil;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
@@ -37,6 +40,8 @@ public class ClienteInserirDTO {
     @Size(min = 8, max = 100)
     private String senha;
     private String confirmaSenha;
+
+    private Set<Perfil> perfis;
 
     public String getNome() {
         return nome;
@@ -109,4 +114,13 @@ public class ClienteInserirDTO {
     public void setConfirmaSenha(String confirmaSenha) {
         this.confirmaSenha = confirmaSenha;
     }
+
+    public Set<Perfil> getPerfis() {
+        return perfis;
+    }
+
+    public void setPerfis(Set<Perfil> perfis) {
+        this.perfis = perfis;
+    }
+
 }

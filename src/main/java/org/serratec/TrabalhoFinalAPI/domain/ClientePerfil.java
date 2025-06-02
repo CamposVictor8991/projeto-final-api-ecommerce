@@ -5,8 +5,10 @@ import java.time.LocalDate;
 import jakarta.persistence.Column;
 import jakarta.persistence.EmbeddedId;
 import jakarta.persistence.Entity;
+import jakarta.persistence.Table;
 
 @Entity
+@Table(name = "cliente_perfil")
 public class ClientePerfil {
 
     @EmbeddedId
@@ -38,6 +40,14 @@ public class ClientePerfil {
 
     public void setDataCriacao(LocalDate dataCriacao) {
         this.dataCriacao = dataCriacao;
+    }
+
+    public void setCliente(Cliente cliente) {
+        this.id.setCliente(cliente);
+    }
+
+    public void setPerfil(Perfil perfil) {
+        this.id.setPerfil(perfil);
     }
 
 }

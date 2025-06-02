@@ -13,7 +13,7 @@ public class ClientePerfilPK implements Serializable {
     private static final long SerialVersionUID = 1L;
 
     @ManyToOne
-    @JoinColumn(name = "id_Cliente")
+    @JoinColumn(name = "id_cliente")
     private Cliente cliente;
 
     @ManyToOne
@@ -37,16 +37,16 @@ public class ClientePerfilPK implements Serializable {
     }
 
     @Override
+    public int hashCode() {
+        return Objects.hash(cliente, perfil);
+    }
+
+    @Override
     public boolean equals(Object o) {
         if (o == null || getClass() != o.getClass()) {
             return false;
         }
         ClientePerfilPK that = (ClientePerfilPK) o;
         return Objects.equals(cliente, that.cliente) && Objects.equals(perfil, that.perfil);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(cliente, perfil);
     }
 }

@@ -12,6 +12,7 @@ import org.serratec.TrabalhoFinalAPI.exception.SenhaException;
 import org.serratec.TrabalhoFinalAPI.repository.ClienteRepository;
 import org.serratec.TrabalhoFinalAPI.repository.EnderecoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -33,8 +34,11 @@ public class ClienteService {
     private EnderecoService enderecoService;
 
     @Autowired
+    private BCryptPasswordEncoder bCryptPasswordEncoder;
+
+    @Autowired
     private MailConfig mailConfig;
-    
+
     //Fazer envio de email  
     public ClienteDTO inserir(ClienteInserirDTO clienteInserirDTO) throws CpfException, EmailException, SenhaException {
         if ((clienteRepository.findByCpf(clienteInserirDTO.getCpf())) != null) {
@@ -57,6 +61,7 @@ public class ClienteService {
         endereco.setComplemento(clienteInserirDTO.getComplemento());
 
         Cliente cliente = new Cliente(clienteInserirDTO);
+        cliente.setSenha(bCryptPasswordEncoder.encode(clienteInserirDTO.getSenha())); // criptografando a senha
         endereco.setCliente(cliente);
 
         List<Endereco> listaEnderecosCliente = new ArrayList<>();
@@ -70,7 +75,6 @@ public class ClienteService {
         return new ClienteDTO(cliente);
 
     }
-    
 
     public ClienteDTO editarCadastro(ClienteEditarDTO clienteEditarDTO, Long id) throws CpfException, EmailException, SenhaException {
         Optional<Cliente> clienteOpt = clienteRepository.findById(id);
@@ -90,7 +94,7 @@ public class ClienteService {
             Cliente cliente = clienteRepository.getReferenceById(id);
 
             cliente.setNome(clienteEditarDTO.getNome());
-            cliente.setSenha(clienteEditarDTO.getSenha());
+            cliente.setSenha(bCryptPasswordEncoder.encode(clienteEditarDTO.getSenha())); // criptografando a senha
             cliente.setEmail(clienteEditarDTO.getEmail());
             cliente.setTelefone(clienteEditarDTO.getTelefone());
 
@@ -104,9 +108,9 @@ public class ClienteService {
     }
 
     public List<ClienteDTO> listarTodos() {
-        List<Cliente> clientes= clienteRepository.findAll();
+        List<Cliente> clientes = clienteRepository.findAll();
         List<ClienteDTO> clientesDTO = new ArrayList<>();
-        for (Cliente c: clientes) {
+        for (Cliente c : clientes) {
             ClienteDTO clienteDTO = new ClienteDTO(c);
             clientesDTO.add(clienteDTO);
         }
@@ -121,14 +125,14 @@ public class ClienteService {
         }
         return null;
     }
-    
-	public boolean excluir(Long id) {
-		if (clienteRepository.existsById(id)) {
-			clienteRepository.deleteById(id);
-			return true;
-		}
-		return false;
-	}
+
+    public boolean excluir(Long id) {
+        if (clienteRepository.existsById(id)) {
+            clienteRepository.deleteById(id);
+            return true;
+        }
+        return false;
+    }
 
     public Endereco criarEndereco(Long id, EnderecoInserirDTO enderecoInserirDTO) {
         String cep = enderecoInserirDTO.getCep();
@@ -136,13 +140,13 @@ public class ClienteService {
         endereco.setNumero(enderecoInserirDTO.getNumero());
         endereco.setComplemento(enderecoInserirDTO.getComplemento());
         Optional<Cliente> clienteOptional = clienteRepository.findById(id);
-        if(clienteOptional.isPresent()) {
+        if (clienteOptional.isPresent()) {
             Cliente cliente = clienteOptional.get();
-            endereco.setCliente(cliente); 
+            endereco.setCliente(cliente);
             enderecoRepository.save(endereco);
             return endereco;
         }
         return null;
-    } 
+    }
 
 }

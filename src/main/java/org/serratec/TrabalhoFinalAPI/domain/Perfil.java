@@ -16,6 +16,14 @@ public class Perfil {
 
     private String nome;
 
+    public Perfil() {
+    }
+
+    public Perfil(Perfil perfil) {
+        this.id = perfil.id;
+        this.nome = perfil.nome;
+    }
+
     public Long getId() {
         return id;
     }
@@ -31,4 +39,5 @@ public class Perfil {
     public void setNome(String nome) {
         this.nome = nome;
     }
+
 }

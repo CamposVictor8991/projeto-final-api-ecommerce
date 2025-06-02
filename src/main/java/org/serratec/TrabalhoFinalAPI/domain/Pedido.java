@@ -93,4 +93,12 @@ public class Pedido {
         this.status = status;
     }
 
+    public LocalDate getDataPedido() {
+        return dataPedido;
+    }
+
+    public void setDataPedido(LocalDate dataPedido) {
+        this.dataPedido = dataPedido;
+    }
+
 }
