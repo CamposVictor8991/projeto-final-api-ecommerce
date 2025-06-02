@@ -22,30 +22,30 @@ import jakarta.validation.Valid;
 @RequestMapping("/produtos")
 public class ProdutoController {
 
-	@Autowired
-	private ProdutoService produtoService;
+    @Autowired
+    private ProdutoService produtoService;
 
-	@GetMapping
-	public ResponseEntity<List<Produto>> listarTodos() {
-		List<Produto> produtos = produtoService.listarTodos();
-		return ResponseEntity.ok(produtos);
-	}
+    @GetMapping
+    public ResponseEntity<List<Produto>> listarTodos() {
+        List<Produto> produtos = produtoService.listarTodos();
+        return ResponseEntity.ok(produtos);
+    }
 
-	@PostMapping
-	public ResponseEntity<Produto> inserir(@Valid @RequestBody ProdutoInserirDTO produto) {
-		Produto novoProduto = produtoService.inserir(produto);
-		return ResponseEntity.status(HttpStatus.CREATED).body(novoProduto);
+    @PostMapping
+    public ResponseEntity<Produto> inserir(@Valid @RequestBody ProdutoInserirDTO produto) {
+        Produto novoProduto = produtoService.inserir(produto);
+        return ResponseEntity.status(HttpStatus.CREATED).body(novoProduto);
 
-	}
+    }
 
-	@PutMapping("/{id}")
-	public ResponseEntity<Produto> atualizar(@PathVariable Long id, @Valid @RequestBody ProdutoInserirDTO produto) {
-		Produto produtoAtualizado = produtoService.atualizar(id, produto);
-		if (produtoAtualizado != null) {
-			return ResponseEntity.ok(produtoAtualizado);
-		}
-		return ResponseEntity.notFound().build();
-	}
-	// Delete não implementado, pois não é necessário para o projeto final.
+    @PutMapping("/{id}")
+    public ResponseEntity<Produto> atualizar(@PathVariable Long id, @Valid @RequestBody ProdutoInserirDTO produto) {
+        Produto produtoAtualizado = produtoService.atualizar(id, produto);
+        if (produtoAtualizado != null) {
+            return ResponseEntity.ok(produtoAtualizado);
+        }
+        return ResponseEntity.notFound().build();
+    }
+    // Delete não implementado, pois não é necessário para o projeto final.
 
 }

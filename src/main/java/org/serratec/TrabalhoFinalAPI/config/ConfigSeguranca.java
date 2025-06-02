@@ -35,6 +35,7 @@ public class ConfigSeguranca {
     @Bean
     SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http.csrf(csrf -> csrf.disable())
+<<<<<<< HEAD
             .cors((cors) -> cors.configurationSource(corsConfigurationsource()))
             .httpBasic(Customizer.withDefaults())
             .authorizeHttpRequests(authorize -> authorize
@@ -58,6 +59,38 @@ public class ConfigSeguranca {
                 .frameOptions().disable() // Allow frames for H2 console
             )
             .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
+=======
+                .cors((cors) -> cors.configurationSource(corsConfigurationsource()))
+                .httpBasic(Customizer.withDefaults())
+                .authorizeHttpRequests(authorize
+                        -> authorize
+                        // consulta geral
+                        .requestMatchers(HttpMethod.GET, "/categorias/**").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/produtos/**").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/perfilCliente/**").permitAll()
+                        // colaboradores
+                        .requestMatchers(HttpMethod.POST, "/categorias/**").permitAll()
+                        .requestMatchers(HttpMethod.PUT, "/categorias/**").permitAll()
+                        .requestMatchers(HttpMethod.DELETE, "/categorias/**").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/produtos/**").permitAll()
+                        .requestMatchers(HttpMethod.PUT, "/produtos/**").permitAll()
+                        .requestMatchers(HttpMethod.DELETE, "/produtos/**").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/clientes/**").permitAll()
+                        // clientes
+                        .requestMatchers(HttpMethod.POST, "/clientes/**").permitAll()
+                        .requestMatchers(HttpMethod.PUT, "/clientes/**").permitAll()
+                        .requestMatchers(HttpMethod.DELETE, "/clientes/**").permitAll()
+                        // administrador
+                        .requestMatchers(HttpMethod.POST, "/perfilCliente/**").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/perfilCliente/**").permitAll()
+                        .requestMatchers(HttpMethod.PUT, "/perfilCliente/**").permitAll()
+                        .requestMatchers("/h2-console/**").permitAll() // Permite acesso ao console H2
+                        .anyRequest().authenticated()
+                )
+                .headers(headers -> headers
+                .frameOptions().disable()) // Desabilita o bloqueio de frames para o H2
+                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
+>>>>>>> 9c3219c8d27aa1f8adc4492c1d68eca39c108d1d
 
         JwtAuthenticationFilter jwtAuthenticationFilter
             = new JwtAuthenticationFilter(authenticationManager(
@@ -79,7 +112,7 @@ public class ConfigSeguranca {
 
     @Bean
     AuthenticationManager authenticationManager(
-        AuthenticationConfiguration authenticationConfiguration) throws Exception {
+            AuthenticationConfiguration authenticationConfiguration) throws Exception {
         return authenticationConfiguration.getAuthenticationManager();
     }
 

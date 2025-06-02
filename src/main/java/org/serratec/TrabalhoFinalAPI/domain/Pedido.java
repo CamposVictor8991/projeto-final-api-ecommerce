@@ -12,87 +12,101 @@ import com.fasterxml.jackson.annotation.JsonManagedReference;
 @Entity
 public class Pedido {
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
+<<<<<<< HEAD
 	private double valorVenda;
     private double total;
 	private double desconto;
 	private LocalDate dataPedido = LocalDate.now();
+=======
+    private double valorVenda;
+    private double desconto;
+    private LocalDate dataPedido = LocalDate.now();
+>>>>>>> 9c3219c8d27aa1f8adc4492c1d68eca39c108d1d
 
-	@Enumerated(EnumType.STRING)
-	private Status status = Status.PENDENTE;
+    @Enumerated(EnumType.STRING)
+    private Status status = Status.PENDENTE;
 
     @JsonBackReference
-	@ManyToOne
-	@JoinColumn(name = "id_cliente")
-	private Cliente cliente;
+    @ManyToOne
+    @JoinColumn(name = "id_cliente")
+    private Cliente cliente;
 
     @JsonBackReference
-	@ManyToOne
-	@JoinColumn(name = "id_endereco")
-	private Endereco endereco;
+    @ManyToOne
+    @JoinColumn(name = "id_endereco")
+    private Endereco endereco;
 
-	@JsonManagedReference
-	@OneToMany(mappedBy = "id.pedido", fetch = FetchType.EAGER, cascade = CascadeType.ALL) //perguntar para o professor
-	List<PedidoProduto> pedidoProdutos;
+    @JsonManagedReference
+    @OneToMany(mappedBy = "id.pedido", fetch = FetchType.EAGER, cascade = CascadeType.ALL) //perguntar para o professor
+    List<PedidoProduto> pedidoProdutos;
 
-	public Long getId() {
-		return id;
-	}
+    public Long getId() {
+        return id;
+    }
 
-	public void setId(Long id) {
-		this.id = id;
-	}
+    public void setId(Long id) {
+        this.id = id;
+    }
 
-	public Cliente getCliente() {
-		return cliente;
-	}
+    public Cliente getCliente() {
+        return cliente;
+    }
 
-	public void setCliente(Cliente cliente) {
-		this.cliente = cliente;
-	}
+    public void setCliente(Cliente cliente) {
+        this.cliente = cliente;
+    }
 
-	public Endereco getEndereco() {
-		return endereco;
-	}
+    public Endereco getEndereco() {
+        return endereco;
+    }
 
-	public void setEndereco(Endereco endereco) {
-		this.endereco = endereco;
-	}
+    public void setEndereco(Endereco endereco) {
+        this.endereco = endereco;
+    }
 
-	public List<PedidoProduto> getPedidoProdutos() {
-		return pedidoProdutos;
-	}
+    public List<PedidoProduto> getPedidoProdutos() {
+        return pedidoProdutos;
+    }
 
-	public void setPedidoProdutos(List<PedidoProduto> pedidoProdutos) {
-		this.pedidoProdutos = pedidoProdutos;
-	}
+    public void setPedidoProdutos(List<PedidoProduto> pedidoProdutos) {
+        this.pedidoProdutos = pedidoProdutos;
+    }
 
-	public double getValorVenda() {
-		return valorVenda;
-	}
+    public double getValorVenda() {
+        return valorVenda;
+    }
 
-	public void setValorVenda(double valorVenda) {
-		this.valorVenda = valorVenda;
-	}
+    public void setValorVenda(double valorVenda) {
+        this.valorVenda = valorVenda;
+    }
 
-	public double getDesconto() {
-		return desconto;
-	}
+    public double getDesconto() {
+        return desconto;
+    }
 
-	public void setDesconto(double desconto) {
-		this.desconto = desconto;
-	}
+    public void setDesconto(double desconto) {
+        this.desconto = desconto;
+    }
 
-	public Status getStatus() {
-		return status;
-	}
+    public Status getStatus() {
+        return status;
+    }
 
-	public void setStatus(Status status) {
-		this.status = status;
-	}
+    public void setStatus(Status status) {
+        this.status = status;
+    }
+
+    public LocalDate getDataPedido() {
+        return dataPedido;
+    }
+
+    public void setDataPedido(LocalDate dataPedido) {
+        this.dataPedido = dataPedido;
+    }
 
     public double getTotal() {
         return total;

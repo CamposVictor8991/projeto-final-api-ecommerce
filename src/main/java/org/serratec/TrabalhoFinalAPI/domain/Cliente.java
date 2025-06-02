@@ -1,5 +1,7 @@
 package org.serratec.TrabalhoFinalAPI.domain;
 
+import java.io.Serializable;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
@@ -24,7 +26,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 
 @Entity
-public class Cliente implements UserDetails {
+public class Cliente implements UserDetails, Serializable {
 
     private static final long serialVersionUID = 1L;
 
@@ -50,7 +52,7 @@ public class Cliente implements UserDetails {
 
     /* Insere perfil no cliente */
     @OneToMany(mappedBy = "id.cliente", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-    private Set<ClientePerfil> clientesPerfis = new HashSet<>();
+    private Set<ClientePerfil> clientePerfis = new HashSet<>();
 
     //construtor
     public Cliente() {
@@ -63,10 +65,18 @@ public class Cliente implements UserDetails {
         this.cpf = clienteInserirDTO.getCpf();
         this.senha = clienteInserirDTO.getSenha();
         this.enderecos = new ArrayList<>();
+        this.clientePerfis = new HashSet<>();
+
+        if (clienteInserirDTO.getPerfis() != null && !clienteInserirDTO.getPerfis().isEmpty()) {
+            for (Perfil perfil : clienteInserirDTO.getPerfis()) {
+            ClientePerfil clientePerfil = new ClientePerfil(this, perfil, LocalDate.now());
+            this.clientePerfis.add(clientePerfil); 
+            }
+        }
     }
 
     public Cliente(Long id, String nome, String telefone, String email, String cpf, String senha,
-            List<Endereco> enderecos, List<Pedido> pedidos, Set<ClientePerfil> clientesPerfis) {
+            List<Endereco> enderecos, List<Pedido> pedidos, Set<ClientePerfil> clientePerfis) {
         this.id = id;
         this.nome = nome;
         this.telefone = telefone;
@@ -75,7 +85,6 @@ public class Cliente implements UserDetails {
         this.senha = senha;
         this.enderecos = enderecos;
         this.pedidos = pedidos;
-        this.clientesPerfis = clientesPerfis;
     }
 
     public Long getId() {
@@ -142,16 +151,16 @@ public class Cliente implements UserDetails {
         this.pedidos = pedidos;
     }
 
+    public Set<ClientePerfil> getClientePerfis() {
+        return clientePerfis;
+    }
+
+    public void setClientePerfis(Set<ClientePerfil> clientePerfis) {
+        this.clientePerfis = clientePerfis;
+    }
+
     public static long getSerialversionuid() {
         return serialVersionUID;
-    }
-
-    public Set<ClientePerfil> getClientesPerfis() {
-        return clientesPerfis;
-    }
-
-    public void setClientesPerfis(Set<ClientePerfil> clientesPerfis) {
-        this.clientesPerfis = clientesPerfis;
     }
 
     @Override
@@ -209,10 +218,11 @@ public class Cliente implements UserDetails {
         return Objects.equals(this.pedidos, other.pedidos);
     }
 
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         List<GrantedAuthority> authorities = new ArrayList<>();
-        for (ClientePerfil clientePerfil : getClientesPerfis()) {
+        for (ClientePerfil clientePerfil : getClientePerfis()) {
             authorities.add(new SimpleGrantedAuthority(clientePerfil.getId().getPerfil().getNome()));
         }
         return authorities;
