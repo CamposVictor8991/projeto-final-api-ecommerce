@@ -48,9 +48,16 @@ public class Cliente implements UserDetails {
     @OneToMany(mappedBy = "cliente", cascade = CascadeType.ALL, orphanRemoval = true)
     List<Pedido> pedidos;
 
+<<<<<<< HEAD
     /* Insere perfil no cliente */
     @OneToMany(mappedBy = "id.cliente", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private Set<ClientePerfil> clientesPerfis = new HashSet<>();
+=======
+    //Aqui esta a lista de favoritos do cliente
+    @JsonManagedReference
+    @OneToMany(mappedBy="cliente", fetch = FetchType.EAGER)
+    private List<Favorito> produtosFavoritos = new ArrayList<>();
+>>>>>>> 3192601b1c5d36809d9a1e895e153e3686537de0
 
     //construtor
     public Cliente() {
@@ -226,6 +233,14 @@ public class Cliente implements UserDetails {
     @Override
     public String getPassword() {
         return this.senha;
+    }
+
+    public List<Favorito> getProdutosFavoritos() {
+        return produtosFavoritos;
+    }
+
+    public void setProdutosFavoritos(List<Favorito> produtosFavoritos) {
+        this.produtosFavoritos = produtosFavoritos;
     }
 
 }
