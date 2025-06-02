@@ -39,20 +39,31 @@ public class ConfigSeguranca {
                 .httpBasic(Customizer.withDefaults())
                 .authorizeHttpRequests(authorize
                         -> authorize
-                        .requestMatchers(HttpMethod.GET, "/clientes/**").permitAll()
-                        .requestMatchers(HttpMethod.POST, "/clientes/**").permitAll()
-                        .requestMatchers(HttpMethod.PUT, "/clientes/**").permitAll()
-                        .requestMatchers(HttpMethod.DELETE, "/clientes/**").permitAll()
+                        // consulta geral
                         .requestMatchers(HttpMethod.GET, "/categorias/**").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/produtos/**").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/perfilCliente/**").permitAll()
+                        // colaboradores
                         .requestMatchers(HttpMethod.POST, "/categorias/**").permitAll()
                         .requestMatchers(HttpMethod.PUT, "/categorias/**").permitAll()
                         .requestMatchers(HttpMethod.DELETE, "/categorias/**").permitAll()
-                        .requestMatchers(HttpMethod.GET, "/produtos/**").permitAll()
                         .requestMatchers(HttpMethod.POST, "/produtos/**").permitAll()
                         .requestMatchers(HttpMethod.PUT, "/produtos/**").permitAll()
                         .requestMatchers(HttpMethod.DELETE, "/produtos/**").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/clientes/**").permitAll()
+                        // clientes
+                        .requestMatchers(HttpMethod.POST, "/clientes/**").permitAll()
+                        .requestMatchers(HttpMethod.PUT, "/clientes/**").permitAll()
+                        .requestMatchers(HttpMethod.DELETE, "/clientes/**").permitAll()
+                        // administrador
+                        .requestMatchers(HttpMethod.POST, "/perfilCliente/**").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/perfilCliente/**").permitAll()
+                        .requestMatchers(HttpMethod.PUT, "/perfilCliente/**").permitAll()
+                        .requestMatchers("/h2-console/**").permitAll() // Permite acesso ao console H2
                         .anyRequest().authenticated()
                 )
+                .headers(headers -> headers
+                .frameOptions().disable()) // Desabilita o bloqueio de frames para o H2
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
 
         JwtAuthenticationFilter jwtAuthenticationFilter
@@ -75,7 +86,7 @@ public class ConfigSeguranca {
 
     @Bean
     AuthenticationManager authenticationManager(
-        AuthenticationConfiguration authenticationConfiguration) throws Exception {
+            AuthenticationConfiguration authenticationConfiguration) throws Exception {
         return authenticationConfiguration.getAuthenticationManager();
     }
 
