@@ -11,6 +11,8 @@ public class PedidoDTO {
     private EnderecoResumoDTO endereco;
     private Status status;
     private List<PedidoProdutoResumoDTO> pedidoProdutos;
+    private Double valorVenda;
+    private Double desconto;
     private Double total;
 
     public PedidoDTO() {
@@ -21,10 +23,12 @@ public class PedidoDTO {
         this.cliente = new ClienteResumoDTO(pedido.getCliente());
         this.endereco = new EnderecoResumoDTO(pedido.getEndereco());
         this.status = pedido.getStatus();
-        this.total = pedido.getValorVenda();
+        this.valorVenda = pedido.getValorVenda();
         this.pedidoProdutos = pedido.getPedidoProdutos().stream()
             .map(PedidoProdutoResumoDTO::new)
             .toList();
+        this.desconto = pedido.getDesconto();
+        this.total = pedido.getTotal();
     }
 
     public Long getId() {
@@ -43,12 +47,12 @@ public class PedidoDTO {
         this.cliente = cliente;
     }
 
-    public Double getTotal() {
-        return total;
+    public Double getValorVenda() {
+        return valorVenda;
     }
 
-    public void setTotal(Double total) {
-        this.total = total;
+    public void setValorVenda(Double valorVenda) {
+        this.valorVenda = valorVenda;
     }
 
     public EnderecoResumoDTO getEndereco() {
@@ -73,5 +77,21 @@ public class PedidoDTO {
 
     public void setPedidoProdutos(List<PedidoProdutoResumoDTO> pedidoProdutos) {
         this.pedidoProdutos = pedidoProdutos;
+    }
+
+    public Double getDesconto() {
+        return desconto;
+    }
+
+    public void setDesconto(Double desconto) {
+        this.desconto = desconto;
+    }
+
+    public Double getTotal() {
+        return total;
+    }
+
+    public void setTotal(Double total) {
+        this.total = total;
     }
 }

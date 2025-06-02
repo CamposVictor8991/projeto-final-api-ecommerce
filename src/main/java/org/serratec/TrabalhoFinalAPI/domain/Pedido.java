@@ -28,9 +28,16 @@ public class Pedido {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+<<<<<<< HEAD
+	private double valorVenda;
+    private double total;
+	private double desconto;
+	private LocalDate dataPedido = LocalDate.now();
+=======
     private double valorVenda;
     private double desconto;
     private LocalDate dataPedido = LocalDate.now();
+>>>>>>> 9c3219c8d27aa1f8adc4492c1d68eca39c108d1d
 
     @Enumerated(EnumType.STRING)
     private Status status = Status.PENDENTE;
@@ -113,4 +120,11 @@ public class Pedido {
         this.dataPedido = dataPedido;
     }
 
+    public double getTotal() {
+        return total;
+    }
+
+    public void setTotal(double total) {
+        this.total = total;
+    }
 }
