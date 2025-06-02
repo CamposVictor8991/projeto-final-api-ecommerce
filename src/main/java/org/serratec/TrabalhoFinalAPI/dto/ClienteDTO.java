@@ -89,4 +89,6 @@ public class ClienteDTO {
     public void setPerfis(Set<Perfil> perfis) {
         this.perfis = perfis;
     }
+
+
 }

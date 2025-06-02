@@ -40,30 +40,29 @@ public class ConfigSeguranca {
             .authorizeHttpRequests(authorize
                 -> authorize
                 // consulta geral
-                .requestMatchers(HttpMethod.GET, "/**").permitAll()
                 .requestMatchers(HttpMethod.GET, "/categorias/**").permitAll()
                 .requestMatchers(HttpMethod.GET, "/produtos/**").permitAll()
-                .requestMatchers(HttpMethod.GET, "/perfilCliente/**").permitAll()
+                .requestMatchers(HttpMethod.GET, "/perfilCliente/**").hasAuthority("ADMINISTRADOR")
                 // colaboradores
-                .requestMatchers(HttpMethod.POST, "/categorias/**").permitAll()
-                .requestMatchers(HttpMethod.PUT, "/categorias/**").permitAll()
-                .requestMatchers(HttpMethod.DELETE, "/categorias/**").permitAll()
-                .requestMatchers(HttpMethod.POST, "/produtos/**").permitAll()
-                .requestMatchers(HttpMethod.PUT, "/produtos/**").permitAll()
-                .requestMatchers(HttpMethod.DELETE, "/produtos/**").permitAll()
-                .requestMatchers(HttpMethod.GET, "/clientes/**").permitAll()
+                .requestMatchers(HttpMethod.POST, "/categorias/**").hasAnyAuthority("COLABORADOR", "ADMINISTRADOR")
+                .requestMatchers(HttpMethod.PUT, "/categorias/**").hasAnyAuthority("COLABORADOR", "ADMINISTRADOR")
+                .requestMatchers(HttpMethod.DELETE, "/categorias/**").hasAnyAuthority("COLABORADOR", "ADMINISTRADOR")
+                .requestMatchers(HttpMethod.POST, "/produtos/**").hasAnyAuthority("COLABORADOR", "ADMINISTRADOR")
+                .requestMatchers(HttpMethod.PUT, "/produtos/**").hasAnyAuthority("COLABORADOR", "ADMINISTRADOR")
+                .requestMatchers(HttpMethod.DELETE, "/produtos/**").hasAnyAuthority("COLABORADOR", "ADMINISTRADOR")
+                .requestMatchers(HttpMethod.GET, "/clientes/**").hasAnyAuthority("COLABORADOR", "ADMINISTRADOR")
                 // clientes
                 .requestMatchers(HttpMethod.POST, "/clientes/**").permitAll()
-                .requestMatchers(HttpMethod.PUT, "/clientes/**").permitAll()
-                .requestMatchers(HttpMethod.DELETE, "/clientes/**").permitAll()
+                .requestMatchers(HttpMethod.PUT, "/clientes/**").hasAnyAuthority("CLIENTE", "ADMINISTRADOR")
+                .requestMatchers(HttpMethod.DELETE, "/clientes/**").hasAnyAuthority("CLIENTE", "ADMINISTRADOR")
                 // administrador
-                .requestMatchers(HttpMethod.POST, "/perfilCliente/**").permitAll()
-                .requestMatchers(HttpMethod.GET, "/perfilCliente/**").permitAll()
-                .requestMatchers(HttpMethod.PUT, "/perfilCliente/**").permitAll()
+                .requestMatchers(HttpMethod.POST, "/perfilCliente/**").hasAuthority("ADMINISTRADOR")
+                .requestMatchers(HttpMethod.GET, "/perfilCliente/**").hasAuthority("ADMINISTRADOR")
+                .requestMatchers(HttpMethod.PUT, "/perfilCliente/**").hasAuthority("ADMINISTRADOR")
                 // favorito
-                .requestMatchers(HttpMethod.POST, "/favoritos/**").permitAll()
-                .requestMatchers(HttpMethod.GET, "/favoritos/**").permitAll()
-                .requestMatchers(HttpMethod.PUT, "/favoritos/**").permitAll()
+                .requestMatchers(HttpMethod.POST, "/favoritos/**").hasAuthority("CLIENTE")
+                .requestMatchers(HttpMethod.GET, "/favoritos/**").hasAuthority("CLIENTE")
+                .requestMatchers(HttpMethod.PUT, "/favoritos/**").hasAuthority("CLIENTE")
                 .requestMatchers("/h2-console/**").permitAll() // Permite acesso ao console H2
                 .anyRequest().authenticated()
             )

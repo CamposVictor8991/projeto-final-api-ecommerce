@@ -1,5 +1,6 @@
 package org.serratec.TrabalhoFinalAPI.domain;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
@@ -50,7 +51,7 @@ public class Cliente implements UserDetails {
 
     /* Insere perfil no cliente */
     @OneToMany(mappedBy = "id.cliente", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-    private Set<ClientePerfil> clientesPerfis = new HashSet<>();
+    private Set<ClientePerfil> clientePerfis = new HashSet<>();
 
     //Aqui esta a lista de favoritos do cliente
     @JsonManagedReference
@@ -68,6 +69,14 @@ public class Cliente implements UserDetails {
         this.cpf = clienteInserirDTO.getCpf();
         this.senha = clienteInserirDTO.getSenha();
         this.enderecos = new ArrayList<>();
+        this.clientePerfis = new HashSet<>();
+
+        if (clienteInserirDTO.getPerfis() != null && !clienteInserirDTO.getPerfis().isEmpty()) {
+            for (Perfil perfil : clienteInserirDTO.getPerfis()) {
+                ClientePerfil clientePerfil = new ClientePerfil(this, perfil, LocalDate.now());
+                this.clientePerfis.add(clientePerfil);
+            }
+        }
     }
 
     public Cliente(Long id, String nome, String telefone, String email, String cpf, String senha,
@@ -80,7 +89,7 @@ public class Cliente implements UserDetails {
         this.senha = senha;
         this.enderecos = enderecos;
         this.pedidos = pedidos;
-        this.clientesPerfis = clientesPerfis;
+        this.clientePerfis = clientesPerfis;
     }
 
     public Long getId() {
@@ -152,11 +161,11 @@ public class Cliente implements UserDetails {
     }
 
     public Set<ClientePerfil> getClientesPerfis() {
-        return clientesPerfis;
+        return clientePerfis;
     }
 
     public void setClientesPerfis(Set<ClientePerfil> clientesPerfis) {
-        this.clientesPerfis = clientesPerfis;
+        this.clientePerfis = clientesPerfis;
     }
 
     @Override

@@ -149,4 +149,8 @@ public class ClienteService {
         return null;
     }
 
+    public Cliente acharCliente (String email) {
+        return clienteRepository.findByEmail(email);
+    }
+
 }
