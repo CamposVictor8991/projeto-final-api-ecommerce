@@ -1,7 +1,5 @@
 package org.serratec.TrabalhoFinalAPI.domain;
 
-import java.io.Serializable;
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
@@ -26,7 +24,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 
 @Entity
-public class Cliente implements UserDetails, Serializable {
+public class Cliente implements UserDetails {
 
     private static final long serialVersionUID = 1L;
 
@@ -50,9 +48,16 @@ public class Cliente implements UserDetails, Serializable {
     @OneToMany(mappedBy = "cliente", cascade = CascadeType.ALL, orphanRemoval = true)
     List<Pedido> pedidos;
 
+<<<<<<< HEAD
     /* Insere perfil no cliente */
     @OneToMany(mappedBy = "id.cliente", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-    private Set<ClientePerfil> clientePerfis = new HashSet<>();
+    private Set<ClientePerfil> clientesPerfis = new HashSet<>();
+=======
+    //Aqui esta a lista de favoritos do cliente
+    @JsonManagedReference
+    @OneToMany(mappedBy="cliente", fetch = FetchType.EAGER)
+    private List<Favorito> produtosFavoritos = new ArrayList<>();
+>>>>>>> 3192601b1c5d36809d9a1e895e153e3686537de0
 
     //construtor
     public Cliente() {
@@ -65,18 +70,10 @@ public class Cliente implements UserDetails, Serializable {
         this.cpf = clienteInserirDTO.getCpf();
         this.senha = clienteInserirDTO.getSenha();
         this.enderecos = new ArrayList<>();
-        this.clientePerfis = new HashSet<>();
-
-        if (clienteInserirDTO.getPerfis() != null && !clienteInserirDTO.getPerfis().isEmpty()) {
-            for (Perfil perfil : clienteInserirDTO.getPerfis()) {
-            ClientePerfil clientePerfil = new ClientePerfil(this, perfil, LocalDate.now());
-            this.clientePerfis.add(clientePerfil); 
-            }
-        }
     }
 
     public Cliente(Long id, String nome, String telefone, String email, String cpf, String senha,
-            List<Endereco> enderecos, List<Pedido> pedidos, Set<ClientePerfil> clientePerfis) {
+            List<Endereco> enderecos, List<Pedido> pedidos, Set<ClientePerfil> clientesPerfis) {
         this.id = id;
         this.nome = nome;
         this.telefone = telefone;
@@ -85,6 +82,7 @@ public class Cliente implements UserDetails, Serializable {
         this.senha = senha;
         this.enderecos = enderecos;
         this.pedidos = pedidos;
+        this.clientesPerfis = clientesPerfis;
     }
 
     public Long getId() {
@@ -151,16 +149,16 @@ public class Cliente implements UserDetails, Serializable {
         this.pedidos = pedidos;
     }
 
-    public Set<ClientePerfil> getClientePerfis() {
-        return clientePerfis;
-    }
-
-    public void setClientePerfis(Set<ClientePerfil> clientePerfis) {
-        this.clientePerfis = clientePerfis;
-    }
-
     public static long getSerialversionuid() {
         return serialVersionUID;
+    }
+
+    public Set<ClientePerfil> getClientesPerfis() {
+        return clientesPerfis;
+    }
+
+    public void setClientesPerfis(Set<ClientePerfil> clientesPerfis) {
+        this.clientesPerfis = clientesPerfis;
     }
 
     @Override
@@ -218,11 +216,10 @@ public class Cliente implements UserDetails, Serializable {
         return Objects.equals(this.pedidos, other.pedidos);
     }
 
-
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         List<GrantedAuthority> authorities = new ArrayList<>();
-        for (ClientePerfil clientePerfil : getClientePerfis()) {
+        for (ClientePerfil clientePerfil : getClientesPerfis()) {
             authorities.add(new SimpleGrantedAuthority(clientePerfil.getId().getPerfil().getNome()));
         }
         return authorities;
@@ -236,6 +233,14 @@ public class Cliente implements UserDetails, Serializable {
     @Override
     public String getPassword() {
         return this.senha;
+    }
+
+    public List<Favorito> getProdutosFavoritos() {
+        return produtosFavoritos;
+    }
+
+    public void setProdutosFavoritos(List<Favorito> produtosFavoritos) {
+        this.produtosFavoritos = produtosFavoritos;
     }
 
 }
