@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 public class ProdutoService {
 	@Autowired
 	private ProdutoRepository produtoRepository;
+	
 	@Autowired
 	private CategoriaRepository categoriaRepository;
 

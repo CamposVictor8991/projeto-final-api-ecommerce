@@ -10,6 +10,7 @@ import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -53,6 +54,11 @@ public class Cliente {
     @JsonManagedReference
     @OneToMany(mappedBy = "cliente",cascade = CascadeType.ALL, orphanRemoval = true)
     List<Pedido> pedidos;
+
+    //Aqui esta a lista de favoritos do cliente
+    @JsonManagedReference
+    @OneToMany(mappedBy="cliente", fetch = FetchType.EAGER)
+    private List<Favorito> produtosFavoritos = new ArrayList<>();
 
     //construtor
     public Cliente(ClienteInserirDTO clienteInserirDTO) {
@@ -129,5 +135,13 @@ public class Cliente {
 	public void setPedidos(List<Pedido> pedidos) {
 		this.pedidos = pedidos;
 	}
+
+    public List<Favorito> getProdutosFavoritos() {
+        return produtosFavoritos;
+    }
+
+    public void setProdutosFavoritos(List<Favorito> produtosFavoritos) {
+        this.produtosFavoritos = produtosFavoritos;
+    }
 
 }

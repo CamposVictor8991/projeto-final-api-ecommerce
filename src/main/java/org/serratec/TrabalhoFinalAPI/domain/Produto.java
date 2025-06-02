@@ -55,6 +55,8 @@ public class Produto {
 		this.quantidade = produtoInserirDTO.getQuantidadeProduto();
 	}
 
+    
+
 	public Long getId() {
         return id;
     }
