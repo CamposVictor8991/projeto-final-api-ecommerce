@@ -29,7 +29,7 @@ public class ClienteDTO {
         this.telefone = cliente.getTelefone();
         this.enderecos = cliente.getEnderecos();
         this.perfis = new HashSet<>();
-        for (ClientePerfil clientePerfil : cliente.getClientePerfis()) {
+        for (ClientePerfil clientePerfil : cliente.getClientesPerfis()) {
 			this.perfis.add(clientePerfil.getId().getPerfil());
 		}
     }

@@ -7,9 +7,7 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import org.serratec.TrabalhoFinalAPI.enuns.Status;
 
-<<<<<<< HEAD
 import com.fasterxml.jackson.annotation.JsonManagedReference;
-=======
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
@@ -19,7 +17,6 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
->>>>>>> 3192601b1c5d36809d9a1e895e153e3686537de0
 
 @Entity
 public class Pedido {
@@ -28,16 +25,10 @@ public class Pedido {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-<<<<<<< HEAD
 	private double valorVenda;
     private double total;
 	private double desconto;
 	private LocalDate dataPedido = LocalDate.now();
-=======
-    private double valorVenda;
-    private double desconto;
-    private LocalDate dataPedido = LocalDate.now();
->>>>>>> 9c3219c8d27aa1f8adc4492c1d68eca39c108d1d
 
     @Enumerated(EnumType.STRING)
     private Status status = Status.PENDENTE;
