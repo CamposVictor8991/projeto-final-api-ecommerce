@@ -74,24 +74,24 @@ public class PedidoService {
 
         // Envia o e-mail de confirmação
         String emailCliente = pedido.getCliente().getEmail();
-        String assuntoPedidoConfirmado = "Seu pedido n° " + pedido.getId() + " foi realizado!";
+        String assuntoPedidoConfirmado = "Seu pedido n° " + pedido.getId() + " foi realizado! 🛍️";
         String mensagemPedidoConfirmado = "Olá, " + pedido.getCliente().getNome() + "!\n\n" +
-                "Seu pedido foi realizado e em breve você o receberá! 🎉" +
-                "\n» Data do pedido: " + pedido.getDataPedido() +
-                "\n» Seu pedido é o n° " + pedido.getId() +
-                "\n» Total: R$ " + String.format("%.2f", pedido.getValorVenda()) +
-                "\n» Endereço de entrega: " + pedido.getEndereco().getLogradouro() + 
-                "\n» Itens do seu pedido: \n";
+                "Recebemos seu pedido realizado em " + pedido.getDataPedido() + " e já estamos preparando ele com todo carinho." +
+                "\nAproveitando esse contato, vamos te dar um resumo do que você comprou:" +
+                "\n\n📝 Seu código de pedido é o n° " + pedido.getId() + "." +
+                "\n📍 Endereço de entrega: " + pedido.getEndereco() +
+                "\n📦 Itens do seu pedido: \n\n";
 
                 for (PedidoProduto pp : pedido.getPedidoProdutos()) {
-                    mensagemPedidoConfirmado += "✔ " + pp.getProduto().getNomeProduto() +
-                            " | " + pp.getQuantidade() + " por " +
-                            " R$ " + String.format("%.2f", pp.getProduto().getPreco()) + " cada. \n";
+                    mensagemPedidoConfirmado += "    ‣ " + pp.getProduto().getNomeProduto() +
+                            ": " + pp.getQuantidade() + " por " +
+                            " R$ " + String.format("%.2f", pp.getProduto().getPreco()) + " cada.\n";
                 }
 
-        mensagemPedidoConfirmado += "\nAgradecemos pela sua compra e esperamos que você aproveite seus produtos!\n" +
-                "Atenciosamente,\n" +
-                "Grupo 5";
+        mensagemPedidoConfirmado += "\nTotal do seu pedido: R$ " + String.format("%.2f", pedido.getValorVenda()) +
+                "\nAgradecemos pela sua compra e esperamos que você aproveite seus produtos!\n" +
+                "\n\nAtenciosamente,\n" +
+                "Grupo 5 🩵💙";
 
         mailConfig.enviarEmail(emailCliente, assuntoPedidoConfirmado, mensagemPedidoConfirmado);
 

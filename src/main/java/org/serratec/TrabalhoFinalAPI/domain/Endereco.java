@@ -116,4 +116,13 @@ public class Endereco {
         this.cliente = cliente;
     }
 
+    @Override
+    public String toString() {
+        return logradouro + ", n° " + numero + " - " + bairro + ", " + cidade + " - " + uf + ", CEP: " + cep
+                + (complemento != null ? ", Complemento: " + complemento : ".");
+    
+    }
+
+    
+
 }

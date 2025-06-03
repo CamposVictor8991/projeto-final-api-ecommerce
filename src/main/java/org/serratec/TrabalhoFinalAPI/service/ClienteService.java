@@ -1,11 +1,16 @@
 package org.serratec.TrabalhoFinalAPI.service;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+
 import org.serratec.TrabalhoFinalAPI.config.MailConfig;
 import org.serratec.TrabalhoFinalAPI.domain.Cliente;
 import org.serratec.TrabalhoFinalAPI.domain.Endereco;
 import org.serratec.TrabalhoFinalAPI.dto.ClienteDTO;
 import org.serratec.TrabalhoFinalAPI.dto.ClienteEditarDTO;
 import org.serratec.TrabalhoFinalAPI.dto.ClienteInserirDTO;
+import org.serratec.TrabalhoFinalAPI.dto.EnderecoInserirDTO;
 import org.serratec.TrabalhoFinalAPI.exception.CpfException;
 import org.serratec.TrabalhoFinalAPI.exception.EmailException;
 import org.serratec.TrabalhoFinalAPI.exception.SenhaException;
@@ -14,12 +19,6 @@ import org.serratec.TrabalhoFinalAPI.repository.EnderecoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-
-import org.serratec.TrabalhoFinalAPI.dto.EnderecoInserirDTO;
 
 @Service
 public class ClienteService {
@@ -70,7 +69,14 @@ public class ClienteService {
 
         clienteRepository.save(cliente);
 
-        mailConfig.enviarEmail(cliente.getEmail(), "Cadastro de Cliente Criado!", cliente.toString());
+        String mensagemCadastroCriado = "Olá, " + cliente.getNome() + "!"+
+            "\n\nEstamos passando bem rapidinho pra dar as boas-vindas e confirmar que seu cadastro foi criado com sucesso! 🎉" +
+            "\nAgora que você faz parte da nossa comunidade e pode aproveitar ofertas exclusivas, acompanhar seus pedidos e muito mais! 🛍️" +
+            "\nLembre-se de que você pode acessar sua conta usando o e-mail: " + cliente.getEmail() + " e a senha que você escolheu." +
+            "\nConta com a gente para qualquer dúvida ou ajuda que você precisar!" +
+            "\n\nAtenciosamente, \nGrupo 5 - Serratec 🩵💙";
+
+        mailConfig.enviarEmail(cliente.getEmail(), "Cadastro de Cliente Criado!", mensagemCadastroCriado);
 
         return new ClienteDTO(cliente);
 
@@ -100,7 +106,18 @@ public class ClienteService {
 
             clienteRepository.save(cliente);
 
-            mailConfig.enviarEmail(cliente.getEmail(), "Seu Cadastro Foi Atualizado!", "Olá! Seu cadastro foi atualizado com sucesso!");
+            String mensagemCadastroEditado = "Olá, " + cliente.getNome() +
+                "\n\nPassando rapidinho pra confirmar que as informações da sua conta foram atualizadas com sucesso! ✨" +
+                "\nLembre-se de sempre manter seus dados atualizados pra não perder acesso à sua conta e continuar por dentro das novidades." +
+                "\nSeus dados atuais são:" +
+                "\n\nNome: " + cliente.getNome() +
+                "\nE-mail: " + cliente.getEmail() +
+                "\nTelefone: " + cliente.getTelefone() +
+                "\n\nSe não foi você quem fez essa alteração, entre em contato com a gente imediatamente." +
+                "\nConta com a gente pra qualquer dúvida ou ajuda que precisar!" +
+                "\n\nAtenciosamente, \nGrupo 5 - Serratec 🩵💙";
+
+            mailConfig.enviarEmail(cliente.getEmail(), "Atualização cadastral!", mensagemCadastroEditado);
 
             return new ClienteDTO(cliente);
         }

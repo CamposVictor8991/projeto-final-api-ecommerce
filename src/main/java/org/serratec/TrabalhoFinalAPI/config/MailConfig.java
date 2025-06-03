@@ -16,7 +16,7 @@ public class MailConfig {
         message.setFrom("laryssa.peixot@gmail.com");
         message.setTo(para);
         message.setSubject(assunto);
-        message.setText(texto + "\n\nGrupo 5");
+        message.setText(texto);
         javaMailSender.send(message);
     }
 }
