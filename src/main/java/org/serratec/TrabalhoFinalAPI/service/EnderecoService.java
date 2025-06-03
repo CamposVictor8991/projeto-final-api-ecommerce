@@ -11,7 +11,7 @@ import java.util.Optional;
 @Service
 public class EnderecoService {
 
-   public Endereco adicionarEndereco(String cep) {
+   public Endereco adicionarEndereco(String cep) throws CepException {
        RestTemplate restTemplate = new RestTemplate();
        String url = "http://viacep.com.br/ws/" + cep + "/json/";
        Optional<EnderecoViaCepDTO> enderecoViaOtp = Optional.ofNullable(restTemplate.getForObject(url, EnderecoViaCepDTO.class));

@@ -23,7 +23,7 @@ public class ProdutoService {
 		return produtoRepository.findAll();
 	}
 
-	public Produto inserir(ProdutoInserirDTO produtoInserirDTO) {
+	public Produto inserir(ProdutoInserirDTO produtoInserirDTO) throws RuntimeMensagemException {
 		Produto produto = new Produto(produtoInserirDTO);
 		produto.setCategoria(categoriaRepository.findById(produtoInserirDTO.getIdCategoria())
 				.orElseThrow(() -> new RuntimeMensagemException("Categoria não encontrada")));
@@ -43,7 +43,7 @@ public class ProdutoService {
 
 		return produtoAtualizado;
 	}
-	public List<Produto> listarRelacionados(Long produtoId) {
+	public List<Produto> listarRelacionados(Long produtoId) throws RuntimeMensagemException {
 	    Produto produto = produtoRepository.findById(produtoId)
 	        .orElseThrow(() -> new RuntimeMensagemException("Produto não encontrado"));
 	    // Busca produtos da mesma categoria, exceto o próprio produto

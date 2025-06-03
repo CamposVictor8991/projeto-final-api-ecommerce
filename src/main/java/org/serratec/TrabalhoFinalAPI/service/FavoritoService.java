@@ -25,9 +25,9 @@ public class FavoritoService {
     @Autowired
     private ProdutoRepository produtoRepository;
 
-    public void adicionarFavorito(Long clienteId, Long produtoId) {
+    public void adicionarFavorito(Long clienteId, Long produtoId) throws RuntimeMensagemException {
         if (favoritoRepository.existsByClienteIdAndProdutoId(clienteId, produtoId)) {
-            throw new RuntimeException("Produto já está nos favoritos.");
+            throw new RuntimeMensagemException("Produto já está nos favoritos.");
         }
 
         Cliente cliente = clienteRepository.findById(clienteId)
@@ -43,7 +43,7 @@ public class FavoritoService {
     }
 
 //deleta um item do favorido
-    public void removerFavorito(Long clienteId, Long produtoId) {
+    public void removerFavorito(Long clienteId, Long produtoId) throws RuntimeMensagemException {
     Favorito favorito = favoritoRepository.findByClienteIdAndProdutoId(clienteId, produtoId)
         .orElseThrow(() -> new RuntimeMensagemException("Favorito não encontrado."));
     favoritoRepository.delete(favorito);
