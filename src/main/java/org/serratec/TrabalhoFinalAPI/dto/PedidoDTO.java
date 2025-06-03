@@ -15,8 +15,9 @@ public class PedidoDTO {
     private Double valorVenda;
     private Double desconto;
     private Double total;
+    private Boolean temCupomFreteGratis;
     private List<Produto> relacionados;
-
+    
     public PedidoDTO() {
     }
 
@@ -31,6 +32,7 @@ public class PedidoDTO {
             .toList();
         this.desconto = pedido.getDesconto();
         this.total = pedido.getTotal();
+        this.temCupomFreteGratis = pedido.getTemCupomFreteGratis();
     }
 
     public Long getId() {
@@ -104,4 +106,12 @@ public class PedidoDTO {
     public void setRelacionados(List<Produto> relacionados) {
         this.relacionados = relacionados;
     }
+
+	public Boolean getTemCupomFreteGratis() {
+		return temCupomFreteGratis;
+	}
+
+	public void setTemCupomFreteGratis(Boolean temCupomFreteGratis) {
+		this.temCupomFreteGratis = temCupomFreteGratis;
+	}
 }

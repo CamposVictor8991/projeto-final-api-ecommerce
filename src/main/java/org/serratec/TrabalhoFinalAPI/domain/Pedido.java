@@ -24,7 +24,7 @@ public class Pedido {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
+    private Boolean temCupomFreteGratis;
 	private double valorVenda;
     private double total;
 	private double desconto;
@@ -118,4 +118,12 @@ public class Pedido {
     public void setTotal(double total) {
         this.total = total;
     }
+
+	public Boolean getTemCupomFreteGratis() {
+		return temCupomFreteGratis;
+	}
+
+	public void setTemCupomFreteGratis(Boolean temCupomFreteGratis) {
+		this.temCupomFreteGratis = temCupomFreteGratis;
+	}
 }

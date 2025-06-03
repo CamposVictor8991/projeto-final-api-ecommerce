@@ -89,10 +89,13 @@ public class PedidoService {
         }
         //calcula total com desconto
         double totalComDesconto = valorTotal - (pedido.getDesconto() / 100 * valorTotal);
-
+        if(totalComDesconto >= 50.00) {
+        	pedido.setTemCupomFreteGratis(true);
+        } else {
+        	pedido.setTemCupomFreteGratis(false);
+        }
         pedido.setValorVenda(valorTotal);
         pedido.setTotal(totalComDesconto);
-
         pedidoRepository.save(pedido);
 
         PedidoDTO pedidoDTO = new PedidoDTO(pedido);
@@ -146,7 +149,11 @@ public class PedidoService {
         }
         //calcula total com desconto
         double totalComDesconto = valorTotal - (pedido.getDesconto() / 100 * valorTotal);
-
+        if(totalComDesconto >= 50.00) {
+        	pedido.setTemCupomFreteGratis(true);
+        } else {
+        	pedido.setTemCupomFreteGratis(false);
+        }
         pedido.setValorVenda(valorTotal);
         pedido.setTotal(totalComDesconto);
 
