@@ -10,6 +10,7 @@ import org.serratec.TrabalhoFinalAPI.domain.Endereco;
 import org.serratec.TrabalhoFinalAPI.domain.Perfil;
 
 public class ClienteDTO {
+
     private Long id;
     private String nome;
     private String cpf;
@@ -30,8 +31,8 @@ public class ClienteDTO {
         this.enderecos = cliente.getEnderecos();
         this.perfis = new HashSet<>();
         for (ClientePerfil clientePerfil : cliente.getClientesPerfis()) {
-			this.perfis.add(clientePerfil.getId().getPerfil());
-		}
+            this.perfis.add(clientePerfil.getId().getPerfil());
+        }
     }
 
     public Long getId() {
@@ -81,7 +82,7 @@ public class ClienteDTO {
     public void setTelefone(String telefone) {
         this.telefone = telefone;
     }
-   
+
     public Set<Perfil> getPerfis() {
         return perfis;
     }
@@ -89,6 +90,5 @@ public class ClienteDTO {
     public void setPerfis(Set<Perfil> perfis) {
         this.perfis = perfis;
     }
-
 
 }

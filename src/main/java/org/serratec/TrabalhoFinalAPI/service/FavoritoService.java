@@ -25,15 +25,15 @@ public class FavoritoService {
     @Autowired
     private ProdutoRepository produtoRepository;
 
-    public void adicionarFavorito(Long clienteId, Long produtoId) {
+    public void adicionarFavorito(Long clienteId, Long produtoId) throws RuntimeMensagemException {
         if (favoritoRepository.existsByClienteIdAndProdutoId(clienteId, produtoId)) {
-            throw new RuntimeException("Produto já está nos favoritos.");
+            throw new RuntimeMensagemException("Produto já está nos favoritos.");
         }
 
         Cliente cliente = clienteRepository.findById(clienteId)
-            .orElseThrow(() -> new RuntimeMensagemException("Cliente não encontrado."));
+                .orElseThrow(() -> new RuntimeMensagemException("Cliente não encontrado."));
         Produto produto = produtoRepository.findById(produtoId)
-            .orElseThrow(() -> new RuntimeMensagemException("Produto não encontrado."));
+                .orElseThrow(() -> new RuntimeMensagemException("Produto não encontrado."));
 
         Favorito favorito = new Favorito();
         favorito.setCliente(cliente);
@@ -43,18 +43,16 @@ public class FavoritoService {
     }
 
 //deleta um item do favorido
-    public void removerFavorito(Long clienteId, Long produtoId) {
-    Favorito favorito = favoritoRepository.findByClienteIdAndProdutoId(clienteId, produtoId)
-        .orElseThrow(() -> new RuntimeMensagemException("Favorito não encontrado."));
-    favoritoRepository.delete(favorito);
+    public void removerFavorito(Long clienteId, Long produtoId) throws RuntimeMensagemException {
+        Favorito favorito = favoritoRepository.findByClienteIdAndProdutoId(clienteId, produtoId)
+                .orElseThrow(() -> new RuntimeMensagemException("Favorito não encontrado."));
+        favoritoRepository.delete(favorito);
     }
-    
 
     public List<Produto> listarFavoritos(Long clienteId) {
         List<Favorito> favoritos = favoritoRepository.findByClienteId(clienteId);
         return favoritos.stream()
-            .map(Favorito::getProduto)
-            .collect(Collectors.toList());
+                .map(Favorito::getProduto)
+                .collect(Collectors.toList());
     }
 }
-

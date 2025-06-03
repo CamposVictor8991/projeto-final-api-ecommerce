@@ -1,6 +1,7 @@
 package org.serratec.TrabalhoFinalAPI.dto;
 
 public class PerfilDTO {
+
     private Long id;
     private String nome;
 

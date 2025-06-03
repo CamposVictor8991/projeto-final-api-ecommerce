@@ -40,7 +40,7 @@ public class PedidoService {
     @Autowired
     private MailConfig mailConfig;
 
-    public PedidoDTO inserirPedido(Long id, PedidoInserirDTO pedidoInserirDTO) {
+    public PedidoDTO inserirPedido(Long id, PedidoInserirDTO pedidoInserirDTO) throws RuntimeMensagemException {
 
         Pedido pedido = new Pedido();
         //confere se o cliente e o id existem
@@ -74,7 +74,7 @@ public class PedidoService {
 
             List<Produto> listarRelacionados = produtoService.listarRelacionados(p.getProdutoId());
 
-            for (Produto r: listarRelacionados) {
+            for (Produto r : listarRelacionados) {
                 if (!relacionados.contains(r)) {
                     relacionados.add(r);
                 }
@@ -98,10 +98,10 @@ public class PedidoService {
         // aplica o desconto baseado na quantidade total
         double desconto = DescontoQuantidadeUtil.calcularDesconto(quantidadeTotalItens);
         double totalComDesconto = valorTotal - (desconto * valorTotal);
-        if(totalComDesconto >= 50.00) {
-        	pedido.setTemCupomFreteGratis(true);
+        if (totalComDesconto >= 50.00) {
+            pedido.setTemCupomFreteGratis(true);
         } else {
-        	pedido.setTemCupomFreteGratis(false);
+            pedido.setTemCupomFreteGratis(false);
         }
         pedido.setValorVenda(valorTotal);
         pedido.setDesconto(desconto * 100); // exemplo: 0.10 vira 10.0%
@@ -111,23 +111,23 @@ public class PedidoService {
         // Envia o e-mail de confirmação
         String emailCliente = pedido.getCliente().getEmail();
         String assuntoPedidoConfirmado = "Seu pedido n° " + pedido.getId() + " foi realizado! ";
-        String mensagemPedidoConfirmado = "Olá, " + pedido.getCliente().getNome() + "!\n\n" +
-            "Recebemos seu pedido realizado em " + pedido.getDataPedido() + " e já estamos preparando ele com todo carinho." +
-            "\nAproveitando esse contato, vamos te dar um resumo do que você comprou:" +
-            "\n\n Seu código de pedido é o n° " + pedido.getId() + "." +
-            "\n Endereço de entrega: " + pedido.getEndereco() +
-            "\n Itens do seu pedido: \n\n";
+        String mensagemPedidoConfirmado = "Olá, " + pedido.getCliente().getNome() + "!\n\n"
+                + "Recebemos seu pedido realizado em " + pedido.getDataPedido() + " e já estamos preparando ele com todo carinho."
+                + "\nAproveitando esse contato, vamos te dar um resumo do que você comprou:"
+                + "\n\n Seu código de pedido é o n° " + pedido.getId() + "."
+                + "\n Endereço de entrega: " + pedido.getEndereco()
+                + "\n Itens do seu pedido: \n\n";
 
         for (PedidoProduto pp : pedido.getPedidoProdutos()) {
-            mensagemPedidoConfirmado += "    ‣ " + pp.getProduto().getNomeProduto() +
-                ": " + pp.getQuantidade() + " por " +
-                " R$ " + String.format("%.2f", pp.getProduto().getPreco()) + " cada.\n";
+            mensagemPedidoConfirmado += "    ‣ " + pp.getProduto().getNomeProduto()
+                    + ": " + pp.getQuantidade() + " por "
+                    + " R$ " + String.format("%.2f", pp.getProduto().getPreco()) + " cada.\n";
         }
 
-        mensagemPedidoConfirmado += "\nTotal do seu pedido: R$ " + String.format("%.2f", pedido.getValorVenda()) +
-            "\nAgradecemos pela sua compra e esperamos que você aproveite seus produtos!\n" +
-            "\n\nAtenciosamente,\n" +
-            "Grupo 5  🩵💙";
+        mensagemPedidoConfirmado += "\nTotal do seu pedido: R$ " + String.format("%.2f", pedido.getValorVenda())
+                + "\nAgradecemos pela sua compra e esperamos que você aproveite seus produtos!\n"
+                + "\n\nAtenciosamente,\n"
+                + "Grupo 5  🩵💙";
 
         mailConfig.enviarEmail(emailCliente, assuntoPedidoConfirmado, mensagemPedidoConfirmado);
 
@@ -138,7 +138,7 @@ public class PedidoService {
         return pedidoDTO;
     }
 
-    public PedidoDTO editarPedido(Long id, Long id_pedido, PedidoInserirDTO pedidoInserirDTO) {
+    public PedidoDTO editarPedido(Long id, Long id_pedido, PedidoInserirDTO pedidoInserirDTO) throws RuntimeMensagemException {
 
         Optional<Pedido> pedidoOpt = pedidoRepository.findById(id_pedido);
         Pedido pedido = pedidoOpt.get();
@@ -186,10 +186,10 @@ public class PedidoService {
         // aplica o desconto baseado na quantidade total
         double desconto = DescontoQuantidadeUtil.calcularDesconto(quantidadeTotalItens);
         double totalComDesconto = valorTotal - (desconto * valorTotal);
-        if(totalComDesconto >= 50.00) {
-        	pedido.setTemCupomFreteGratis(true);
+        if (totalComDesconto >= 50.00) {
+            pedido.setTemCupomFreteGratis(true);
         } else {
-        	pedido.setTemCupomFreteGratis(false);
+            pedido.setTemCupomFreteGratis(false);
         }
         pedido.setValorVenda(valorTotal);
         pedido.setDesconto(desconto * 100);

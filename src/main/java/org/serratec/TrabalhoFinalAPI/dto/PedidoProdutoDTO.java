@@ -1,6 +1,7 @@
 package org.serratec.TrabalhoFinalAPI.dto;
 
 public class PedidoProdutoDTO {
+
     private Long produtoId;
     private int quantidade;
 

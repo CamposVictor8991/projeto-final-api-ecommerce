@@ -12,5 +12,5 @@ public class DescontoQuantidadeUtil {
         }
         return 0.0; // Sem desconto
     }
-    
+
 }

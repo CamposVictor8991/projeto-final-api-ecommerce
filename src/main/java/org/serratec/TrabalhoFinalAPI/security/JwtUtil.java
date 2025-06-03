@@ -23,10 +23,10 @@ public class JwtUtil {
     public String generateToken(String username) {
         SecretKey secretKeySpec = Keys.hmacShaKeyFor(jwtSecret.getBytes());
         return Jwts.builder()
-            .setSubject(username)
-            .setExpiration(new Date(System.currentTimeMillis() + this.jwtExpirationMiliseg))
-            .signWith(secretKeySpec)
-            .compact();
+                .setSubject(username)
+                .setExpiration(new Date(System.currentTimeMillis() + this.jwtExpirationMiliseg))
+                .signWith(secretKeySpec)
+                .compact();
     }
 
     public boolean isValidToken(String token) {
@@ -52,9 +52,9 @@ public class JwtUtil {
 
     public Claims getClaims(String token) {
         return Jwts.parserBuilder()
-            .setSigningKey(jwtSecret.getBytes())
-            .build()
-            .parseClaimsJws(token)
-            .getBody();
+                .setSigningKey(jwtSecret.getBytes())
+                .build()
+                .parseClaimsJws(token)
+                .getBody();
     }
 }

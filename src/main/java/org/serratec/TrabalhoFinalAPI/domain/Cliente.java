@@ -55,7 +55,7 @@ public class Cliente implements UserDetails {
 
     //Aqui esta a lista de favoritos do cliente
     @JsonManagedReference
-    @OneToMany(mappedBy="cliente", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "cliente", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private List<Favorito> produtosFavoritos = new ArrayList<>();
 
     //construtor
@@ -249,7 +249,5 @@ public class Cliente implements UserDetails {
     public void setProdutosFavoritos(List<Favorito> produtosFavoritos) {
         this.produtosFavoritos = produtosFavoritos;
     }
-
-
 
 }

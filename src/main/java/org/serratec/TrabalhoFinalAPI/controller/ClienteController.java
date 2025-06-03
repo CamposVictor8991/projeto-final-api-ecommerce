@@ -5,6 +5,7 @@ import java.util.Set;
 
 import org.serratec.TrabalhoFinalAPI.domain.ClientePerfil;
 import org.serratec.TrabalhoFinalAPI.domain.Endereco;
+import org.serratec.TrabalhoFinalAPI.domain.Categoria;
 import org.serratec.TrabalhoFinalAPI.domain.Cliente;
 import org.serratec.TrabalhoFinalAPI.dto.ClienteDTO;
 import org.serratec.TrabalhoFinalAPI.dto.ClienteEditarDTO;
@@ -32,6 +33,11 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import jakarta.validation.Valid;
 
 @RestController
@@ -42,11 +48,33 @@ public class ClienteController {
     private ClienteService clienteService;
 
     @GetMapping
+    @Operation(summary = "Listar todos os clientes", description = "A resposta lista os dados de todos os clientes, com seus endereços associados.")
+    @ApiResponses(value = {
+        @ApiResponse(responseCode = "200",
+                content = {
+                    @Content(schema = @Schema(implementation = Categoria.class), mediaType = "application/json")},
+                description = "Retorna todos os clientes"),
+        @ApiResponse(responseCode = "401", description = "Erro de autenticação"),
+        @ApiResponse(responseCode = "403", description = "Não há permissão para acesso o recurso"),
+        @ApiResponse(responseCode = "404", description = "Recurso não encontrado"),
+        @ApiResponse(responseCode = "505", description = "Exceção interna da aplicação")
+    })
     public ResponseEntity<List<ClienteDTO>> listarTodos() {
         return ResponseEntity.ok(clienteService.listarTodos());
     }
 
     @GetMapping("/{id}")
+    @Operation(summary = "Exibir um cliente", description = "A resposta exibe os dados de um cliente específico, com seus endereços associados.")
+    @ApiResponses(value = {
+        @ApiResponse(responseCode = "200",
+                content = {
+                    @Content(schema = @Schema(implementation = Categoria.class), mediaType = "application/json")},
+                description = "Retorna o cliente com o ID especificado"),
+        @ApiResponse(responseCode = "401", description = "Erro de autenticação"),
+        @ApiResponse(responseCode = "403", description = "Não há permissão para acesso o recurso"),
+        @ApiResponse(responseCode = "404", description = "Recurso não encontrado"),
+        @ApiResponse(responseCode = "505", description = "Exceção interna da aplicação")
+    })
     public ResponseEntity<Object> exibirPorId(@PathVariable Long id) {
 
         // Obtém o nome de usuário autenticado
@@ -56,7 +84,7 @@ public class ClienteController {
         Cliente usuarioAutenticado = clienteService.acharCliente(username);
 
         boolean isAdmin = usuarioAutenticado.getAuthorities().stream()
-            .anyMatch(auth -> auth.getAuthority().equals("ADMINISTRADOR"));
+                .anyMatch(auth -> auth.getAuthority().equals("ADMINISTRADOR"));
 
         if (!usuarioAutenticado.getId().equals(id) && !isAdmin) {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Você não tem permissão para acessar este usuário.");
@@ -70,6 +98,17 @@ public class ClienteController {
     }
 
     @PostMapping
+    @Operation(summary = "Criar um cliente", description = "A resposta cria um novo cliente e retorna seus dados.")
+    @ApiResponses(value = {
+        @ApiResponse(responseCode = "200",
+                content = {
+                    @Content(schema = @Schema(implementation = Categoria.class), mediaType = "application/json")},
+                description = "Retorna o cliente criado"),
+        @ApiResponse(responseCode = "401", description = "Erro de autenticação"),
+        @ApiResponse(responseCode = "403", description = "Não há permissão para acesso o recurso"),
+        @ApiResponse(responseCode = "404", description = "Recurso não encontrado"),
+        @ApiResponse(responseCode = "505", description = "Exceção interna da aplicação")
+    })
     public ResponseEntity<Object> criar(@Valid @RequestBody ClienteInserirDTO clienteInserirDTO) {
         try {
             ClienteDTO clienteDTO = clienteService.inserir(clienteInserirDTO);
@@ -80,6 +119,17 @@ public class ClienteController {
     }
 
     @PutMapping("/{id}")
+    @Operation(summary = "Edita um cliente", description = "A resposta atualiza os dados de um cliente específico e retorna os dados atualizados.")
+    @ApiResponses(value = {
+        @ApiResponse(responseCode = "200",
+                content = {
+                    @Content(schema = @Schema(implementation = Categoria.class), mediaType = "application/json")},
+                description = "Retorna o cliente atualizado"),
+        @ApiResponse(responseCode = "401", description = "Erro de autenticação"),
+        @ApiResponse(responseCode = "403", description = "Não há permissão para acesso o recurso"),
+        @ApiResponse(responseCode = "404", description = "Recurso não encontrado"),
+        @ApiResponse(responseCode = "505", description = "Exceção interna da aplicação")
+    })
     public ResponseEntity<Object> editar(
             @Valid @RequestBody ClienteEditarDTO clienteEditarDTO, @PathVariable Long id) {
 //        try {
@@ -91,12 +141,11 @@ public class ClienteController {
         Cliente usuarioAutenticado = clienteService.acharCliente(username);
 
         boolean isAdmin = usuarioAutenticado.getAuthorities().stream()
-            .anyMatch(auth -> auth.getAuthority().equals("ADMINISTRADOR"));
+                .anyMatch(auth -> auth.getAuthority().equals("ADMINISTRADOR"));
 
         if (!usuarioAutenticado.getId().equals(id) && !isAdmin) {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Você não tem permissão para acessar este usuário.");
         }
-
 
         ClienteDTO clienteDTO = clienteService.editarCadastro(clienteEditarDTO, id);
         if (clienteDTO == null) {
@@ -109,8 +158,18 @@ public class ClienteController {
     }
 
     @DeleteMapping("/{id}")
+    @Operation(summary = "Deleta um cliente", description = "A resposta deleta um cliente específico e retorna o status da operação.")
+    @ApiResponses(value = {
+        @ApiResponse(responseCode = "200",
+                content = {
+                    @Content(schema = @Schema(implementation = Categoria.class), mediaType = "application/json")},
+                description = "Retorna o status da exclusão do cliente"),
+        @ApiResponse(responseCode = "401", description = "Erro de autenticação"),
+        @ApiResponse(responseCode = "403", description = "Não há permissão para acesso o recurso"),
+        @ApiResponse(responseCode = "404", description = "Recurso não encontrado"),
+        @ApiResponse(responseCode = "505", description = "Exceção interna da aplicação")
+    })
     public ResponseEntity<Object> excluir(@PathVariable Long id) {
-
 
         // Obtém o nome de usuário autenticado
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
@@ -119,12 +178,11 @@ public class ClienteController {
         Cliente usuarioAutenticado = clienteService.acharCliente(username);
 
         boolean isAdmin = usuarioAutenticado.getAuthorities().stream()
-            .anyMatch(auth -> auth.getAuthority().equals("ADMINISTRADOR"));
+                .anyMatch(auth -> auth.getAuthority().equals("ADMINISTRADOR"));
 
         if (!usuarioAutenticado.getId().equals(id) && !isAdmin) {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Você não tem permissão para acessar este usuário.");
         }
-
 
         boolean removido = clienteService.excluir(id);
         if (removido) {
@@ -134,6 +192,17 @@ public class ClienteController {
     }
 
     @PostMapping("/{id}/enderecos")
+    @Operation(summary = "Cria um endereço no cliente", description = "A resposta cria um novo endereço para um cliente específico e retorna os dados do endereço criado.")
+    @ApiResponses(value = {
+        @ApiResponse(responseCode = "200",
+                content = {
+                    @Content(schema = @Schema(implementation = Categoria.class), mediaType = "application/json")},
+                description = "Retorna o endereço criado"),
+        @ApiResponse(responseCode = "401", description = "Erro de autenticação"),
+        @ApiResponse(responseCode = "403", description = "Não há permissão para acesso o recurso"),
+        @ApiResponse(responseCode = "404", description = "Recurso não encontrado"),
+        @ApiResponse(responseCode = "505", description = "Exceção interna da aplicação")
+    })
     public ResponseEntity<Object> criarEndereco(@PathVariable Long id, @Valid @RequestBody EnderecoInserirDTO enderecoInserirDTO) {
 
         // Obtém o nome de usuário autenticado
@@ -143,12 +212,11 @@ public class ClienteController {
         Cliente usuarioAutenticado = clienteService.acharCliente(username);
 
         boolean isAdmin = usuarioAutenticado.getAuthorities().stream()
-            .anyMatch(auth -> auth.getAuthority().equals("ADMINISTRADOR"));
+                .anyMatch(auth -> auth.getAuthority().equals("ADMINISTRADOR"));
 
         if (!usuarioAutenticado.getId().equals(id) && !isAdmin) {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Você não tem permissão para alterar este usuário.");
         }
-
 
         Endereco endereco = clienteService.criarEndereco(id, enderecoInserirDTO);
         if (endereco == null) {
@@ -162,6 +230,17 @@ public class ClienteController {
     private PedidoService pedidoService;
 
     @GetMapping("/{id}/pedidos")
+    @Operation(summary = "Listar pedidos", description = "A resposta retorna os pedidos associados a um cliente específico.")
+    @ApiResponses(value = {
+        @ApiResponse(responseCode = "200",
+                content = {
+                    @Content(schema = @Schema(implementation = Categoria.class), mediaType = "application/json")},
+                description = "Retorna os pedidos do cliente com o ID especificado"),
+        @ApiResponse(responseCode = "401", description = "Erro de autenticação"),
+        @ApiResponse(responseCode = "403", description = "Não há permissão para acesso o recurso"),
+        @ApiResponse(responseCode = "404", description = "Recurso não encontrado"),
+        @ApiResponse(responseCode = "505", description = "Exceção interna da aplicação")
+    })
     public ResponseEntity<Object> listarPedidos(@PathVariable Long id) {
 
         // Obtém o nome de usuário autenticado
@@ -171,7 +250,7 @@ public class ClienteController {
         Cliente usuarioAutenticado = clienteService.acharCliente(username);
 
         boolean isAdmin = usuarioAutenticado.getAuthorities().stream()
-            .anyMatch(auth -> auth.getAuthority().equals("ADMINISTRADOR"));
+                .anyMatch(auth -> auth.getAuthority().equals("ADMINISTRADOR"));
 
         if (!usuarioAutenticado.getId().equals(id) && !isAdmin) {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Você não tem permissão para acessar este usuário.");
@@ -187,6 +266,17 @@ public class ClienteController {
     }
 
     @PostMapping("/{id}/pedidos")
+    @Operation(summary = "Inserir um pedido", description = " A resposta cria um novo pedido para um cliente específico e retorna os dados do pedido criado.")
+    @ApiResponses(value = {
+        @ApiResponse(responseCode = "200",
+                content = {
+                    @Content(schema = @Schema(implementation = Categoria.class), mediaType = "application/json")},
+                description = "Retorna o pedido criado"),
+        @ApiResponse(responseCode = "401", description = "Erro de autenticação"),
+        @ApiResponse(responseCode = "403", description = "Não há permissão para acesso o recurso"),
+        @ApiResponse(responseCode = "404", description = "Recurso não encontrado"),
+        @ApiResponse(responseCode = "505", description = "Exceção interna da aplicação")
+    })
     public ResponseEntity<Object> inserirPedido(@PathVariable Long id, @RequestBody PedidoInserirDTO pedidoInserirDTO) {
         // Obtém o nome de usuário autenticado
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
@@ -195,7 +285,7 @@ public class ClienteController {
         Cliente usuarioAutenticado = clienteService.acharCliente(username);
 
         boolean isAdmin = usuarioAutenticado.getAuthorities().stream()
-            .anyMatch(auth -> auth.getAuthority().equals("ADMINISTRADOR"));
+                .anyMatch(auth -> auth.getAuthority().equals("ADMINISTRADOR"));
 
         if (!usuarioAutenticado.getId().equals(id) && !isAdmin) {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Você não tem permissão para acessar este usuário.");
@@ -206,6 +296,17 @@ public class ClienteController {
     }
 
     @PutMapping("/{id}/pedidos/{id_pedido}")
+    @Operation(summary = "Edita pedido", description = "A resposta atualiza os dados de um pedido específico de um cliente e retorna os dados atualizados do pedido.")
+    @ApiResponses(value = {
+        @ApiResponse(responseCode = "200",
+                content = {
+                    @Content(schema = @Schema(implementation = Categoria.class), mediaType = "application/json")},
+                description = "Retorna pedido atualizado"),
+        @ApiResponse(responseCode = "401", description = "Erro de autenticação"),
+        @ApiResponse(responseCode = "403", description = "Não há permissão para acesso o recurso"),
+        @ApiResponse(responseCode = "404", description = "Recurso não encontrado"),
+        @ApiResponse(responseCode = "505", description = "Exceção interna da aplicação")
+    })
     public ResponseEntity<Object> editarPedido(@PathVariable Long id, @PathVariable Long id_pedido, @Valid @RequestBody PedidoInserirDTO pedidoInserirDTO) {
         // Obtém o nome de usuário autenticado
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
@@ -214,7 +315,7 @@ public class ClienteController {
         Cliente usuarioAutenticado = clienteService.acharCliente(username);
 
         boolean isAdmin = usuarioAutenticado.getAuthorities().stream()
-            .anyMatch(auth -> auth.getAuthority().equals("ADMINISTRADOR"));
+                .anyMatch(auth -> auth.getAuthority().equals("ADMINISTRADOR"));
 
         if (!usuarioAutenticado.getId().equals(id) && !isAdmin) {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Você não tem permissão para acessar este usuário.");
@@ -226,6 +327,17 @@ public class ClienteController {
 
     // Status do pedido
     @PutMapping("/{id}/pedidos/{id_pedido}/status")
+    @Operation(summary = "Edita status do pedido", description = "A resposta atualiza o status de um pedido específico de um cliente e retorna os dados atualizados do pedido.")
+    @ApiResponses(value = {
+        @ApiResponse(responseCode = "200",
+                content = {
+                    @Content(schema = @Schema(implementation = Categoria.class), mediaType = "application/json")},
+                description = "Retorna o pedido atualizado"),
+        @ApiResponse(responseCode = "401", description = "Erro de autenticação"),
+        @ApiResponse(responseCode = "403", description = "Não há permissão para acesso o recurso"),
+        @ApiResponse(responseCode = "404", description = "Recurso não encontrado"),
+        @ApiResponse(responseCode = "505", description = "Exceção interna da aplicação")
+    })
     public ResponseEntity<Object> editarStatus(@PathVariable Long id, @PathVariable Long id_pedido, @Valid @RequestBody EditarStatusDTO editarStatusDTO) {
         // Obtém o nome de usuário autenticado
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
@@ -234,7 +346,7 @@ public class ClienteController {
         Cliente usuarioAutenticado = clienteService.acharCliente(username);
 
         boolean isAdmin = usuarioAutenticado.getAuthorities().stream()
-            .anyMatch(auth -> auth.getAuthority().equals("ADMINISTRADOR"));
+                .anyMatch(auth -> auth.getAuthority().equals("ADMINISTRADOR"));
 
         if (!usuarioAutenticado.getId().equals(id) && !isAdmin) {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Você não tem permissão para acessar este usuário.");

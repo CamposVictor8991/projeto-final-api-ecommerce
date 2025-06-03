@@ -10,27 +10,28 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class CategoriaService {
-	@Autowired
-	private CategoriaRepository categoriaRepository;
 
-	public List<Categoria> listarTodos() {
-		return categoriaRepository.findAll();
-	}
+    @Autowired
+    private CategoriaRepository categoriaRepository;
 
-	public Categoria inserir(CategoriaInserirDTO categoria) {
-		Categoria c = new Categoria(categoria);
-		categoriaRepository.save(c);
-		return c;
+    public List<Categoria> listarTodos() {
+        return categoriaRepository.findAll();
+    }
 
-	}
-	
-	public Categoria atualizar(long id, CategoriaInserirDTO categoria) {
-		Categoria categoriaAtualizada = categoriaRepository.findById(id).orElse(null);
-		if (categoriaAtualizada != null) {
-			categoriaAtualizada.setNomeCategoria(categoria.getNomeCategoria());
-			categoriaAtualizada.setDescricaoCategoria(categoria.getDescricaoCategoria());
-			categoriaAtualizada = categoriaRepository.save(categoriaAtualizada);
-		}
-		return categoriaAtualizada;
-	}
+    public Categoria inserir(CategoriaInserirDTO categoria) {
+        Categoria c = new Categoria(categoria);
+        categoriaRepository.save(c);
+        return c;
+
+    }
+
+    public Categoria atualizar(long id, CategoriaInserirDTO categoria) {
+        Categoria categoriaAtualizada = categoriaRepository.findById(id).orElse(null);
+        if (categoriaAtualizada != null) {
+            categoriaAtualizada.setNomeCategoria(categoria.getNomeCategoria());
+            categoriaAtualizada.setDescricaoCategoria(categoria.getDescricaoCategoria());
+            categoriaAtualizada = categoriaRepository.save(categoriaAtualizada);
+        }
+        return categoriaAtualizada;
+    }
 }

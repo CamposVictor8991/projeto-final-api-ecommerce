@@ -8,9 +8,7 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface ProdutoRepository extends JpaRepository<Produto, Long> {
-	List<Produto> findByCategoriaIdAndIdNot(Long categoriaId, Long id);
 
-
-	
+    List<Produto> findByCategoriaIdAndIdNot(Long categoriaId, Long id);
 
 }
