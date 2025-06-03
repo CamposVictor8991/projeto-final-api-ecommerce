@@ -18,6 +18,7 @@ import org.serratec.TrabalhoFinalAPI.repository.ClienteRepository;
 import org.serratec.TrabalhoFinalAPI.repository.EnderecoRepository;
 import org.serratec.TrabalhoFinalAPI.repository.PedidoRepository;
 import org.serratec.TrabalhoFinalAPI.repository.ProdutoRepository;
+import org.serratec.TrabalhoFinalAPI.util.DescontoQuantidadeUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -36,23 +37,24 @@ public class PedidoService {
     public PedidoDTO inserirPedido(Long id, PedidoInserirDTO pedidoInserirDTO) {
 
         Pedido pedido = new Pedido();
-        //confere se o cliente e o id existem
+        // confere se o cliente e o id existem
         pedido.setCliente(clienteRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Cliente não encontrado")));
         pedido.setEndereco(enderecoRepository.findById(pedidoInserirDTO.getEnderecoId())
                 .orElseThrow(() -> new RuntimeException("Endereço não encontrado")));
 
-        //cria lista temporaria dos pedido/produtos inseridos
+        // cria lista temporaria dos pedido/produtos inseridos
         List<PedidoProdutoDTO> pedidoProdutosDTO = pedidoInserirDTO.getPedidoProdutos();
         List<PedidoProduto> pedidoProdutos = new ArrayList<>();
         for (PedidoProdutoDTO p : pedidoProdutosDTO) {
-            //confere se exuste o produto no estoque
+            // confere se exuste o produto no estoque
             Produto produto = produtoRepository.findById(p.getProdutoId())
                     .orElseThrow(() -> new RuntimeException("Produto não disponível."));
 
-            //confere se existem unidades suficientes no estoque
+            // confere se existem unidades suficientes no estoque
             if (produto.getQuantidade() < p.getQuantidade()) {
-                new RuntimeException("Estoque insificiente, atualmente existem " + produto.getQuantidade() + " unidades de " + produto.getNomeProduto() + " no estoque.");
+                new RuntimeException("Estoque insificiente, atualmente existem " + produto.getQuantidade()
+                        + " unidades de " + produto.getNomeProduto() + " no estoque.");
             }
             PedidoProduto pedidoProduto = new PedidoProduto();
             pedidoProduto.setQuantidade(p.getQuantidade());
@@ -68,18 +70,24 @@ public class PedidoService {
 
         pedido.setPedidoProdutos(pedidoProdutos);
 
-        //calcula o valor da venda
+        // calcula o valor da venda
         double valorTotal = 0.0;
+        int quantidadeTotalItens = 0;
+
         for (PedidoProduto pedidoProduto : pedidoProdutos) {
             double valor = pedidoProduto.getProduto().getPreco() * pedidoProduto.getQuantidade();
             valorTotal += valor;
+            quantidadeTotalItens += pedidoProduto.getQuantidade();
         }
-        //calcula total com desconto
-        double totalComDesconto = valorTotal - (pedido.getDesconto() / 100 * valorTotal);
 
+        // aplica o desconto baseado na quantidade total
+        double desconto = DescontoQuantidadeUtil.calcularDesconto(quantidadeTotalItens);
+        double totalComDesconto = valorTotal - (desconto * valorTotal);
+
+        // salva os valores no pedido
         pedido.setValorVenda(valorTotal);
+        pedido.setDesconto(desconto * 100); // exemplo: 0.10 vira 10.0%
         pedido.setTotal(totalComDesconto);
-
         pedidoRepository.save(pedido);
         PedidoDTO pedidoDTO = new PedidoDTO(pedido);
 
@@ -90,23 +98,24 @@ public class PedidoService {
 
         Optional<Pedido> pedidoOpt = pedidoRepository.findById(id_pedido);
         Pedido pedido = pedidoOpt.get();
-        //confere se o cliente e o id existem
+        // confere se o cliente e o id existem
         pedido.setCliente(clienteRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Cliente não encontrado")));
         pedido.setEndereco(enderecoRepository.findById(pedidoInserirDTO.getEnderecoId())
                 .orElseThrow(() -> new RuntimeException("Endereço não disponível.")));
 
-        //cria lista temporaria dos pedido/produtos inseridos
+        // cria lista temporaria dos pedido/produtos inseridos
         List<PedidoProdutoDTO> pedidoProdutosDTO = pedidoInserirDTO.getPedidoProdutos();
         List<PedidoProduto> pedidoProdutos = new ArrayList<>();
         for (PedidoProdutoDTO p : pedidoProdutosDTO) {
-            //confere se exuste o produto no estoque
+            // confere se exuste o produto no estoque
             Produto produto = produtoRepository.findById(p.getProdutoId())
                     .orElseThrow(() -> new RuntimeException("Produto não encontrado"));
 
-            //confere se existem unidades suficientes no estoque
+            // confere se existem unidades suficientes no estoque
             if (produto.getQuantidade() < p.getQuantidade()) {
-                new RuntimeException("Estoque insificiente, atualmente existem " + produto.getQuantidade() + " unidades de " + produto.getNomeProduto() + " no estoque.");
+                new RuntimeException("Estoque insificiente, atualmente existem " + produto.getQuantidade()
+                        + " unidades de " + produto.getNomeProduto() + " no estoque.");
             }
 
             PedidoProduto pedidoProduto = new PedidoProduto();
@@ -122,18 +131,24 @@ public class PedidoService {
         }
 
         pedido.setPedidoProdutos(pedidoProdutos);
-        //calcula o valor da venda
+        // calcula o valor da venda
         double valorTotal = 0.0;
+        int quantidadeTotalItens = 0;
+
         for (PedidoProduto pedidoProduto : pedidoProdutos) {
             double valor = pedidoProduto.getProduto().getPreco() * pedidoProduto.getQuantidade();
             valorTotal += valor;
+            quantidadeTotalItens += pedidoProduto.getQuantidade();
         }
-        //calcula total com desconto
-        double totalComDesconto = valorTotal - (pedido.getDesconto() / 100 * valorTotal);
 
+        // aplica o desconto baseado na quantidade total
+        double desconto = DescontoQuantidadeUtil.calcularDesconto(quantidadeTotalItens);
+        double totalComDesconto = valorTotal - (desconto * valorTotal);
+
+        // salva os valores no pedido
         pedido.setValorVenda(valorTotal);
+        pedido.setDesconto(desconto * 100); // exemplo: 0.10 vira 10.0%
         pedido.setTotal(totalComDesconto);
-
         pedidoRepository.save(pedido);
         PedidoDTO pedidoDTO = new PedidoDTO(pedido);
 
@@ -167,13 +182,13 @@ public class PedidoService {
         pedido.setStatus(status);
         pedido.setDesconto(editarStatusDTO.getDesconto());
 
-        //calcula total com desconto
+        // calcula total com desconto
         double totalComDesconto = pedido.getTotal() - (editarStatusDTO.getDesconto() / 100 * pedido.getTotal());
         pedido.setTotal(totalComDesconto);
 
         List<PedidoProduto> pedidosProdutos = pedido.getPedidoProdutos();
 
-        //confere se o pedido foi concluido e se foi retirar os itens do estoque
+        // confere se o pedido foi concluido e se foi retirar os itens do estoque
         if (editarStatusDTO.getStatus().equals(Status.CONCLUIDO)) {
             for (PedidoProduto pp : pedidosProdutos) {
                 Produto produto = pp.getProduto();
