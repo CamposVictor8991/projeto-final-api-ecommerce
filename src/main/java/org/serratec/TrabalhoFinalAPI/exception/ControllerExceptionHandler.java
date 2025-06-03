@@ -17,7 +17,7 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 @ControllerAdvice
 public class ControllerExceptionHandler extends ResponseEntityExceptionHandler {
 
-    @ExceptionHandler({EmailException.class, SenhaException.class})
+    @ExceptionHandler({EmailException.class, SenhaException.class, RuntimeMensagemException.class})
 	protected ResponseEntity<Object> handleEmailESenhaException(RuntimeException ex) {
 		return ResponseEntity.unprocessableEntity().body(ex.getMessage());
 	}

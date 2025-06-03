@@ -14,6 +14,7 @@ import org.serratec.TrabalhoFinalAPI.dto.PedidoDTO;
 import org.serratec.TrabalhoFinalAPI.dto.PedidoInserirDTO;
 import org.serratec.TrabalhoFinalAPI.dto.PedidoProdutoDTO;
 import org.serratec.TrabalhoFinalAPI.enuns.Status;
+import org.serratec.TrabalhoFinalAPI.exception.RuntimeMensagemException;
 import org.serratec.TrabalhoFinalAPI.repository.ClienteRepository;
 import org.serratec.TrabalhoFinalAPI.repository.EnderecoRepository;
 import org.serratec.TrabalhoFinalAPI.repository.PedidoRepository;
@@ -32,27 +33,31 @@ public class PedidoService {
     private PedidoRepository pedidoRepository;
     @Autowired
     private ProdutoRepository produtoRepository;
+    @Autowired
+    ProdutoService produtoService;
 
     public PedidoDTO inserirPedido(Long id, PedidoInserirDTO pedidoInserirDTO) {
 
         Pedido pedido = new Pedido();
         //confere se o cliente e o id existem
         pedido.setCliente(clienteRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Cliente não encontrado")));
+                .orElseThrow(() -> new RuntimeMensagemException("Cliente não encontrado")));
         pedido.setEndereco(enderecoRepository.findById(pedidoInserirDTO.getEnderecoId())
-                .orElseThrow(() -> new RuntimeException("Endereço não encontrado")));
+                .orElseThrow(() -> new RuntimeMensagemException("Endereço não encontrado")));
 
         //cria lista temporaria dos pedido/produtos inseridos
         List<PedidoProdutoDTO> pedidoProdutosDTO = pedidoInserirDTO.getPedidoProdutos();
         List<PedidoProduto> pedidoProdutos = new ArrayList<>();
+        //lista temporaria de produtos relacionados
+        List<Produto> relacionados = new ArrayList<>();
         for (PedidoProdutoDTO p : pedidoProdutosDTO) {
             //confere se exuste o produto no estoque
             Produto produto = produtoRepository.findById(p.getProdutoId())
-                    .orElseThrow(() -> new RuntimeException("Produto não disponível."));
+                    .orElseThrow(() -> new RuntimeMensagemException("Produto não disponível."));
 
             //confere se existem unidades suficientes no estoque
             if (produto.getQuantidade() < p.getQuantidade()) {
-                new RuntimeException("Estoque insificiente, atualmente existem " + produto.getQuantidade() + " unidades de " + produto.getNomeProduto() + " no estoque.");
+                throw new RuntimeMensagemException("Estoque insificiente, atualmente existem " + produto.getQuantidade() + " unidades de " + produto.getNomeProduto() + " no estoque.");
             }
             PedidoProduto pedidoProduto = new PedidoProduto();
             pedidoProduto.setQuantidade(p.getQuantidade());
@@ -62,6 +67,14 @@ public class PedidoService {
             ppId.setPedido(pedido);
             ppId.setProduto(produto);
             pedidoProduto.setId(ppId);
+
+            List<Produto> listarRelacionados = produtoService.listarRelacionados(p.getProdutoId());
+
+            for (Produto r: listarRelacionados) {
+                if (!relacionados.contains(r)) {
+                    relacionados.add(r);
+                }
+            }
 
             pedidoProdutos.add(pedidoProduto);
         }
@@ -81,7 +94,10 @@ public class PedidoService {
         pedido.setTotal(totalComDesconto);
 
         pedidoRepository.save(pedido);
+
         PedidoDTO pedidoDTO = new PedidoDTO(pedido);
+
+        pedidoDTO.setRelacionados(relacionados);
 
         return pedidoDTO;
     }
@@ -92,9 +108,9 @@ public class PedidoService {
         Pedido pedido = pedidoOpt.get();
         //confere se o cliente e o id existem
         pedido.setCliente(clienteRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Cliente não encontrado")));
+                .orElseThrow(() -> new RuntimeMensagemException("Cliente não encontrado")));
         pedido.setEndereco(enderecoRepository.findById(pedidoInserirDTO.getEnderecoId())
-                .orElseThrow(() -> new RuntimeException("Endereço não disponível.")));
+                .orElseThrow(() -> new RuntimeMensagemException("Endereço não disponível.")));
 
         //cria lista temporaria dos pedido/produtos inseridos
         List<PedidoProdutoDTO> pedidoProdutosDTO = pedidoInserirDTO.getPedidoProdutos();
@@ -102,11 +118,11 @@ public class PedidoService {
         for (PedidoProdutoDTO p : pedidoProdutosDTO) {
             //confere se exuste o produto no estoque
             Produto produto = produtoRepository.findById(p.getProdutoId())
-                    .orElseThrow(() -> new RuntimeException("Produto não encontrado"));
+                    .orElseThrow(() -> new RuntimeMensagemException("Produto não encontrado"));
 
             //confere se existem unidades suficientes no estoque
             if (produto.getQuantidade() < p.getQuantidade()) {
-                new RuntimeException("Estoque insificiente, atualmente existem " + produto.getQuantidade() + " unidades de " + produto.getNomeProduto() + " no estoque.");
+                throw new RuntimeMensagemException("Estoque insificiente, atualmente existem " + produto.getQuantidade() + " unidades de " + produto.getNomeProduto() + " no estoque.");
             }
 
             PedidoProduto pedidoProduto = new PedidoProduto();

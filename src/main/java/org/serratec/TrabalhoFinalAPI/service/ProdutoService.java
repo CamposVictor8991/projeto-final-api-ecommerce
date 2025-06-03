@@ -4,6 +4,8 @@ import java.util.List;
 
 import org.serratec.TrabalhoFinalAPI.domain.Produto;
 import org.serratec.TrabalhoFinalAPI.dto.ProdutoInserirDTO;
+import org.serratec.TrabalhoFinalAPI.exception.CpfException;
+import org.serratec.TrabalhoFinalAPI.exception.RuntimeMensagemException;
 import org.serratec.TrabalhoFinalAPI.repository.CategoriaRepository;
 import org.serratec.TrabalhoFinalAPI.repository.ProdutoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,7 +26,7 @@ public class ProdutoService {
 	public Produto inserir(ProdutoInserirDTO produtoInserirDTO) {
 		Produto produto = new Produto(produtoInserirDTO);
 		produto.setCategoria(categoriaRepository.findById(produtoInserirDTO.getIdCategoria())
-				.orElseThrow(() -> new RuntimeException("Categoria não encontrada")));
+				.orElseThrow(() -> new RuntimeMensagemException("Categoria não encontrada")));
 
 		return produtoRepository.save(produto);
 	}
@@ -35,7 +37,7 @@ public class ProdutoService {
 			produtoAtualizado.setDescricao(produtoInserirDTO.getDescricaoProduto());
 			produtoAtualizado.setPreco(produtoInserirDTO.getPrecoProduto());
 			produtoAtualizado.setCategoria(categoriaRepository.findById(produtoInserirDTO.getIdCategoria())
-					.orElseThrow(() -> new RuntimeException("Categoria não encontrada")));
+					.orElseThrow(() -> new RuntimeMensagemException("Categoria não encontrada")));
 			produtoAtualizado = produtoRepository.save(produtoAtualizado);
 		}
 
@@ -43,7 +45,7 @@ public class ProdutoService {
 	}
 	public List<Produto> listarRelacionados(Long produtoId) {
 	    Produto produto = produtoRepository.findById(produtoId)
-	        .orElseThrow(() -> new RuntimeException("Produto não encontrado"));
+	        .orElseThrow(() -> new RuntimeMensagemException("Produto não encontrado"));
 	    // Busca produtos da mesma categoria, exceto o próprio produto
 	    return produtoRepository.findByCategoriaIdAndIdNot(produto.getCategoria().getId(), produtoId);
 	}

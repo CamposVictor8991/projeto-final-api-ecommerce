@@ -6,6 +6,7 @@ import java.util.stream.Collectors;
 import org.serratec.TrabalhoFinalAPI.domain.Cliente;
 import org.serratec.TrabalhoFinalAPI.domain.Favorito;
 import org.serratec.TrabalhoFinalAPI.domain.Produto;
+import org.serratec.TrabalhoFinalAPI.exception.RuntimeMensagemException;
 import org.serratec.TrabalhoFinalAPI.repository.ClienteRepository;
 import org.serratec.TrabalhoFinalAPI.repository.FavoritoRepository;
 import org.serratec.TrabalhoFinalAPI.repository.ProdutoRepository;
@@ -30,9 +31,9 @@ public class FavoritoService {
         }
 
         Cliente cliente = clienteRepository.findById(clienteId)
-            .orElseThrow(() -> new RuntimeException("Cliente não encontrado."));
+            .orElseThrow(() -> new RuntimeMensagemException("Cliente não encontrado."));
         Produto produto = produtoRepository.findById(produtoId)
-            .orElseThrow(() -> new RuntimeException("Produto não encontrado."));
+            .orElseThrow(() -> new RuntimeMensagemException("Produto não encontrado."));
 
         Favorito favorito = new Favorito();
         favorito.setCliente(cliente);
@@ -44,7 +45,7 @@ public class FavoritoService {
 //deleta um item do favorido
     public void removerFavorito(Long clienteId, Long produtoId) {
     Favorito favorito = favoritoRepository.findByClienteIdAndProdutoId(clienteId, produtoId)
-        .orElseThrow(() -> new RuntimeException("Favorito não encontrado."));
+        .orElseThrow(() -> new RuntimeMensagemException("Favorito não encontrado."));
     favoritoRepository.delete(favorito);
     }
     

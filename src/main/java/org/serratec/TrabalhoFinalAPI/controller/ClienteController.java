@@ -1,7 +1,9 @@
 package org.serratec.TrabalhoFinalAPI.controller;
 
 import java.util.List;
+import java.util.Set;
 
+import org.serratec.TrabalhoFinalAPI.domain.ClientePerfil;
 import org.serratec.TrabalhoFinalAPI.domain.Endereco;
 import org.serratec.TrabalhoFinalAPI.domain.Cliente;
 import org.serratec.TrabalhoFinalAPI.dto.ClienteDTO;
@@ -19,6 +21,7 @@ import org.serratec.TrabalhoFinalAPI.service.PedidoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -52,7 +55,10 @@ public class ClienteController {
         // Aqui você pega o usuário autenticado (do banco) e verifica o ID
         Cliente usuarioAutenticado = clienteService.acharCliente(username);
 
-        if (!usuarioAutenticado.getId().equals(id)) {
+        boolean isAdmin = usuarioAutenticado.getAuthorities().stream()
+            .anyMatch(auth -> auth.getAuthority().equals("ADMINISTRADOR"));
+
+        if (!usuarioAutenticado.getId().equals(id) && !isAdmin) {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Você não tem permissão para acessar este usuário.");
         }
 
@@ -77,13 +83,20 @@ public class ClienteController {
     public ResponseEntity<Object> editar(
             @Valid @RequestBody ClienteEditarDTO clienteEditarDTO, @PathVariable Long id) {
 //        try {
+
+        // Obtém o nome de usuário autenticado
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
 
+        // Aqui você pega o usuário autenticado (do banco) e verifica o ID
         Cliente usuarioAutenticado = clienteService.acharCliente(username);
 
-        if (!usuarioAutenticado.getId().equals(id)) {
-            return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Você não tem permissão para alterar este usuário.");
+        boolean isAdmin = usuarioAutenticado.getAuthorities().stream()
+            .anyMatch(auth -> auth.getAuthority().equals("ADMINISTRADOR"));
+
+        if (!usuarioAutenticado.getId().equals(id) && !isAdmin) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Você não tem permissão para acessar este usuário.");
         }
+
 
         ClienteDTO clienteDTO = clienteService.editarCadastro(clienteEditarDTO, id);
         if (clienteDTO == null) {
@@ -98,13 +111,20 @@ public class ClienteController {
     @DeleteMapping("/{id}")
     public ResponseEntity<Object> excluir(@PathVariable Long id) {
 
+
+        // Obtém o nome de usuário autenticado
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
 
+        // Aqui você pega o usuário autenticado (do banco) e verifica o ID
         Cliente usuarioAutenticado = clienteService.acharCliente(username);
 
-        if (!usuarioAutenticado.getId().equals(id)) {
-            return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Você não tem permissão para alterar este usuário.");
+        boolean isAdmin = usuarioAutenticado.getAuthorities().stream()
+            .anyMatch(auth -> auth.getAuthority().equals("ADMINISTRADOR"));
+
+        if (!usuarioAutenticado.getId().equals(id) && !isAdmin) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Você não tem permissão para acessar este usuário.");
         }
+
 
         boolean removido = clienteService.excluir(id);
         if (removido) {
@@ -116,13 +136,19 @@ public class ClienteController {
     @PostMapping("/{id}/enderecos")
     public ResponseEntity<Object> criarEndereco(@PathVariable Long id, @Valid @RequestBody EnderecoInserirDTO enderecoInserirDTO) {
 
+        // Obtém o nome de usuário autenticado
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
 
+        // Aqui você pega o usuário autenticado (do banco) e verifica o ID
         Cliente usuarioAutenticado = clienteService.acharCliente(username);
 
-        if (!usuarioAutenticado.getId().equals(id)) {
+        boolean isAdmin = usuarioAutenticado.getAuthorities().stream()
+            .anyMatch(auth -> auth.getAuthority().equals("ADMINISTRADOR"));
+
+        if (!usuarioAutenticado.getId().equals(id) && !isAdmin) {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Você não tem permissão para alterar este usuário.");
         }
+
 
         Endereco endereco = clienteService.criarEndereco(id, enderecoInserirDTO);
         if (endereco == null) {
@@ -138,11 +164,16 @@ public class ClienteController {
     @GetMapping("/{id}/pedidos")
     public ResponseEntity<Object> listarPedidos(@PathVariable Long id) {
 
+        // Obtém o nome de usuário autenticado
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
 
+        // Aqui você pega o usuário autenticado (do banco) e verifica o ID
         Cliente usuarioAutenticado = clienteService.acharCliente(username);
 
-        if (!usuarioAutenticado.getId().equals(id)) {
+        boolean isAdmin = usuarioAutenticado.getAuthorities().stream()
+            .anyMatch(auth -> auth.getAuthority().equals("ADMINISTRADOR"));
+
+        if (!usuarioAutenticado.getId().equals(id) && !isAdmin) {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Você não tem permissão para acessar este usuário.");
         }
 
@@ -157,13 +188,17 @@ public class ClienteController {
 
     @PostMapping("/{id}/pedidos")
     public ResponseEntity<Object> inserirPedido(@PathVariable Long id, @RequestBody PedidoInserirDTO pedidoInserirDTO) {
-
+        // Obtém o nome de usuário autenticado
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
 
+        // Aqui você pega o usuário autenticado (do banco) e verifica o ID
         Cliente usuarioAutenticado = clienteService.acharCliente(username);
 
-        if (!usuarioAutenticado.getId().equals(id)) {
-            return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Você não tem permissão para alterar este usuário.");
+        boolean isAdmin = usuarioAutenticado.getAuthorities().stream()
+            .anyMatch(auth -> auth.getAuthority().equals("ADMINISTRADOR"));
+
+        if (!usuarioAutenticado.getId().equals(id) && !isAdmin) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Você não tem permissão para acessar este usuário.");
         }
 
         PedidoDTO pedidoDTO = pedidoService.inserirPedido(id, pedidoInserirDTO);
@@ -172,14 +207,19 @@ public class ClienteController {
 
     @PutMapping("/{id}/pedidos/{id_pedido}")
     public ResponseEntity<Object> editarPedido(@PathVariable Long id, @PathVariable Long id_pedido, @Valid @RequestBody PedidoInserirDTO pedidoInserirDTO) {
-
+        // Obtém o nome de usuário autenticado
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
 
+        // Aqui você pega o usuário autenticado (do banco) e verifica o ID
         Cliente usuarioAutenticado = clienteService.acharCliente(username);
 
-        if (!usuarioAutenticado.getId().equals(id)) {
-            return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Você não tem permissão para alterar este usuário.");
+        boolean isAdmin = usuarioAutenticado.getAuthorities().stream()
+            .anyMatch(auth -> auth.getAuthority().equals("ADMINISTRADOR"));
+
+        if (!usuarioAutenticado.getId().equals(id) && !isAdmin) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Você não tem permissão para acessar este usuário.");
         }
+
         PedidoDTO pedidoDTO = pedidoService.editarPedido(id, id_pedido, pedidoInserirDTO);
         return ResponseEntity.ok(pedidoDTO);
     }
@@ -187,13 +227,17 @@ public class ClienteController {
     // Status do pedido
     @PutMapping("/{id}/pedidos/{id_pedido}/status")
     public ResponseEntity<Object> editarStatus(@PathVariable Long id, @PathVariable Long id_pedido, @Valid @RequestBody EditarStatusDTO editarStatusDTO) {
-
+        // Obtém o nome de usuário autenticado
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
 
+        // Aqui você pega o usuário autenticado (do banco) e verifica o ID
         Cliente usuarioAutenticado = clienteService.acharCliente(username);
 
-        if (!usuarioAutenticado.getId().equals(id)) {
-            return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Você não tem permissão para alterar este usuário.");
+        boolean isAdmin = usuarioAutenticado.getAuthorities().stream()
+            .anyMatch(auth -> auth.getAuthority().equals("ADMINISTRADOR"));
+
+        if (!usuarioAutenticado.getId().equals(id) && !isAdmin) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Você não tem permissão para acessar este usuário.");
         }
 
         PedidoDTO pedidoDTO = pedidoService.editarStatus(id, id_pedido, editarStatusDTO);

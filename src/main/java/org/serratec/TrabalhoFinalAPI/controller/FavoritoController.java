@@ -17,9 +17,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-
-
-
 @RestController
 @RequestMapping("/favoritos")
 public class FavoritoController {
@@ -32,13 +29,17 @@ public class FavoritoController {
 
     @PostMapping("/{clienteId}/{produtoId}")
     public ResponseEntity<Object> adicionarFavorito(@PathVariable Long clienteId, @PathVariable Long produtoId) {
-
+        // Obtém o nome de usuário autenticado
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
 
+        // Aqui você pega o usuário autenticado (do banco) e verifica o ID
         Cliente usuarioAutenticado = clienteService.acharCliente(username);
 
-        if (!usuarioAutenticado.getId().equals(clienteId)) {
-            return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Você não tem permissão para alterar este usuário.");
+        boolean isAdmin = usuarioAutenticado.getAuthorities().stream()
+            .anyMatch(auth -> auth.getAuthority().equals("ADMINISTRADOR"));
+
+        if (!usuarioAutenticado.getId().equals(clienteId) && !isAdmin) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Você não tem permissão para acessar este usuário.");
         }
 
         favoritoService.adicionarFavorito(clienteId, produtoId);
@@ -47,12 +48,16 @@ public class FavoritoController {
 
     @GetMapping("/{clienteId}/listar")
     public ResponseEntity<Object> listarFavoritos(@PathVariable Long clienteId) {
-
+        // Obtém o nome de usuário autenticado
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
 
+        // Aqui você pega o usuário autenticado (do banco) e verifica o ID
         Cliente usuarioAutenticado = clienteService.acharCliente(username);
 
-        if (!usuarioAutenticado.getId().equals(clienteId)) {
+        boolean isAdmin = usuarioAutenticado.getAuthorities().stream()
+            .anyMatch(auth -> auth.getAuthority().equals("ADMINISTRADOR"));
+
+        if (!usuarioAutenticado.getId().equals(clienteId) && !isAdmin) {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Você não tem permissão para acessar este usuário.");
         }
 
@@ -63,13 +68,17 @@ public class FavoritoController {
     //deleta um item do favorido 
     @DeleteMapping("/{clienteId}/{produtoId}")
     public ResponseEntity<Object> removerFavorito(@PathVariable Long clienteId, @PathVariable Long produtoId) {
-
+        // Obtém o nome de usuário autenticado
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
 
+        // Aqui você pega o usuário autenticado (do banco) e verifica o ID
         Cliente usuarioAutenticado = clienteService.acharCliente(username);
 
-        if (!usuarioAutenticado.getId().equals(clienteId)) {
-            return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Você não tem permissão para alterar este usuário.");
+        boolean isAdmin = usuarioAutenticado.getAuthorities().stream()
+            .anyMatch(auth -> auth.getAuthority().equals("ADMINISTRADOR"));
+
+        if (!usuarioAutenticado.getId().equals(clienteId) && !isAdmin) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Você não tem permissão para acessar este usuário.");
         }
 
         favoritoService.removerFavorito(clienteId, produtoId);

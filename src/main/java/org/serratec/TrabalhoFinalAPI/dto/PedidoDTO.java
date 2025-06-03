@@ -3,6 +3,7 @@ package org.serratec.TrabalhoFinalAPI.dto;
 import java.util.List;
 
 import org.serratec.TrabalhoFinalAPI.domain.Pedido;
+import org.serratec.TrabalhoFinalAPI.domain.Produto;
 import org.serratec.TrabalhoFinalAPI.enuns.Status;
 
 public class PedidoDTO {
@@ -14,6 +15,7 @@ public class PedidoDTO {
     private Double valorVenda;
     private Double desconto;
     private Double total;
+    private List<Produto> relacionados;
 
     public PedidoDTO() {
     }
@@ -93,5 +95,13 @@ public class PedidoDTO {
 
     public void setTotal(Double total) {
         this.total = total;
+    }
+
+    public List<Produto> getRelacionados() {
+        return relacionados;
+    }
+
+    public void setRelacionados(List<Produto> relacionados) {
+        this.relacionados = relacionados;
     }
 }

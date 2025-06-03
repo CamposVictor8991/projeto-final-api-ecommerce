@@ -50,9 +50,12 @@ public class ConfigSeguranca {
                 .requestMatchers(HttpMethod.POST, "/produtos/**").hasAnyAuthority("COLABORADOR", "ADMINISTRADOR")
                 .requestMatchers(HttpMethod.PUT, "/produtos/**").hasAnyAuthority("COLABORADOR", "ADMINISTRADOR")
                 .requestMatchers(HttpMethod.DELETE, "/produtos/**").hasAnyAuthority("COLABORADOR", "ADMINISTRADOR")
-                .requestMatchers(HttpMethod.GET, "/clientes/**").hasAnyAuthority("COLABORADOR", "ADMINISTRADOR")
                 // clientes
                 .requestMatchers(HttpMethod.POST, "/clientes/**").permitAll()
+                .requestMatchers(HttpMethod.GET, "/clientes/{id}").hasAnyAuthority("CLIENTE", "ADMINISTRADOR")
+                .requestMatchers(HttpMethod.GET, "/clientes/**").hasAuthority("ADMINISTRADOR")
+
+
                 .requestMatchers(HttpMethod.PUT, "/clientes/**").hasAnyAuthority("CLIENTE", "ADMINISTRADOR")
                 .requestMatchers(HttpMethod.DELETE, "/clientes/**").hasAnyAuthority("CLIENTE", "ADMINISTRADOR")
                 // administrador
