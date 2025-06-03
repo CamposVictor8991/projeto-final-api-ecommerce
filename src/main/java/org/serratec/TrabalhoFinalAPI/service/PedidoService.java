@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import org.serratec.TrabalhoFinalAPI.config.MailConfig;
+import org.serratec.TrabalhoFinalAPI.util.DescontoQuantidadeUtil;
 import org.serratec.TrabalhoFinalAPI.domain.Cliente;
 import org.serratec.TrabalhoFinalAPI.domain.Pedido;
 import org.serratec.TrabalhoFinalAPI.domain.PedidoProduto;
@@ -35,6 +37,8 @@ public class PedidoService {
     private ProdutoRepository produtoRepository;
     @Autowired
     ProdutoService produtoService;
+    @Autowired
+    private MailConfig mailConfig;
 
     public PedidoDTO inserirPedido(Long id, PedidoInserirDTO pedidoInserirDTO) {
 
@@ -83,20 +87,49 @@ public class PedidoService {
 
         //calcula o valor da venda
         double valorTotal = 0.0;
+        int quantidadeTotalItens = 0;
         for (PedidoProduto pedidoProduto : pedidoProdutos) {
             double valor = pedidoProduto.getProduto().getPreco() * pedidoProduto.getQuantidade();
             valorTotal += valor;
+            quantidadeTotalItens += pedidoProduto.getQuantidade();
         }
+
         //calcula total com desconto
-        double totalComDesconto = valorTotal - (pedido.getDesconto() / 100 * valorTotal);
+        // aplica o desconto baseado na quantidade total
+        double desconto = DescontoQuantidadeUtil.calcularDesconto(quantidadeTotalItens);
+        double totalComDesconto = valorTotal - (desconto * valorTotal);
         if(totalComDesconto >= 50.00) {
         	pedido.setTemCupomFreteGratis(true);
         } else {
         	pedido.setTemCupomFreteGratis(false);
         }
         pedido.setValorVenda(valorTotal);
+        pedido.setDesconto(desconto * 100); // exemplo: 0.10 vira 10.0%
         pedido.setTotal(totalComDesconto);
         pedidoRepository.save(pedido);
+
+        // Envia o e-mail de confirmação
+        String emailCliente = pedido.getCliente().getEmail();
+        String assuntoPedidoConfirmado = "Seu pedido n° " + pedido.getId() + " foi realizado! ";
+        String mensagemPedidoConfirmado = "Olá, " + pedido.getCliente().getNome() + "!\n\n" +
+            "Recebemos seu pedido realizado em " + pedido.getDataPedido() + " e já estamos preparando ele com todo carinho." +
+            "\nAproveitando esse contato, vamos te dar um resumo do que você comprou:" +
+            "\n\n Seu código de pedido é o n° " + pedido.getId() + "." +
+            "\n Endereço de entrega: " + pedido.getEndereco() +
+            "\n Itens do seu pedido: \n\n";
+
+        for (PedidoProduto pp : pedido.getPedidoProdutos()) {
+            mensagemPedidoConfirmado += "    ‣ " + pp.getProduto().getNomeProduto() +
+                ": " + pp.getQuantidade() + " por " +
+                " R$ " + String.format("%.2f", pp.getProduto().getPreco()) + " cada.\n";
+        }
+
+        mensagemPedidoConfirmado += "\nTotal do seu pedido: R$ " + String.format("%.2f", pedido.getValorVenda()) +
+            "\nAgradecemos pela sua compra e esperamos que você aproveite seus produtos!\n" +
+            "\n\nAtenciosamente,\n" +
+            "Grupo 5  🩵💙";
+
+        mailConfig.enviarEmail(emailCliente, assuntoPedidoConfirmado, mensagemPedidoConfirmado);
 
         PedidoDTO pedidoDTO = new PedidoDTO(pedido);
 
@@ -143,18 +176,23 @@ public class PedidoService {
         pedido.setPedidoProdutos(pedidoProdutos);
         //calcula o valor da venda
         double valorTotal = 0.0;
+        int quantidadeTotalItens = 0;
         for (PedidoProduto pedidoProduto : pedidoProdutos) {
             double valor = pedidoProduto.getProduto().getPreco() * pedidoProduto.getQuantidade();
             valorTotal += valor;
+            quantidadeTotalItens += pedidoProduto.getQuantidade();
         }
         //calcula total com desconto
-        double totalComDesconto = valorTotal - (pedido.getDesconto() / 100 * valorTotal);
+        // aplica o desconto baseado na quantidade total
+        double desconto = DescontoQuantidadeUtil.calcularDesconto(quantidadeTotalItens);
+        double totalComDesconto = valorTotal - (desconto * valorTotal);
         if(totalComDesconto >= 50.00) {
         	pedido.setTemCupomFreteGratis(true);
         } else {
         	pedido.setTemCupomFreteGratis(false);
         }
         pedido.setValorVenda(valorTotal);
+        pedido.setDesconto(desconto * 100);
         pedido.setTotal(totalComDesconto);
 
         pedidoRepository.save(pedido);
@@ -188,11 +226,6 @@ public class PedidoService {
         Pedido pedido = pedidoOpt.get();
 
         pedido.setStatus(status);
-        pedido.setDesconto(editarStatusDTO.getDesconto());
-
-        //calcula total com desconto
-        double totalComDesconto = pedido.getTotal() - (editarStatusDTO.getDesconto() / 100 * pedido.getTotal());
-        pedido.setTotal(totalComDesconto);
 
         List<PedidoProduto> pedidosProdutos = pedido.getPedidoProdutos();
 
