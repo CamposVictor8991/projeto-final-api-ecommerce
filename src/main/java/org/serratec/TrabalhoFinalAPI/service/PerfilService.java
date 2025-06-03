@@ -15,15 +15,15 @@ public class PerfilService {
     private PerfilRepository perfilRepository;
 
     public List<Perfil> listarPefis() {
-		return perfilRepository.findAll();
-	}
+        return perfilRepository.findAll();
+    }
 
     public Perfil atualizarPerfil(long id, PerfilInserirDTO perfil) {
-		Perfil perfilAtualizado = perfilRepository.findById(id).orElse(null);
-		if (perfilAtualizado != null) {
-			perfilAtualizado.setNome(perfil.getNome());
-			perfilAtualizado = perfilRepository.save(perfilAtualizado);
-		}
-		return perfilAtualizado;
-	}
+        Perfil perfilAtualizado = perfilRepository.findById(id).orElse(null);
+        if (perfilAtualizado != null) {
+            perfilAtualizado.setNome(perfil.getNome());
+            perfilAtualizado = perfilRepository.save(perfilAtualizado);
+        }
+        return perfilAtualizado;
+    }
 }

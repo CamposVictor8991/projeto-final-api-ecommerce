@@ -70,12 +70,12 @@ public class ClienteService {
 
         clienteRepository.save(cliente);
 
-        String mensagemCadastroCriado = "Olá, " + cliente.getNome() + "!"+
-            "\n\nEstamos passando bem rapidinho pra dar as boas-vindas e confirmar que seu cadastro foi criado com sucesso! " +
-            "\nAgora que você faz parte da nossa comunidade e pode aproveitar ofertas exclusivas, acompanhar seus pedidos e muito mais! " +
-            "\nLembre-se de que você pode acessar sua conta usando o e-mail: " + cliente.getEmail() + " e a senha que você escolheu." +
-            "\nConta com a gente para qualquer dúvida ou ajuda que você precisar!" +
-            "\n\nAtenciosamente, \nGrupo 5 - Serratec  🩵💙";
+        String mensagemCadastroCriado = "Olá, " + cliente.getNome() + "!"
+                + "\n\nEstamos passando bem rapidinho pra dar as boas-vindas e confirmar que seu cadastro foi criado com sucesso! "
+                + "\nAgora que você faz parte da nossa comunidade e pode aproveitar ofertas exclusivas, acompanhar seus pedidos e muito mais! "
+                + "\nLembre-se de que você pode acessar sua conta usando o e-mail: " + cliente.getEmail() + " e a senha que você escolheu."
+                + "\nConta com a gente para qualquer dúvida ou ajuda que você precisar!"
+                + "\n\nAtenciosamente, \nGrupo 5 - Serratec  🩵💙";
 
         mailConfig.enviarEmail(cliente.getEmail(), "Cadastro de Cliente Criado!", mensagemCadastroCriado);
 
@@ -107,16 +107,16 @@ public class ClienteService {
 
             clienteRepository.save(cliente);
 
-            String mensagemCadastroEditado = "Olá, " + cliente.getNome() +
-                "\n\nPassando rapidinho pra confirmar que as informações da sua conta foram atualizadas com sucesso! ✨" +
-                "\nLembre-se de sempre manter seus dados atualizados pra não perder acesso à sua conta e continuar por dentro das novidades." +
-                "\nSeus dados atuais são:" +
-                "\n\nNome: " + cliente.getNome() +
-                "\nE-mail: " + cliente.getEmail() +
-                "\nTelefone: " + cliente.getTelefone() +
-                "\n\nSe não foi você quem fez essa alteração, entre em contato com a gente imediatamente." +
-                "\nConta com a gente pra qualquer dúvida ou ajuda que precisar!" +
-                "\n\nAtenciosamente, \nGrupo 5 - Serratec 🩵💙";
+            String mensagemCadastroEditado = "Olá, " + cliente.getNome()
+                    + "\n\nPassando rapidinho pra confirmar que as informações da sua conta foram atualizadas com sucesso! ✨"
+                    + "\nLembre-se de sempre manter seus dados atualizados pra não perder acesso à sua conta e continuar por dentro das novidades."
+                    + "\nSeus dados atuais são:"
+                    + "\n\nNome: " + cliente.getNome()
+                    + "\nE-mail: " + cliente.getEmail()
+                    + "\nTelefone: " + cliente.getTelefone()
+                    + "\n\nSe não foi você quem fez essa alteração, entre em contato com a gente imediatamente."
+                    + "\nConta com a gente pra qualquer dúvida ou ajuda que precisar!"
+                    + "\n\nAtenciosamente, \nGrupo 5 - Serratec 🩵💙";
 
             mailConfig.enviarEmail(cliente.getEmail(), "Atualização cadastral!", mensagemCadastroEditado);
 
@@ -167,7 +167,7 @@ public class ClienteService {
         return null;
     }
 
-    public Cliente acharCliente (String email) {
+    public Cliente acharCliente(String email) {
         return clienteRepository.findByEmail(email);
     }
 
