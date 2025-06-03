@@ -1,18 +1,13 @@
 package org.serratec.TrabalhoFinalAPI.domain;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
+import jakarta.persistence.*;
 import jakarta.validation.constraints.Size;
 import org.serratec.TrabalhoFinalAPI.dto.EnderecoViaCepDTO;
 
 @Entity
 public class Endereco {
-    
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -27,17 +22,15 @@ public class Endereco {
 
     private String cidade;
 
-    @Size(max=2)
+    @Size(max = 2)
     private String uf;
 
-    @Size(max=100, message="Preencha até ${max} caracteres.")
+    @Size(max = 100, message = "Preencha até ${max} caracteres.")
     private String complemento;
-
-    	/* Aqui estamos colocando um ID do cliente no endereço */
 
     @JsonBackReference
     @ManyToOne
-    @JoinColumn(name="id_cliente")
+    @JoinColumn(name = "id_cliente")
     private Cliente cliente;
 
     public Endereco() {
@@ -115,12 +108,19 @@ public class Endereco {
         this.complemento = complemento;
     }
 
-	public Cliente getCliente() {
-		return cliente;
-	}
+    public Cliente getCliente() {
+        return cliente;
+    }
 
-	public void setCliente(Cliente cliente) {
-		this.cliente = cliente;
-	}
+    public void setCliente(Cliente cliente) {
+        this.cliente = cliente;
+    }
+
+    @Override
+    public String toString() {
+        return logradouro + ", n° " + numero + " - " + bairro + ", " + cidade + " - " + uf + ", CEP: " + cep
+            + (complemento != null ? ", Complemento: " + complemento : ".");
+
+    }
 
 }

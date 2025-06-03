@@ -1,17 +1,14 @@
 package org.serratec.TrabalhoFinalAPI.domain;
 
+import jakarta.persistence.*;
 import org.serratec.TrabalhoFinalAPI.dto.ProdutoInserirDTO;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
+
+import java.util.List;
 
 @Entity
 public class Produto {
@@ -32,7 +29,7 @@ public class Produto {
     
     private int quantidade;
 
-    
+
     /* Aqui estamos exibindo ID desta categoria no PRODUTO! */
     @JsonBackReference
     @ManyToOne
@@ -54,6 +51,8 @@ public class Produto {
 		this.preco = produtoInserirDTO.getPrecoProduto();
 		this.quantidade = produtoInserirDTO.getQuantidadeProduto();
 	}
+
+    
 
 	public Long getId() {
         return id;

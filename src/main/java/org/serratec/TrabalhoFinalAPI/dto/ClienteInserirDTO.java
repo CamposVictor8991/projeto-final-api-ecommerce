@@ -1,15 +1,47 @@
 package org.serratec.TrabalhoFinalAPI.dto;
 
+import java.util.Set;
+
+import org.hibernate.validator.constraints.br.CPF;
+import org.serratec.TrabalhoFinalAPI.domain.Perfil;
+
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Pattern;
+import jakarta.validation.constraints.Size;
+
 public class ClienteInserirDTO {
+
+    @NotBlank(message="Nome é um campo obrigatório.")
+    @Size(max = 100, message="Máximo de ${max} caracteres.")
     private String nome;
+
+    @NotBlank(message="E-mail é um campo obrigatório.")
+    @Email(message = "E-mail inválido.")
     private String email;
+
+    @NotBlank(message="CPF é um campo obrigatório.")
+    @CPF(message="CPF inválido.")
     private String cpf;
+
+    @NotBlank(message="Telefone é um campo obrigatório.")
+    @Pattern(regexp = "^\\(?[1-9]{2}\\)?\s?(9[0-9]{4})-?[0-9]{4}$", message = "Telefone inválido. Ex: (11) 91234-5678")
     private String telefone;
+
+    @NotBlank(message="CEP é um campo obrigatório.")
     private String cep;
+
+    @NotBlank(message="Número de endereço é um campo obrigatório.")
     private String numeroEndereco;
+    @Size(max= 100)
     private String complemento;
+
+    @NotBlank(message="A senha é um campo obrigatório.")
+    @Size(min = 8, max = 100)
     private String senha;
     private String confirmaSenha;
+
+    private Set<Perfil> perfis;
 
     public String getNome() {
         return nome;
@@ -82,4 +114,13 @@ public class ClienteInserirDTO {
     public void setConfirmaSenha(String confirmaSenha) {
         this.confirmaSenha = confirmaSenha;
     }
+
+    public Set<Perfil> getPerfis() {
+        return perfis;
+    }
+
+    public void setPerfis(Set<Perfil> perfis) {
+        this.perfis = perfis;
+    }
+
 }

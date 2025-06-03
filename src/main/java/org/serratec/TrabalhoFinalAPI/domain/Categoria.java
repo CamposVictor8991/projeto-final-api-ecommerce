@@ -22,34 +22,28 @@ public class Categoria {
     private Long id;
 
     @NotBlank
-    @Size(max = 30, message="Máximo de ${max} caracteres.")
+    @Size(max = 30, message = "Máximo de ${max} caracteres.")
     private String nomeCategoria;
 
     @NotBlank
     @Size(max = 60, message = "Máximo de ${max} caracteres.")
     private String descricaoCategoria;
-    
+
     /* Aqui estamos exibindo produtos desta categoria! */
     @JsonManagedReference
     @OneToMany(mappedBy = "categoria")
-    List <Produto> produtos;
-    
-    
-    
+    List<Produto> produtos;
+
     public Categoria() {
-		super();
-	}
+        super();
+    }
 
-    
-    
-	public Categoria(CategoriaInserirDTO categoriaInserirDTO) {
-		this.nomeCategoria = categoriaInserirDTO.getNomeCategoria();
-		this.descricaoCategoria = categoriaInserirDTO.getDescricaoCategoria();
-	}
+    public Categoria(CategoriaInserirDTO categoriaInserirDTO) {
+        this.nomeCategoria = categoriaInserirDTO.getNomeCategoria();
+        this.descricaoCategoria = categoriaInserirDTO.getDescricaoCategoria();
+    }
 
-
-
-	public Long getId() {
+    public Long getId() {
         return id;
     }
 
@@ -73,12 +67,12 @@ public class Categoria {
         this.descricaoCategoria = descricaoCategoria;
     }
 
-	public List<Produto> getProdutos() {
-		return produtos;
-	}
+    public List<Produto> getProdutos() {
+        return produtos;
+    }
 
-	public void setProdutos(List<Produto> produtos) {
-		this.produtos = produtos;
-	}
+    public void setProdutos(List<Produto> produtos) {
+        this.produtos = produtos;
+    }
 
 }
