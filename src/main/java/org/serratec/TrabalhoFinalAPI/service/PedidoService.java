@@ -40,7 +40,7 @@ public class PedidoService {
     @Autowired
     private MailConfig mailConfig;
 
-    public PedidoDTO inserirPedido(Long id, PedidoInserirDTO pedidoInserirDTO) {
+    public PedidoDTO inserirPedido(Long id, PedidoInserirDTO pedidoInserirDTO) throws RuntimeMensagemException {
 
         Pedido pedido = new Pedido();
         //confere se o cliente e o id existem
@@ -138,7 +138,7 @@ public class PedidoService {
         return pedidoDTO;
     }
 
-    public PedidoDTO editarPedido(Long id, Long id_pedido, PedidoInserirDTO pedidoInserirDTO) {
+    public PedidoDTO editarPedido(Long id, Long id_pedido, PedidoInserirDTO pedidoInserirDTO) throws RuntimeMensagemException {
 
         Optional<Pedido> pedidoOpt = pedidoRepository.findById(id_pedido);
         Pedido pedido = pedidoOpt.get();
