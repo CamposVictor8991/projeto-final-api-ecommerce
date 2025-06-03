@@ -104,24 +104,4 @@ public class ProdutoController {
         return ResponseEntity.ok(relacionados);
     }
 
-    @DeleteMapping("/{id}")
-    @Operation(summary = "Deletar um produto", description = "Remove um produto existente")
-    @ApiResponses(value = {
-        @ApiResponse(responseCode = "200",
-                content = {
-                    @Content(schema = @Schema(implementation = Categoria.class), mediaType = "application/json")},
-                description = "Retorna categoria atualizada"),
-        @ApiResponse(responseCode = "401", description = "Erro de autenticação"),
-        @ApiResponse(responseCode = "403", description = "Não há permissão para acesso o recurso"),
-        @ApiResponse(responseCode = "404", description = "Recurso não encontrado"),
-        @ApiResponse(responseCode = "505", description = "Exceção interna da aplicação")
-    })
-    public ResponseEntity<Void> deletar(@PathVariable Long id) {
-        boolean deleted = produtoService.deletar(id);
-        if (deleted) {
-            return ResponseEntity.noContent().build();
-        }
-        return ResponseEntity.notFound().build();
-    }
-
 }
