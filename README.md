@@ -4,15 +4,6 @@
   API RESTful desenvolvida como trabalho final da disciplina de <strong>Desenvolvimento de APIs</strong> do programa <strong>Serratec – Residência em TIC - Software</strong>.
 </p>
 
-<p align="center">
-  <a href="#-funcionalidades">Funcionalidades</a> •
-  <a href="#-tecnologias">Tecnologias</a> •
-  <a href="#-grupo-5">Grupo</a> •
-  <a href="#-execução">Execução</a> •
-  <a href="#-documentação">Documentação</a> •
-  <a href="#-contato">Contato</a>
-</p>
-
 ---
 
 ## ✅ Funcionalidades
