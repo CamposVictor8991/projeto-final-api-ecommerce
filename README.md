@@ -56,6 +56,31 @@ Desenvolvido em equipe por:
 
 ---
 
+📚 Documentação
+A documentação da API está disponível por meio do Swagger UI, permitindo visualizar e testar todos os endpoints de forma interativa.
+
+🔗 Acesse em: http://localhost:8080/swagger-ui.html
+
+Exemplos de Endpoints
+GET /produtos — Lista todos os produtos
+
+POST /categorias — Cadastra uma nova categoria
+
+PUT /usuarios/{id} — Atualiza dados de um usuário
+
+DELETE /pedidos/{id} — Remove um pedido
+
+POST /auth/login — Realiza login e gera token
+
+⚠️ Para usar endpoints protegidos, é necessário autenticar-se e incluir o token JWT no cabeçalho das requisições.
+
+---
+
+📬 Contato
+Caso tenha dúvidas, sugestões ou encontre algum problema, fique à vontade para entrar em contato com a equipe ou abrir uma issue neste repositório.
+
+---
+
 ## 🙏 Agradecimentos
 
 Agradecemos ao **Serratec – Residência em TIC - Software** pela oportunidade de aprendizado, desenvolvimento técnico e pessoal ao longo do curso.
