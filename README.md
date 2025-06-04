@@ -36,14 +36,15 @@ Tecnologias e ferramentas utilizadas no desenvolvimento:
 
 Desenvolvido em equipe por:
 
-| Nome                           | Funcionalidade Individual           |
-|--------------------------------|-------------------------------------|
-| 🧠 Arthur dos Santos Gomes     | 💸 Cálculo de desconto             |
-| 🛒 Bruno Ventura Gross         | 📦 Controle de estoque             |
-| 🔗 Daniel Lopes                | 🧩 Produtos relacionados           |
-| 🧡 Iara Coutinho               | 🌟 Funcionalidade de favoritos     |
-| 📧 Laryssa Peixoto             | ✉️ Envio de e-mails                |
-| 🚚 Victor da Silva Campos      | 🎟️ Cupom de frete grátis           |
+| Nome                                                                 | Funcionalidade Individual              |
+|----------------------------------------------------------------------|----------------------------------------|
+| 🧠 [Arthur dos Santos Gomes](https://github.com/ArthSGM)             | 💸 Cálculo de desconto                |
+| 🛒 [Bruno Ventura Gross](https://github.com/bvgross)                 | 📦 Controle de estoque                |
+| 🔗 [Daniel Lopes](https://github.com/Danzete)                        | 🧩 Produtos relacionados              |
+| 🧡 [Iara Coutinho](https://github.com/IaraMarkendorf)                | 🌟 Funcionalidade de favoritos        |
+| 📧 [Laryssa Peixoto](https://github.com/larypeixoto)                 | ✉️ Envio de e-mails                   |
+| 🚚 [Victor da Silva Campos](https://github.com/CamposVictor8991)     | 🎟️ Cupom de frete grátis              |
+
 
 ---
 
@@ -82,11 +83,11 @@ Nosso reconhecimento especial vai para:
 - 🧑‍💻 **Monitor Carlos Eduardo (Cadu)**, por todo o suporte, orientação e incentivo durante o desenvolvimento do projeto.
 - 🤝 **Colegas de equipe**, que fizeram parte dessa jornada com colaboração, empenho e espírito de equipe:
 
-  - Arthur dos Santos Gomes  
-  - Bruno Ventura Gross  
-  - Daniel Lopes  
-  - Iara Coutinho  
-  - Laryssa Peixoto  
-  - Victor da Silva Campos  
+  - [Arthur dos Santos Gomes](https://github.com/ArthSGM)   
+  - [Bruno Ventura Gross](https://github.com/bvgross)  
+  - [Daniel Lopes](https://github.com/Danzete)  
+  - [Iara Coutinho](https://github.com/IaraMarkendorf)  
+  - [Laryssa Peixoto](https://github.com/larypeixoto) 
+  - [Victor da Silva Campos](https://github.com/CamposVictor8991)  
 
 Este projeto representa mais do que a conclusão de uma disciplina — é um marco no nosso caminho como desenvolvedores. 💙
