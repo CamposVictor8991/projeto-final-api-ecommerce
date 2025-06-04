@@ -1,26 +1,76 @@
-Projeto Final - API E-commerce
-Este projeto é uma API RESTful para um sistema de e-commerce, desenvolvida como trabalho final da disciplina de Desenvolvimento de APIs do Serratec – Residência em TIC - Software.
+<h1 align="center">🛍️ Projeto Final - API E-commerce</h1>
 
-A aplicação permite o gerenciamento de produtos, categorias, usuários e pedidos, oferecendo endpoints para operações CRUD, autenticação de usuários e documentação Swagger.
+<p align="center">
+  API RESTful desenvolvida como trabalho final da disciplina de <strong>Desenvolvimento de APIs</strong> do programa <strong>Serratec – Residência em TIC - Software</strong>.
+</p>
 
-Grupo 5 - Colaboradores:
+<p align="center">
+  <a href="#-funcionalidades">Funcionalidades</a> •
+  <a href="#-tecnologias">Tecnologias</a> •
+  <a href="#-grupo-5">Grupo</a> •
+  <a href="#-execução">Execução</a> •
+  <a href="#-documentação">Documentação</a> •
+  <a href="#-contato">Contato</a>
+</p>
 
--Arthur dos Santos Gomes
--Bruno Ventura Gross
--Daniel Lopes
--Iara Coutinho
--Laryssa Peixoto
--Victor da Silva Campos
+---
 
-Tecnologias Utilizadas: 
+## ✅ Funcionalidades
 
--Java 17
--Spring Boot
--Spring Data JPA
--H2 Database (banco de dados em memória)
--Maven
--Swagger/OpenAPI (documentação da API)
--Postman (coleção de testes)
+A API permite o gerenciamento completo de uma loja virtual, com os seguintes recursos:
 
+- 📦 CRUD de **produtos** e **categorias**
+- 👤 Cadastro e autenticação de **usuários**
+- 🛒 Gestão de **pedidos**
+- 🔐 **Segurança** e autenticação com Spring Security
+- 📑 **Documentação Swagger** para teste dos endpoints
 
+---
 
+## 🛠️ Tecnologias
+
+Tecnologias e ferramentas utilizadas no desenvolvimento:
+
+- ☕ **Java 17**
+- ⚙️ **Spring Boot**
+- 🗃️ **Spring Data JPA**
+- 🧪 **H2 Database** (banco em memória)
+- 🧰 **Maven**
+- 📘 **Swagger/OpenAPI**
+- 📬 **Postman** (coleção de testes)
+
+---
+
+## 👥 Grupo 5
+
+Desenvolvido em equipe por:
+
+| Nome                           | Funcionalidade Individual           |
+|--------------------------------|-------------------------------------|
+| 🧠 Arthur dos Santos Gomes     | 💸 Cálculo de desconto             |
+| 🛒 Bruno Ventura Gross         | 📦 Controle de estoque             |
+| 🔗 Daniel Lopes                | 🧩 Produtos relacionados           |
+| 🧡 Iara Coutinho               | 🌟 Funcionalidade de favoritos     |
+| 📧 Laryssa Peixoto             | ✉️ Envio de e-mails                |
+| 🚚 Victor da Silva Campos      | 🎟️ Cupom de frete grátis           |
+
+---
+
+## 🙏 Agradecimentos
+
+Agradecemos ao **Serratec – Residência em TIC - Software** pela oportunidade de aprendizado, desenvolvimento técnico e pessoal ao longo do curso.
+
+Nosso reconhecimento especial vai para:
+
+- 👨‍🏫 **Professor Alberto Paz**, pela didática, paciência e dedicação ao nosso aprendizado.
+- 🧑‍💻 **Monitor Carlos Eduardo (Cadu)**, por todo o suporte, orientação e incentivo durante o desenvolvimento do projeto.
+- 🤝 **Colegas de equipe**, que fizeram parte dessa jornada com colaboração, empenho e espírito de equipe:
+
+  - Arthur dos Santos Gomes  
+  - Bruno Ventura Gross  
+  - Daniel Lopes  
+  - Iara Coutinho  
+  - Laryssa Peixoto  
+  - Victor da Silva Campos  
+
+Este projeto representa mais do que a conclusão de uma disciplina — é um marco no nosso caminho como desenvolvedores. 💙
